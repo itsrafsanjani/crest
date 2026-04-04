@@ -60,7 +60,8 @@ struct EventRowView: View {
     private var meetingLink: MeetingLink? {
         MeetingLinkDetector.detect(
             location: event.location,
-            notes: event.notes
+            notes: event.notes,
+            url: event.url
         )
     }
 }

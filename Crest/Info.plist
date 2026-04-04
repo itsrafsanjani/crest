@@ -18,5 +18,11 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Crest needs access to your calendars to show upcoming events and meeting links.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Crest needs access to your calendars to show upcoming events and meeting links.</string>
 </dict>
 </plist>

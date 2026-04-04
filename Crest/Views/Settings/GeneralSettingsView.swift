@@ -7,6 +7,9 @@ struct GeneralSettingsView: View {
     @AppStorage(AppSettingsKey.showUpcomingEventInMenuBar) private var showUpcomingEvent = AppSettingsDefault.showUpcomingEventInMenuBar
     @AppStorage(AppSettingsKey.menuBarEventMaxLength) private var menuBarEventMaxLength = AppSettingsDefault.menuBarEventMaxLength
 
+    @AppStorage(AppSettingsKey.meetingAlertEnabled) private var meetingAlertEnabled = AppSettingsDefault.meetingAlertEnabled
+    @AppStorage(AppSettingsKey.joinMeetingShortcutEnabled) private var joinShortcutEnabled = AppSettingsDefault.joinMeetingShortcutEnabled
+
     @State private var launchAtLogin = false
 
     var body: some View {
@@ -31,6 +34,24 @@ struct GeneralSettingsView: View {
                         in: 10...60,
                         step: 5
                     )
+                }
+            }
+
+            Section("Meetings") {
+                Toggle("Fullscreen alert when meetings start", isOn: $meetingAlertEnabled)
+
+                Toggle("Global shortcut to join next meeting", isOn: $joinShortcutEnabled)
+                if joinShortcutEnabled {
+                    HStack {
+                        Text("Shortcut")
+                        Spacer()
+                        Text("⌘⇧J")
+                            .font(.body.monospaced())
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(.quaternary, in: RoundedRectangle(cornerRadius: 5))
+                    }
                 }
             }
 

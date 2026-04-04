@@ -29,6 +29,8 @@ enum AppSettingsKey {
     static let showDeclinedEvents = "showDeclinedEvents"
     static let enabledCalendarIDs = "enabledCalendarIDs"
     static let islamicModeEnabled = "islamicModeEnabled"
+    static let meetingAlertEnabled = "meetingAlertEnabled"
+    static let joinMeetingShortcutEnabled = "joinMeetingShortcutEnabled"
 }
 
 enum AppSettingsDefault {
@@ -39,4 +41,6 @@ enum AppSettingsDefault {
     static let calendarLookaheadDays = 7
     static let showDeclinedEvents = false
     static let islamicModeEnabled = false
+    static let meetingAlertEnabled = true
+    static let joinMeetingShortcutEnabled = true
 }

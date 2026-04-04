@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		051BBEAEC33F7F322379E40F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0F3B1CCC350E068EDB37F /* AppDelegate.swift */; };
 		08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC20B7E89F0D072779F0C977 /* SettingsView.swift */; };
 		13CC27987046A433C5B44EB6 /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */; };
 		3F93DA114A5454F544E1C3A7 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */; };
+		41624402DF685081DAFF6A66 /* MeetingAlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D0488F0F3E10CA123B72AD /* MeetingAlertService.swift */; };
 		416E3285FC9BF11C9DA4F8C8 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AF892423B5F0A06ECDA2D /* DayCell.swift */; };
 		41C66B993D13DC19D37CA8EF /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1863D44BECEA391A42D0EA /* EventDetailView.swift */; };
 		5A103BF866F4D16163DA6FAB /* PlaceholderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */; };
@@ -18,13 +20,16 @@
 		6ED94B515257AF1F0FEFC346 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7C5111C19071CEEEC81E75 /* EventListView.swift */; };
 		743B66FDBB7043CC63882DDE /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */; };
 		7D38FA4B37BB6F01BBA41A64 /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F54E2C0031F04188666E4DB /* CalendarSettingsView.swift */; };
+		87E60D10A6C54363ED125B03 /* GlobalShortcutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */; };
 		9F371AAD042E1E647EF2ED4D /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */; };
 		A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F030B2E2DC44A485B760B202 /* AppSettings.swift */; };
 		AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */; };
 		B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */; };
 		BACA6E41617EB4D9EE677451 /* MeetingLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */; };
 		BAE76692271D459894E3974D /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8309C07BB062ED3304E8DA5 /* CalendarService.swift */; };
+		BBA48852B091A055DD90F4A7 /* MeetingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748AFFD1063DC138815E1EFA /* MeetingAlertView.swift */; };
 		D26478021DFBA494E5278DAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */; };
+		EF11FD64D25C574A478197F7 /* MeetingAlertWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,15 +43,20 @@
 		60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowView.swift; sourceTree = "<group>"; };
 		704AE3B14AA8297313BFB555 /* Crest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		748AFFD1063DC138815E1EFA /* MeetingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAlertView.swift; sourceTree = "<group>"; };
 		884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderSettingsView.swift; sourceTree = "<group>"; };
 		8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockService.swift; sourceTree = "<group>"; };
+		9AF0F3B1CCC350E068EDB37F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F54E2C0031F04188666E4DB /* CalendarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSettingsView.swift; sourceTree = "<group>"; };
 		A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabel.swift; sourceTree = "<group>"; };
 		A8309C07BB062ED3304E8DA5 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAlertWindow.swift; sourceTree = "<group>"; };
+		CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCalendarView.swift; sourceTree = "<group>"; };
 		DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
 		DC20B7E89F0D072779F0C977 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F030B2E2DC44A485B760B202 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		F2D0488F0F3E10CA123B72AD /* MeetingAlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAlertService.swift; sourceTree = "<group>"; };
 		F85AF892423B5F0A06ECDA2D /* DayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCell.swift; sourceTree = "<group>"; };
 		FE1863D44BECEA391A42D0EA /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,6 +91,8 @@
 			children = (
 				A8309C07BB062ED3304E8DA5 /* CalendarService.swift */,
 				8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */,
+				CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */,
+				F2D0488F0F3E10CA123B72AD /* MeetingAlertService.swift */,
 				024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */,
 			);
 			path = Services;
@@ -130,11 +142,21 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		A836B6C74C0319D5A1FC8E74 /* MeetingAlert */ = {
+			isa = PBXGroup;
+			children = (
+				748AFFD1063DC138815E1EFA /* MeetingAlertView.swift */,
+				AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */,
+			);
+			path = MeetingAlert;
+			sourceTree = "<group>";
+		};
 		A8D76A7A93EBFA27EAE4CA24 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				4142BFEFA972FA58AC9DC673 /* Calendar */,
 				AAF8D3B522F5207B7AF355B2 /* Events */,
+				A836B6C74C0319D5A1FC8E74 /* MeetingAlert */,
 				3F842D942C4AFFF417D1CBE8 /* MenuBar */,
 				85D7822241355A5C5589B2FA /* Settings */,
 			);
@@ -154,6 +176,7 @@
 		BA318E090C726FDECC47EE69 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				9AF0F3B1CCC350E068EDB37F /* AppDelegate.swift */,
 				38E73BC5E20144CDF01B4219 /* CrestApp.swift */,
 			);
 			path = App;
@@ -197,6 +220,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
+					ADA9BA9F3D6E69D3F8FBB95C = {
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = 4F949458EAF05FEBD3F9D10A /* Build configuration list for PBXProject "Crest" */;
@@ -234,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				051BBEAEC33F7F322379E40F /* AppDelegate.swift in Sources */,
 				A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */,
 				BAE76692271D459894E3974D /* CalendarService.swift in Sources */,
 				7D38FA4B37BB6F01BBA41A64 /* CalendarSettingsView.swift in Sources */,
@@ -245,6 +272,10 @@
 				6ED94B515257AF1F0FEFC346 /* EventListView.swift in Sources */,
 				AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */,
 				9F371AAD042E1E647EF2ED4D /* GeneralSettingsView.swift in Sources */,
+				87E60D10A6C54363ED125B03 /* GlobalShortcutService.swift in Sources */,
+				41624402DF685081DAFF6A66 /* MeetingAlertService.swift in Sources */,
+				BBA48852B091A055DD90F4A7 /* MeetingAlertView.swift in Sources */,
+				EF11FD64D25C574A478197F7 /* MeetingAlertWindow.swift in Sources */,
 				BACA6E41617EB4D9EE677451 /* MeetingLinkDetector.swift in Sources */,
 				3F93DA114A5454F544E1C3A7 /* MenuBarLabel.swift in Sources */,
 				B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */,
@@ -262,6 +293,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Crest/Crest.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Crest/Info.plist;
@@ -269,7 +302,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app;
 				SDKROOT = macosx;
 			};
@@ -336,6 +369,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Crest/Crest.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Crest/Info.plist;
@@ -343,7 +378,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app;
 				SDKROOT = macosx;
 			};
