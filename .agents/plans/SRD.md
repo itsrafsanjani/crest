@@ -73,8 +73,8 @@ Fires exactly 15 minutes before each prayer's start time.
 - Full-screen non-blocking NSWindow overlay
 - Shows: prayer name in Arabic + transliteration, "Prayer in 15 minutes" label, live countdown updating every second
 - Thin circular arc animating down from full to empty over 15 minutes
-- Actions: **Dismiss** (hides for this prayer), **Snooze 5 min** (re-shows in 5 minutes)
-- Esc key dismisses
+- Actions: **Snooze 5 min** (simple button click, re-shows in 5 minutes), **Dismiss** (requires typing "inshallah" to confirm dismissal)
+- Esc key is blocked — the only way to close is typing "inshallah" or snoozing
 - Non-blocking — user can still interact with apps behind it
 
 #### Overlay 2 — Prayer Ending Warning (20 min before prayer window closes)
@@ -84,13 +84,20 @@ Fires when only 20 minutes remain in the current prayer's time window (i.e., 20 
 - Full-screen **blocking** NSWindow overlay — captures input to demand attention
 - Urgent tone: warmer/amber colour scheme to distinguish from Overlay 1
 - Shows: prayer name, "Prayer time ending in 20 minutes", live countdown, next prayer name and its start time
-- Actions: **I have prayed** (marks prayer complete, dismisses), **Dismiss** (closes without marking)
-- Esc key dismisses without marking
+- Actions: **Dismiss** (requires typing "inshallah" to confirm dismissal)
+- Esc key is blocked — the only way to close is typing "inshallah"
 - Intended as a final urgent reminder for users who haven't prayed yet
+
+#### Overlay Settings (per-prayer)
+
+Each prayer has two independent checkboxes in **Settings → Islamic Mode → Overlays**:
+- **Remind at prayer start** — enables/disables Overlay 1 for that prayer
+- **Remind before prayer ends** — enables/disables Overlay 2 for that prayer
+
+No prayer tracking or "I have prayed" functionality — the overlays are purely reminders.
 
 #### Overlay Behaviour Rules
 
-- If the user already marked the prayer as done (via "I have prayed"), Overlay 2 does not fire
 - If device was asleep when an overlay should have triggered, it fires immediately on wake if still within the valid window
 - Both overlays respect macOS Focus / Do Not Disturb — a sub-setting controls whether to override DND or respect it
 
@@ -120,5 +127,5 @@ Fires when only 20 minutes remain in the current prayer's time window (i.e., 20 
 | v0.2  | EventKit, calendar popover, event list, Google Calendar                           |
 | v0.3  | Meeting detection, join button, fullscreen meeting alert                          |
 | v0.4  | Islamic Mode: prayer times, Hijri date, notifications, Overlay 1 (15-min warning) |
-| v0.5  | Overlay 2 (20-min prayer ending alert), prayer tracking, sleep/wake handling      |
+| v0.5  | Overlay 2 (20-min prayer ending alert), sleep/wake handling                       |
 | v1.0  | World clocks, date calculator, polish, App Store release                          |

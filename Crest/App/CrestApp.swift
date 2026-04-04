@@ -5,22 +5,44 @@ struct CrestApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var clock = ClockService()
     @State private var calendarService = CalendarService()
+    @State private var locationService = LocationService()
+    @State private var prayerTimeService: PrayerTimeService?
 
     var body: some Scene {
-        let _ = appDelegate.setup(calendarService: calendarService)
+        let prayerService = resolvedPrayerTimeService
+        let _ = appDelegate.setup(
+            calendarService: calendarService,
+            prayerTimeService: prayerService
+        )
 
         MenuBarExtra {
-            PopoverView(clock: clock, calendarService: calendarService)
+            PopoverView(
+                clock: clock,
+                calendarService: calendarService,
+                prayerTimeService: prayerService
+            )
         } label: {
             MenuBarLabel(
                 clock: clock,
-                nextEventTitle: calendarService.nextEvent?.title
+                nextEventTitle: calendarService.nextEvent?.title,
+                hijriDateString: prayerService.isEnabled ? prayerService.hijriDateString : nil
             )
         }
         .menuBarExtraStyle(.window)
 
         Settings {
-            SettingsView()
+            SettingsView(
+                locationService: locationService,
+                prayerTimeService: prayerService,
+                notificationService: appDelegate.prayerNotificationService
+            )
         }
+    }
+
+    private var resolvedPrayerTimeService: PrayerTimeService {
+        if let existing = prayerTimeService { return existing }
+        let service = PrayerTimeService(locationService: locationService)
+        DispatchQueue.main.async { prayerTimeService = service }
+        return service
     }
 }

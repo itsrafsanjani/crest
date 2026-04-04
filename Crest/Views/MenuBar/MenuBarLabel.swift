@@ -5,9 +5,11 @@ struct MenuBarLabel: View {
     @AppStorage(AppSettingsKey.showSeconds) private var showSeconds = AppSettingsDefault.showSeconds
     @AppStorage(AppSettingsKey.showUpcomingEventInMenuBar) private var showEvent = AppSettingsDefault.showUpcomingEventInMenuBar
     @AppStorage(AppSettingsKey.menuBarEventMaxLength) private var maxEventLength = AppSettingsDefault.menuBarEventMaxLength
+    @AppStorage(AppSettingsKey.showHijriInMenuBar) private var showHijri = AppSettingsDefault.showHijriInMenuBar
 
     var clock: ClockService
     var nextEventTitle: String?
+    var hijriDateString: String?
 
     var body: some View {
         let timeText = clock.formattedTime(format: dateFormat, showSeconds: showSeconds)
@@ -15,6 +17,12 @@ struct MenuBarLabel: View {
 
         HStack(spacing: 6) {
             Text(timeText)
+            if showHijri, let hijri = hijriDateString, !hijri.isEmpty {
+                Text("·")
+                    .foregroundStyle(.secondary)
+                Text(hijri)
+                    .foregroundStyle(.secondary)
+            }
             if let eventText {
                 Text("·")
                     .foregroundStyle(.secondary)

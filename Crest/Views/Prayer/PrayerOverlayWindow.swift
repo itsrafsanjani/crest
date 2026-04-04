@@ -1,0 +1,54 @@
+import AppKit
+import SwiftUI
+
+final class PrayerOverlayWindow: NSPanel {
+    private let onDismissAction: () -> Void
+    private let onSnoozeAction: () -> Void
+
+    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping () -> Void) {
+        self.onDismissAction = onDismiss
+        self.onSnoozeAction = onSnooze
+
+        let screen = NSScreen.main ?? NSScreen.screens[0]
+        let frame = screen.frame
+
+        super.init(
+            contentRect: frame,
+            styleMask: [.borderless, .nonactivatingPanel],
+            backing: .buffered,
+            defer: false
+        )
+
+        self.level = .floating
+        self.isOpaque = false
+        self.backgroundColor = .clear
+        self.hasShadow = false
+        self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        self.isMovable = false
+        self.isMovableByWindowBackground = false
+        self.hidesOnDeactivate = false
+
+        let overlayView = PrayerOverlayView(
+            prayer: prayer,
+            prayerTime: prayerTime,
+            onDismiss: onDismiss,
+            onSnooze: onSnooze
+        )
+
+        let hostingView = NSHostingView(rootView: overlayView)
+        hostingView.frame = frame
+        self.contentView = hostingView
+    }
+
+    func showFullscreen() {
+        makeKeyAndOrderFront(nil)
+    }
+
+    override func keyDown(with event: NSEvent) {
+        // Esc is blocked — user must type "inshallah" or snooze
+        if event.keyCode == 53 { return }
+        super.keyDown(with: event)
+    }
+
+    override var canBecomeKey: Bool { true }
+}

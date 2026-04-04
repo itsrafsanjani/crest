@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct SettingsView: View {
+    var locationService: LocationService
+    var prayerTimeService: PrayerTimeService
+    var notificationService: PrayerNotificationService?
+
     var body: some View {
         TabView {
             GeneralSettingsView()
@@ -29,14 +33,25 @@ struct SettingsView: View {
                 Label("World Clocks", systemImage: "globe")
             }
 
-            PlaceholderSettingsView(
-                title: "Islamic Mode",
-                description: "Prayer times, Hijri date, and overlay settings will appear here."
-            )
-            .tabItem {
-                Label("Islamic Mode", systemImage: "moon.stars")
+            if let notifService = notificationService {
+                IslamicSettingsView(
+                    locationService: locationService,
+                    prayerTimeService: prayerTimeService,
+                    notificationService: notifService
+                )
+                .tabItem {
+                    Label("Islamic Mode", systemImage: "moon.stars")
+                }
+            } else {
+                PlaceholderSettingsView(
+                    title: "Islamic Mode",
+                    description: "Prayer times, Hijri date, and overlay settings will appear here."
+                )
+                .tabItem {
+                    Label("Islamic Mode", systemImage: "moon.stars")
+                }
             }
         }
-        .frame(width: 480, height: 320)
+        .frame(width: 480, height: 420)
     }
 }

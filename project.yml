@@ -6,6 +6,11 @@ options:
   xcodeVersion: "16.1"
   generateEmptyDirectories: true
 
+packages:
+  Adhan:
+    url: https://github.com/batoulapps/adhan-swift
+    branch: main
+
 settings:
   base:
     SWIFT_VERSION: "5.9"
@@ -17,18 +22,21 @@ targets:
     platform: macOS
     sources:
       - path: Crest
+    dependencies:
+      - package: Adhan
     info:
       path: Crest/Info.plist
       properties:
         LSUIElement: true
         NSCalendarsFullAccessUsageDescription: "Crest needs access to your calendars to show upcoming events and meeting links."
         NSCalendarsUsageDescription: "Crest needs access to your calendars to show upcoming events and meeting links."
+        NSLocationUsageDescription: "Crest needs your location to calculate accurate prayer times."
     entitlements:
       path: Crest/Crest.entitlements
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.crest.app
-        MARKETING_VERSION: "0.3.0"
+        MARKETING_VERSION: "0.4.0"
         CURRENT_PROJECT_VERSION: "1"
         INFOPLIST_FILE: Crest/Info.plist
         CODE_SIGN_ENTITLEMENTS: Crest/Crest.entitlements
