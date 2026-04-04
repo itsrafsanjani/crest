@@ -3,15 +3,15 @@ import Observation
 import AppKit
 
 @Observable
-final class PrayerOverlayService {
+final class PrayerEndingOverlayService {
     private let prayerTimeService: PrayerTimeService
     private var scheduledTimers: [String: Timer] = [:]
     private var dismissedPrayers: Set<String> = []
     private var refreshTimer: Timer?
-    private(set) var overlayWindow: PrayerOverlayWindow?
+    private(set) var overlayWindow: PrayerEndingOverlayWindow?
     private(set) var activePrayer: Prayer?
 
-    private let warningMinutes: TimeInterval = 15
+    private let warningMinutes: TimeInterval = 20
 
     init(prayerTimeService: PrayerTimeService) {
         self.prayerTimeService = prayerTimeService
@@ -30,8 +30,8 @@ final class PrayerOverlayService {
 
         guard prayerTimeService.isEnabled else { return }
 
-        let perPrayer = (UserDefaults.standard.dictionary(forKey: AppSettingsKey.overlay1PerPrayer) as? [String: Bool])
-            ?? AppSettingsDefault.defaultOverlay1PerPrayer
+        let perPrayer = (UserDefaults.standard.dictionary(forKey: AppSettingsKey.overlay2PerPrayer) as? [String: Bool])
+            ?? AppSettingsDefault.defaultOverlay2PerPrayer
 
         let now = Date()
         let warningInterval = warningMinutes * 60
@@ -42,13 +42,15 @@ final class PrayerOverlayService {
             guard perPrayer[prayer.rawValue] ?? true else { continue }
             guard !dismissedPrayers.contains(prayer.rawValue) else { continue }
 
-            let fireTime = prayerTime.time.addingTimeInterval(-warningInterval)
+            guard let endTime = prayerTimeService.prayerEndTime(prayer) else { continue }
+
+            let fireTime = endTime.addingTimeInterval(-warningInterval)
             guard fireTime > now else { continue }
 
             let delay = fireTime.timeIntervalSince(now)
             let timer = Timer.scheduledTimer(withTimeInterval: max(delay, 0.1), repeats: false) { [weak self] _ in
                 DispatchQueue.main.async {
-                    self?.fireOverlay(for: prayer, prayerTime: prayerTime.time)
+                    self?.fireOverlay(for: prayer, prayerEndTime: endTime)
                 }
             }
             RunLoop.main.add(timer, forMode: .common)
@@ -65,30 +67,12 @@ final class PrayerOverlayService {
         activePrayer = nil
     }
 
-    func snoozeOverlay() {
-        guard let prayer = activePrayer else { return }
-        overlayWindow?.close()
-        overlayWindow = nil
-        activePrayer = nil
-
-        let snoozeTimer = Timer.scheduledTimer(withTimeInterval: 5 * 60, repeats: false) { [weak self] _ in
-            DispatchQueue.main.async {
-                guard let self else { return }
-                if let pt = self.prayerTimeService.timeForPrayer(prayer) {
-                    self.fireOverlay(for: prayer, prayerTime: pt)
-                }
-            }
-        }
-        RunLoop.main.add(snoozeTimer, forMode: .common)
-        scheduledTimers["\(prayer.rawValue)-snooze"] = snoozeTimer
-    }
-
     /// Called by SleepWakeService on wake — fires any missed overlays still within the valid window.
     func handleWake() {
         guard prayerTimeService.isEnabled else { return }
 
-        let perPrayer = (UserDefaults.standard.dictionary(forKey: AppSettingsKey.overlay1PerPrayer) as? [String: Bool])
-            ?? AppSettingsDefault.defaultOverlay1PerPrayer
+        let perPrayer = (UserDefaults.standard.dictionary(forKey: AppSettingsKey.overlay2PerPrayer) as? [String: Bool])
+            ?? AppSettingsDefault.defaultOverlay2PerPrayer
 
         let now = Date()
         let warningInterval = warningMinutes * 60
@@ -99,11 +83,11 @@ final class PrayerOverlayService {
             guard perPrayer[prayer.rawValue] ?? true else { continue }
             guard !dismissedPrayers.contains(prayer.rawValue) else { continue }
 
-            let fireTime = prayerTime.time.addingTimeInterval(-warningInterval)
+            guard let endTime = prayerTimeService.prayerEndTime(prayer) else { continue }
+            let fireTime = endTime.addingTimeInterval(-warningInterval)
 
-            // Fire time passed during sleep but prayer hasn't started yet
-            if fireTime <= now && prayerTime.time > now {
-                fireOverlay(for: prayer, prayerTime: prayerTime.time)
+            if fireTime <= now && endTime > now {
+                fireOverlay(for: prayer, prayerEndTime: endTime)
                 return
             }
         }
@@ -113,33 +97,45 @@ final class PrayerOverlayService {
 
     // MARK: - Private
 
-    private func fireOverlay(for prayer: Prayer, prayerTime: Date) {
+    private func fireOverlay(for prayer: Prayer, prayerEndTime: Date) {
         guard prayerTimeService.isEnabled else { return }
         guard !dismissedPrayers.contains(prayer.rawValue) else { return }
 
         let respectDND = UserDefaults.standard.object(forKey: AppSettingsKey.overlayRespectDND) as? Bool
             ?? AppSettingsDefault.overlayRespectDND
         if respectDND {
-            // Skip if DND/Focus is active — NSDoNotDisturbEnabled is the legacy key
             if let dndEnabled = UserDefaults(suiteName: "com.apple.notificationcenterui")?.bool(forKey: "doNotDisturb"),
                dndEnabled {
                 return
             }
         }
 
-        showOverlayWindow(prayer: prayer, prayerTime: prayerTime)
+        let nextPrayer = nextPrayerAfter(prayer)
+        let nextPrayerStartTime = nextPrayer.flatMap { prayerTimeService.timeForPrayer($0) }
+
+        showOverlayWindow(prayer: prayer, prayerEndTime: prayerEndTime,
+                          nextPrayer: nextPrayer, nextPrayerStartTime: nextPrayerStartTime)
         scheduledTimers.removeValue(forKey: prayer.rawValue)
     }
 
-    private func showOverlayWindow(prayer: Prayer, prayerTime: Date) {
+    private func nextPrayerAfter(_ prayer: Prayer) -> Prayer? {
+        let sequence: [Prayer] = [.fajr, .dhuhr, .asr, .maghrib, .isha]
+        guard let idx = sequence.firstIndex(of: prayer) else { return nil }
+        let nextIdx = idx + 1
+        return nextIdx < sequence.count ? sequence[nextIdx] : .fajr
+    }
+
+    private func showOverlayWindow(prayer: Prayer, prayerEndTime: Date,
+                                    nextPrayer: Prayer?, nextPrayerStartTime: Date?) {
         dismissOverlayWindowOnly()
 
         activePrayer = prayer
-        let window = PrayerOverlayWindow(
+        let window = PrayerEndingOverlayWindow(
             prayer: prayer,
-            prayerTime: prayerTime,
-            onDismiss: { [weak self] in self?.dismissOverlay() },
-            onSnooze: { [weak self] in self?.snoozeOverlay() }
+            prayerEndTime: prayerEndTime,
+            nextPrayer: nextPrayer,
+            nextPrayerStartTime: nextPrayerStartTime,
+            onDismiss: { [weak self] in self?.dismissOverlay() }
         )
         overlayWindow = window
         window.showFullscreen()
@@ -165,12 +161,11 @@ final class PrayerOverlayService {
         var toRemove: [String] = []
         for key in dismissedPrayers {
             guard let prayer = Prayer(rawValue: key),
-                  let time = prayerTimeService.timeForPrayer(prayer) else {
+                  let endTime = prayerTimeService.prayerEndTime(prayer) else {
                 toRemove.append(key)
                 continue
             }
-            // Clear dismissed state after the prayer time has passed
-            if time < now {
+            if endTime < now {
                 toRemove.append(key)
             }
         }

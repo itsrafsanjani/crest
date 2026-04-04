@@ -4,7 +4,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var meetingAlertService: MeetingAlertService?
     var globalShortcutService: GlobalShortcutService?
     var prayerOverlayService: PrayerOverlayService?
+    var prayerEndingOverlayService: PrayerEndingOverlayService?
     private(set) var prayerNotificationService: PrayerNotificationService?
+    private var sleepWakeService: SleepWakeService?
     private var localKeyMonitor: Any?
 
     @discardableResult
@@ -17,7 +19,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let notifService = PrayerNotificationService(prayerTimeService: prayerTimeService)
         prayerNotificationService = notifService
-        prayerOverlayService = PrayerOverlayService(prayerTimeService: prayerTimeService)
+
+        let overlay1 = PrayerOverlayService(prayerTimeService: prayerTimeService)
+        prayerOverlayService = overlay1
+
+        let overlay2 = PrayerEndingOverlayService(prayerTimeService: prayerTimeService)
+        prayerEndingOverlayService = overlay2
+
+        sleepWakeService = SleepWakeService(
+            prayerTimeService: prayerTimeService,
+            prayerOverlayService: overlay1,
+            prayerEndingOverlayService: overlay2,
+            prayerNotificationService: notifService,
+            meetingAlertService: alertService
+        )
 
         registerLocalShortcuts()
         return true

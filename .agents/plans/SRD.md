@@ -91,6 +91,7 @@ Fires when only 20 minutes remain in the current prayer's time window (i.e., 20 
 #### Overlay Settings (per-prayer)
 
 Each prayer has two independent checkboxes in **Settings → Islamic Mode → Overlays**:
+
 - **Remind at prayer start** — enables/disables Overlay 1 for that prayer
 - **Remind before prayer ends** — enables/disables Overlay 2 for that prayer
 

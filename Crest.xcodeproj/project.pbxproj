@@ -18,6 +18,7 @@
 		416E3285FC9BF11C9DA4F8C8 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AF892423B5F0A06ECDA2D /* DayCell.swift */; };
 		41C66B993D13DC19D37CA8EF /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1863D44BECEA391A42D0EA /* EventDetailView.swift */; };
 		5A103BF866F4D16163DA6FAB /* PlaceholderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */; };
+		5D1D12D1BD2CCE8533736801 /* SleepWakeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4598905CB0F114A151B4204A /* SleepWakeService.swift */; };
 		641CB2B8A8A6B2DCAF79CE3E /* CrestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E73BC5E20144CDF01B4219 /* CrestApp.swift */; };
 		6AE2AFCDCDEC3150EDE62016 /* ClockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */; };
 		6ED94B515257AF1F0FEFC346 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7C5111C19071CEEEC81E75 /* EventListView.swift */; };
@@ -31,15 +32,18 @@
 		A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F030B2E2DC44A485B760B202 /* AppSettings.swift */; };
 		AA9771D73890B9AB0B80971B /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E1F407917460DDF3D19C7 /* LocationService.swift */; };
 		AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */; };
+		B36A39B2696C9467B8FF8AEE /* PrayerEndingOverlayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */; };
 		B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */; };
 		BA49B42F6E54474F19043476 /* PrayerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FF48833057677FE05C39CC /* PrayerModels.swift */; };
 		BACA6E41617EB4D9EE677451 /* MeetingLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */; };
 		BAE76692271D459894E3974D /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8309C07BB062ED3304E8DA5 /* CalendarService.swift */; };
 		BBA48852B091A055DD90F4A7 /* MeetingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748AFFD1063DC138815E1EFA /* MeetingAlertView.swift */; };
+		BCA5640411FED84E4C3D89C6 /* PrayerEndingOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E84418163FAABEA8D221BD2 /* PrayerEndingOverlayWindow.swift */; };
 		D26478021DFBA494E5278DAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */; };
 		D35A36B2F17A63EAFFD4007D /* IslamicSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF3460709590753DF203528 /* IslamicSettingsView.swift */; };
 		D667D06D5C0E2710A3E1221B /* PrayerTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D91B0877FE5D9B2D3058D45 /* PrayerTimeService.swift */; };
 		EF11FD64D25C574A478197F7 /* MeetingAlertWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */; };
+		F80E393AA0A9DCAD95CD4385 /* PrayerEndingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +55,10 @@
 		2C7868A5436B0A0D57C964D4 /* Crest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crest.entitlements; sourceTree = "<group>"; };
 		34FF48833057677FE05C39CC /* PrayerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerModels.swift; sourceTree = "<group>"; };
 		38E73BC5E20144CDF01B4219 /* CrestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrestApp.swift; sourceTree = "<group>"; };
+		3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayView.swift; sourceTree = "<group>"; };
 		453E1F407917460DDF3D19C7 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		4598905CB0F114A151B4204A /* SleepWakeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepWakeService.swift; sourceTree = "<group>"; };
+		4E84418163FAABEA8D221BD2 /* PrayerEndingOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayWindow.swift; sourceTree = "<group>"; };
 		4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOverlayView.swift; sourceTree = "<group>"; };
@@ -70,6 +77,7 @@
 		AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAlertWindow.swift; sourceTree = "<group>"; };
 		CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		CDF3460709590753DF203528 /* IslamicSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslamicSettingsView.swift; sourceTree = "<group>"; };
+		D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayService.swift; sourceTree = "<group>"; };
 		D2FC315B66CB4056F378BCFF /* PrayerNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerNotificationService.swift; sourceTree = "<group>"; };
 		D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCalendarView.swift; sourceTree = "<group>"; };
 		DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
@@ -125,9 +133,11 @@
 				453E1F407917460DDF3D19C7 /* LocationService.swift */,
 				F2D0488F0F3E10CA123B72AD /* MeetingAlertService.swift */,
 				024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */,
+				D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */,
 				D2FC315B66CB4056F378BCFF /* PrayerNotificationService.swift */,
 				86322D1190012AC327623FB3 /* PrayerOverlayService.swift */,
 				8D91B0877FE5D9B2D3058D45 /* PrayerTimeService.swift */,
+				4598905CB0F114A151B4204A /* SleepWakeService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -222,6 +232,8 @@
 		CC24DC66F673770FE67B85A5 /* Prayer */ = {
 			isa = PBXGroup;
 			children = (
+				3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */,
+				4E84418163FAABEA8D221BD2 /* PrayerEndingOverlayWindow.swift */,
 				613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */,
 				2949F196F767459DFE933161 /* PrayerOverlayWindow.swift */,
 				9C256ED20E676B026299C726 /* PrayerTimesView.swift */,
@@ -335,6 +347,9 @@
 				B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */,
 				5A103BF866F4D16163DA6FAB /* PlaceholderSettingsView.swift in Sources */,
 				743B66FDBB7043CC63882DDE /* PopoverView.swift in Sources */,
+				B36A39B2696C9467B8FF8AEE /* PrayerEndingOverlayService.swift in Sources */,
+				F80E393AA0A9DCAD95CD4385 /* PrayerEndingOverlayView.swift in Sources */,
+				BCA5640411FED84E4C3D89C6 /* PrayerEndingOverlayWindow.swift in Sources */,
 				BA49B42F6E54474F19043476 /* PrayerModels.swift in Sources */,
 				A9A88634D5ABA65399433F77 /* PrayerNotificationService.swift in Sources */,
 				273A281FE4F528B0040055BB /* PrayerOverlayService.swift in Sources */,
@@ -343,6 +358,7 @@
 				D667D06D5C0E2710A3E1221B /* PrayerTimeService.swift in Sources */,
 				7304066B00F7974744FEDDDE /* PrayerTimesView.swift in Sources */,
 				08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */,
+				5D1D12D1BD2CCE8533736801 /* SleepWakeService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +379,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app;
 				SDKROOT = macosx;
 			};
@@ -439,7 +455,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app;
 				SDKROOT = macosx;
 			};

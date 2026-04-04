@@ -7,6 +7,7 @@ final class PrayerTimeService {
     private let locationService: LocationService
     private var timer: Timer?
     private var lastComputedDay: Int = -1
+    private var rawPrayerTimes: PrayerTimes?
 
     private(set) var todayPrayers: [PrayerTime] = []
     private(set) var currentPrayer: Prayer?
@@ -14,6 +15,7 @@ final class PrayerTimeService {
     private(set) var nextPrayerTime: Date?
     private(set) var countdownToNext: TimeInterval = 0
     private(set) var hijriDateString: String = ""
+    private(set) var islamicMidnight: Date?
 
     var isEnabled: Bool {
         UserDefaults.standard.object(forKey: AppSettingsKey.islamicModeEnabled) as? Bool
@@ -38,6 +40,8 @@ final class PrayerTimeService {
             nextPrayerTime = nil
             countdownToNext = 0
             hijriDateString = ""
+            islamicMidnight = nil
+            rawPrayerTimes = nil
             return
         }
 
@@ -64,8 +68,12 @@ final class PrayerTimeService {
 
         guard let prayers = PrayerTimes(coordinates: coords, date: dateComponents, calculationParameters: params) else {
             todayPrayers = []
+            rawPrayerTimes = nil
+            islamicMidnight = nil
             return
         }
+
+        rawPrayerTimes = prayers
 
         todayPrayers = [
             PrayerTime(prayer: .fajr, time: prayers.fajr),
@@ -76,6 +84,8 @@ final class PrayerTimeService {
             PrayerTime(prayer: .isha, time: prayers.isha),
         ]
 
+        islamicMidnight = SunnahTimes(from: prayers)?.middleOfTheNight
+
         lastComputedDay = dateComponents.day ?? -1
         updateCurrentNext()
         computeHijriDate()
@@ -83,6 +93,18 @@ final class PrayerTimeService {
 
     func timeForPrayer(_ prayer: Prayer) -> Date? {
         todayPrayers.first(where: { $0.prayer == prayer })?.time
+    }
+
+    /// Returns the end of the prayer's valid window per Islamic fiqh.
+    func prayerEndTime(_ prayer: Prayer) -> Date? {
+        switch prayer {
+        case .fajr:    return timeForPrayer(.sunrise)
+        case .sunrise: return timeForPrayer(.dhuhr)
+        case .dhuhr:   return timeForPrayer(.asr)
+        case .asr:     return timeForPrayer(.maghrib)
+        case .maghrib: return timeForPrayer(.isha)
+        case .isha:    return islamicMidnight
+        }
     }
 
     // MARK: - Private
