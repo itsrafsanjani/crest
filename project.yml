@@ -1,0 +1,31 @@
+name: Crest
+options:
+  bundleIdPrefix: com.crest
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.1"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+targets:
+  Crest:
+    type: application
+    platform: macOS
+    sources:
+      - path: Crest
+    info:
+      path: Crest/Info.plist
+    entitlements:
+      path: Crest/Crest.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.crest.app
+        MARKETING_VERSION: "0.2.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_FILE: Crest/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Crest/Crest.entitlements
+        COMBINE_HIDPI_IMAGES: YES

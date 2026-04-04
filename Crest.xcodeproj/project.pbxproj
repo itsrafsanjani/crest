@@ -1,0 +1,439 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC20B7E89F0D072779F0C977 /* SettingsView.swift */; };
+		13CC27987046A433C5B44EB6 /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */; };
+		3F93DA114A5454F544E1C3A7 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */; };
+		416E3285FC9BF11C9DA4F8C8 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AF892423B5F0A06ECDA2D /* DayCell.swift */; };
+		41C66B993D13DC19D37CA8EF /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1863D44BECEA391A42D0EA /* EventDetailView.swift */; };
+		5A103BF866F4D16163DA6FAB /* PlaceholderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */; };
+		641CB2B8A8A6B2DCAF79CE3E /* CrestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E73BC5E20144CDF01B4219 /* CrestApp.swift */; };
+		6AE2AFCDCDEC3150EDE62016 /* ClockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */; };
+		6ED94B515257AF1F0FEFC346 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7C5111C19071CEEEC81E75 /* EventListView.swift */; };
+		743B66FDBB7043CC63882DDE /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */; };
+		7D38FA4B37BB6F01BBA41A64 /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F54E2C0031F04188666E4DB /* CalendarSettingsView.swift */; };
+		9F371AAD042E1E647EF2ED4D /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */; };
+		A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F030B2E2DC44A485B760B202 /* AppSettings.swift */; };
+		AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */; };
+		B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */; };
+		BACA6E41617EB4D9EE677451 /* MeetingLinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */; };
+		BAE76692271D459894E3974D /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8309C07BB062ED3304E8DA5 /* CalendarService.swift */; };
+		D26478021DFBA494E5278DAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkDetector.swift; sourceTree = "<group>"; };
+		095D1059E2E8C4D6664E8074 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		1E7C5111C19071CEEEC81E75 /* EventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
+		2C7868A5436B0A0D57C964D4 /* Crest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crest.entitlements; sourceTree = "<group>"; };
+		38E73BC5E20144CDF01B4219 /* CrestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrestApp.swift; sourceTree = "<group>"; };
+		4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowView.swift; sourceTree = "<group>"; };
+		704AE3B14AA8297313BFB555 /* Crest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderSettingsView.swift; sourceTree = "<group>"; };
+		8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockService.swift; sourceTree = "<group>"; };
+		9F54E2C0031F04188666E4DB /* CalendarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSettingsView.swift; sourceTree = "<group>"; };
+		A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabel.swift; sourceTree = "<group>"; };
+		A8309C07BB062ED3304E8DA5 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCalendarView.swift; sourceTree = "<group>"; };
+		DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
+		DC20B7E89F0D072779F0C977 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F030B2E2DC44A485B760B202 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		F85AF892423B5F0A06ECDA2D /* DayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCell.swift; sourceTree = "<group>"; };
+		FE1863D44BECEA391A42D0EA /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		357D329A08CBAA269753CCBE /* Crest */ = {
+			isa = PBXGroup;
+			children = (
+				4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */,
+				2C7868A5436B0A0D57C964D4 /* Crest.entitlements */,
+				095D1059E2E8C4D6664E8074 /* Info.plist */,
+				BA318E090C726FDECC47EE69 /* App */,
+				827B2B36BA7282C27BB8D5E2 /* Models */,
+				403B2FD62885927D32F63248 /* Services */,
+				D815C180E0BC4417A4DCC688 /* Utilities */,
+				A8D76A7A93EBFA27EAE4CA24 /* Views */,
+			);
+			path = Crest;
+			sourceTree = "<group>";
+		};
+		3F842D942C4AFFF417D1CBE8 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */,
+				60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		403B2FD62885927D32F63248 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A8309C07BB062ED3304E8DA5 /* CalendarService.swift */,
+				8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */,
+				024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4142BFEFA972FA58AC9DC673 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				F85AF892423B5F0A06ECDA2D /* DayCell.swift */,
+				D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		7915A41E54FD90E7E93E8846 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				704AE3B14AA8297313BFB555 /* Crest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		827B2B36BA7282C27BB8D5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F030B2E2DC44A485B760B202 /* AppSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		85A97BF4D590CA29C9A9E883 = {
+			isa = PBXGroup;
+			children = (
+				357D329A08CBAA269753CCBE /* Crest */,
+				7915A41E54FD90E7E93E8846 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		85D7822241355A5C5589B2FA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9F54E2C0031F04188666E4DB /* CalendarSettingsView.swift */,
+				0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */,
+				884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */,
+				DC20B7E89F0D072779F0C977 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A8D76A7A93EBFA27EAE4CA24 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4142BFEFA972FA58AC9DC673 /* Calendar */,
+				AAF8D3B522F5207B7AF355B2 /* Events */,
+				3F842D942C4AFFF417D1CBE8 /* MenuBar */,
+				85D7822241355A5C5589B2FA /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AAF8D3B522F5207B7AF355B2 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				FE1863D44BECEA391A42D0EA /* EventDetailView.swift */,
+				1E7C5111C19071CEEEC81E75 /* EventListView.swift */,
+				6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		BA318E090C726FDECC47EE69 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				38E73BC5E20144CDF01B4219 /* CrestApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D815C180E0BC4417A4DCC688 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ADA9BA9F3D6E69D3F8FBB95C /* Crest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C6E46E563413AC7B08278FC /* Build configuration list for PBXNativeTarget "Crest" */;
+			buildPhases = (
+				C54109E5ADE1FAC49EA35208 /* Sources */,
+				7632FFDF74DF748ACF9284C0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Crest;
+			packageProductDependencies = (
+			);
+			productName = Crest;
+			productReference = 704AE3B14AA8297313BFB555 /* Crest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6027AE677E6026C03E785E24 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 4F949458EAF05FEBD3F9D10A /* Build configuration list for PBXProject "Crest" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 85A97BF4D590CA29C9A9E883;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7915A41E54FD90E7E93E8846 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ADA9BA9F3D6E69D3F8FBB95C /* Crest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7632FFDF74DF748ACF9284C0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D26478021DFBA494E5278DAC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C54109E5ADE1FAC49EA35208 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */,
+				BAE76692271D459894E3974D /* CalendarService.swift in Sources */,
+				7D38FA4B37BB6F01BBA41A64 /* CalendarSettingsView.swift in Sources */,
+				6AE2AFCDCDEC3150EDE62016 /* ClockService.swift in Sources */,
+				641CB2B8A8A6B2DCAF79CE3E /* CrestApp.swift in Sources */,
+				13CC27987046A433C5B44EB6 /* DateFormatting.swift in Sources */,
+				416E3285FC9BF11C9DA4F8C8 /* DayCell.swift in Sources */,
+				41C66B993D13DC19D37CA8EF /* EventDetailView.swift in Sources */,
+				6ED94B515257AF1F0FEFC346 /* EventListView.swift in Sources */,
+				AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */,
+				9F371AAD042E1E647EF2ED4D /* GeneralSettingsView.swift in Sources */,
+				BACA6E41617EB4D9EE677451 /* MeetingLinkDetector.swift in Sources */,
+				3F93DA114A5454F544E1C3A7 /* MenuBarLabel.swift in Sources */,
+				B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */,
+				5A103BF866F4D16163DA6FAB /* PlaceholderSettingsView.swift in Sources */,
+				743B66FDBB7043CC63882DDE /* PopoverView.swift in Sources */,
+				08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		78028379A8F94699FA12F41B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Crest/Crest.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Crest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		7A73CCD253EC97FA097AF293 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		EB0EED063AE6BF3FC2ED025B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Crest/Crest.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Crest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F91E21B65ECC03DFE56BEF8D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F949458EAF05FEBD3F9D10A /* Build configuration list for PBXProject "Crest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F91E21B65ECC03DFE56BEF8D /* Debug */,
+				7A73CCD253EC97FA097AF293 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7C6E46E563413AC7B08278FC /* Build configuration list for PBXNativeTarget "Crest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB0EED063AE6BF3FC2ED025B /* Debug */,
+				78028379A8F94699FA12F41B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6027AE677E6026C03E785E24 /* Project object */;
+}
