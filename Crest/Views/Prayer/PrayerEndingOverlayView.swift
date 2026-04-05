@@ -46,125 +46,142 @@ struct PrayerEndingOverlayView: View {
         return f
     }()
 
+    private var urgencyColor: Color {
+        Color(red: 0.85, green: 0.25, blue: 0.15)
+    }
+
     var body: some View {
         ZStack {
-            Color.black.opacity(0.6)
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                Spacer()
-                alertCard
-                Spacer()
-            }
+            overlayBackground
+            countdownBadge
+            mainContent
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear { startCountdown() }
         .onDisappear { timer?.invalidate() }
     }
 
-    private var alertCard: some View {
-        VStack(spacing: 28) {
-            countdownRing
-            prayerInfo
-            nextPrayerInfo
-            dismissField
-            actions
-        }
-        .padding(40)
-        .frame(width: 440)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
-        .overlay(
-            RoundedRectangle(cornerRadius: 24)
-                .strokeBorder(amberColor.opacity(0.25), lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.5), radius: 40, y: 10)
-    }
-
-    private var countdownRing: some View {
+    private var overlayBackground: some View {
         ZStack {
-            Circle()
-                .stroke(amberColor.opacity(0.15), lineWidth: 6)
-                .frame(width: 120, height: 120)
+            Color.black
 
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(
-                    amberColor,
-                    style: StrokeStyle(lineWidth: 6, lineCap: .round)
-                )
-                .frame(width: 120, height: 120)
-                .rotationEffect(.degrees(-90))
+            RadialGradient(
+                colors: [
+                    urgencyColor.opacity(0.5),
+                    prayer.themeColor.opacity(0.2),
+                    Color.black.opacity(0.85)
+                ],
+                center: .center,
+                startRadius: 80,
+                endRadius: 800
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var countdownBadge: some View {
+        VStack {
+            Text(countdownText)
+                .font(.system(size: 14, weight: .medium, design: .rounded).monospacedDigit())
+                .foregroundStyle(.white.opacity(0.5))
+                .padding(.top, 40)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var mainContent: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            Image(systemName: prayer.systemImage)
+                .font(.system(size: 48))
+                .foregroundStyle(urgencyColor)
+                .padding(.bottom, 24)
+
+            Text(remainingSeconds > 0 ? "\(prayer.displayName) Ending Soon" : "\(prayer.displayName) Time Has Ended")
+                .font(.system(size: 34, weight: .bold))
+                .foregroundStyle(.white)
+                .padding(.bottom, 16)
+
+            Text("\"Verily, the prayer is enjoined on the believers at fixed hours.\" (Surah An-Nisa 4:103)")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.6))
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: 500)
+                .padding(.bottom, 20)
+
+            if let next = nextPrayer, let startTime = nextPrayerStartTime {
+                HStack(spacing: 6) {
+                    Image(systemName: next.systemImage)
+                        .font(.caption)
+                    Text("\(next.displayName) begins at \(Self.timeFormatter.string(from: startTime))")
+                        .font(.callout)
+                }
+                .foregroundStyle(.white.opacity(0.5))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(.white.opacity(0.08), in: Capsule())
+                .padding(.bottom, 20)
+            }
+
+            progressBar
+                .padding(.bottom, 40)
+
+            dismissField
+                .padding(.bottom, 32)
+
+            Button(action: onDismiss) {
+                Text("Dismiss")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 12)
+                    .background(urgencyColor, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(!canDismiss)
+            .opacity(canDismiss ? 1 : 0.4)
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var progressBar: some View {
+        ZStack(alignment: .leading) {
+            Capsule()
+                .fill(.white.opacity(0.1))
+                .frame(width: 300, height: 4)
+
+            Capsule()
+                .fill(urgencyColor)
+                .frame(width: 300 * progress, height: 4)
                 .animation(.linear(duration: 1), value: remainingSeconds)
-
-            VStack(spacing: 2) {
-                Text(countdownText)
-                    .font(.system(size: 28, weight: .light, design: .rounded).monospacedDigit())
-                Text("remaining")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
         }
-    }
-
-    private var prayerInfo: some View {
-        VStack(spacing: 8) {
-            Text(prayer.arabicName)
-                .font(.system(size: 36, weight: .regular, design: .serif))
-
-            Text(prayer.transliteration)
-                .font(.title2.weight(.semibold))
-
-            Text(remainingSeconds > 0 ? "Prayer time ending soon" : "Prayer time has ended")
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(amberColor)
-                .textCase(.uppercase)
-                .tracking(0.8)
-        }
-    }
-
-    @ViewBuilder
-    private var nextPrayerInfo: some View {
-        if let next = nextPrayer, let startTime = nextPrayerStartTime {
-            HStack(spacing: 6) {
-                Image(systemName: next.systemImage)
-                    .font(.caption)
-                    .foregroundStyle(amberColor.opacity(0.7))
-                Text("\(next.displayName) begins at \(Self.timeFormatter.string(from: startTime))")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(amberColor.opacity(0.08), in: Capsule())
-        }
+        .frame(width: 300, height: 4)
     }
 
     private var dismissField: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 8) {
             Text("Type **inshallah** to dismiss")
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.5))
 
             TextField("", text: $dismissText)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 200)
+                .textFieldStyle(.plain)
+                .font(.body)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .frame(width: 220)
+                .background(.white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.white.opacity(0.15), lineWidth: 1)
+                )
         }
-    }
-
-    private var actions: some View {
-        Button(action: onDismiss) {
-            Text("Dismiss")
-                .font(.body.weight(.semibold))
-                .frame(width: 160, height: 36)
-        }
-        .buttonStyle(.borderedProminent)
-        .tint(amberColor)
-        .controlSize(.large)
-        .disabled(!canDismiss)
-    }
-
-    private var amberColor: Color {
-        Color.orange
     }
 
     private func startCountdown() {

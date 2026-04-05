@@ -12,24 +12,31 @@ struct DayCell: View {
     var body: some View {
         VStack(spacing: 2) {
             Text("\(calendar.component(.day, from: date))")
-                .font(.system(size: 12, weight: isToday ? .bold : .regular))
+                .font(.system(size: 13, weight: isToday ? .bold : .regular))
                 .foregroundStyle(foregroundColor)
-                .frame(width: 28, height: 28)
+                .frame(width: 30, height: 30)
                 .background(background)
 
             Circle()
-                .fill(hasEvents ? Color.accentColor : Color.clear)
+                .fill(dotColor)
                 .frame(width: 4, height: 4)
         }
-        .frame(height: 36)
+        .frame(height: 38)
         .contentShape(Rectangle())
     }
 
     private var foregroundColor: Color {
         if isSelected { return .white }
-        if !isCurrentMonth { return .secondary.opacity(0.4) }
+        if !isCurrentMonth { return .secondary.opacity(0.5) }
         if isToday { return .accentColor }
         return .primary
+    }
+
+    private var dotColor: Color {
+        if !hasEvents { return .clear }
+        if isSelected { return .white.opacity(0.7) }
+        if !isCurrentMonth { return .accentColor.opacity(0.3) }
+        return .accentColor
     }
 
     @ViewBuilder

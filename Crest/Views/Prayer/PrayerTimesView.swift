@@ -11,6 +11,17 @@ struct PrayerTimesView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            HStack {
+                Text("Prayer Times")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 6)
+            .background(.bar)
+
             ForEach(prayerTimeService.todayPrayers) { pt in
                 prayerRow(pt)
                 if pt.prayer != .isha {
@@ -18,7 +29,7 @@ struct PrayerTimesView: View {
                 }
             }
         }
-        .padding(.vertical, 4)
+        .padding(.bottom, 4)
     }
 
     private func prayerRow(_ pt: PrayerTime) -> some View {

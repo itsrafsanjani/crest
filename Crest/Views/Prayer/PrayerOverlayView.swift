@@ -9,6 +9,7 @@ struct PrayerOverlayView: View {
     @State private var remainingSeconds: Int
     @State private var dismissText = ""
     @State private var timer: Timer?
+    @State private var selectedSnoozeDuration: Int = 5
 
     private let totalDuration: Int = 15 * 60
 
@@ -36,113 +37,168 @@ struct PrayerOverlayView: View {
         dismissText.lowercased().trimmingCharacters(in: .whitespaces) == "inshallah"
     }
 
+    private var themeColor: Color { prayer.themeColor }
+
     var body: some View {
         ZStack {
-            Color.black.opacity(0.45)
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                Spacer()
-                alertCard
-                Spacer()
-            }
+            overlayBackground
+            countdownBadge
+            mainContent
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear { startCountdown() }
         .onDisappear { timer?.invalidate() }
     }
 
-    private var alertCard: some View {
-        VStack(spacing: 28) {
-            countdownRing
-            prayerInfo
-            dismissField
-            actions
-        }
-        .padding(40)
-        .frame(width: 420)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
-        .overlay(
-            RoundedRectangle(cornerRadius: 24)
-                .strokeBorder(.white.opacity(0.1), lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.4), radius: 40, y: 10)
-    }
-
-    private var countdownRing: some View {
+    private var overlayBackground: some View {
         ZStack {
-            Circle()
-                .stroke(Color.indigo.opacity(0.15), lineWidth: 6)
-                .frame(width: 120, height: 120)
+            Color.black
 
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(
-                    Color.indigo,
-                    style: StrokeStyle(lineWidth: 6, lineCap: .round)
-                )
-                .frame(width: 120, height: 120)
-                .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 1), value: remainingSeconds)
-
-            VStack(spacing: 2) {
-                Text(countdownText)
-                    .font(.system(size: 28, weight: .light, design: .rounded).monospacedDigit())
-                Text("remaining")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
+            RadialGradient(
+                colors: [
+                    themeColor.opacity(0.4),
+                    themeColor.opacity(0.15),
+                    Color.black.opacity(0.8)
+                ],
+                center: .center,
+                startRadius: 100,
+                endRadius: 800
+            )
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    private var prayerInfo: some View {
-        VStack(spacing: 8) {
-            Text(prayer.arabicName)
-                .font(.system(size: 36, weight: .regular, design: .serif))
-
-            Text(prayer.transliteration)
-                .font(.title2.weight(.semibold))
-
-            Text(remainingSeconds > 0 ? "Prayer starting soon" : "Prayer time has begun")
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
-                .tracking(0.8)
+    private var countdownBadge: some View {
+        VStack {
+            Text(countdownText)
+                .font(.system(size: 14, weight: .medium, design: .rounded).monospacedDigit())
+                .foregroundStyle(.white.opacity(0.5))
+                .padding(.top, 40)
+            Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var mainContent: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            Image(systemName: prayer.systemImage)
+                .font(.system(size: 48))
+                .foregroundStyle(themeColor)
+                .padding(.bottom, 24)
+
+            Text("It's time for \(prayer.displayName)")
+                .font(.system(size: 34, weight: .bold))
+                .foregroundStyle(.white)
+                .padding(.bottom, 16)
+
+            Text(quranVerse)
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.6))
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: 500)
+                .padding(.bottom, 32)
+
+            progressBar
+                .padding(.bottom, 40)
+
+            dismissField
+                .padding(.bottom, 32)
+
+            actionButtons
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var progressBar: some View {
+        ZStack(alignment: .leading) {
+            Capsule()
+                .fill(.white.opacity(0.1))
+                .frame(width: 300, height: 4)
+
+            Capsule()
+                .fill(themeColor)
+                .frame(width: 300 * progress, height: 4)
+                .animation(.linear(duration: 1), value: remainingSeconds)
+        }
+        .frame(width: 300, height: 4)
     }
 
     private var dismissField: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 8) {
             Text("Type **inshallah** to dismiss")
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.5))
 
             TextField("", text: $dismissText)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 200)
+                .textFieldStyle(.plain)
+                .font(.body)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .frame(width: 220)
+                .background(.white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.white.opacity(0.15), lineWidth: 1)
+                )
         }
     }
 
-    private var actions: some View {
-        HStack(spacing: 16) {
-            Button(action: onSnooze) {
-                Text("Snooze 5 min")
-                    .font(.body.weight(.medium))
-                    .frame(width: 130, height: 36)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
+    private var actionButtons: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 16) {
+                Button(action: onSnooze) {
+                    Label("Snooze (\(selectedSnoozeDuration)m)", systemImage: "moon.zzz")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(themeColor, in: Capsule())
+                }
+                .buttonStyle(.plain)
 
-            Button(action: onDismiss) {
-                Text("Dismiss")
-                    .font(.body.weight(.semibold))
-                    .frame(width: 130, height: 36)
+                Button(action: onDismiss) {
+                    Label("Skip", systemImage: "xmark")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.white.opacity(0.7))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(.white.opacity(0.1), in: Capsule())
+                        .overlay(Capsule().strokeBorder(.white.opacity(0.15), lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .disabled(!canDismiss)
+                .opacity(canDismiss ? 1 : 0.4)
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.indigo)
-            .controlSize(.large)
-            .disabled(!canDismiss)
+
+            HStack(spacing: 8) {
+                ForEach([5, 10, 15, 30], id: \.self) { duration in
+                    Button {
+                        selectedSnoozeDuration = duration
+                    } label: {
+                        Text("\(duration)m")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(selectedSnoozeDuration == duration ? .white : .white.opacity(0.5))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(
+                                selectedSnoozeDuration == duration ? themeColor.opacity(0.6) : .white.opacity(0.08),
+                                in: Capsule()
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
         }
+    }
+
+    private var quranVerse: String {
+        "\"Indeed, prayer has been decreed upon the believers a decree of specified times.\" (Surah An-Nisa 4:103)"
     }
 
     private func startCountdown() {

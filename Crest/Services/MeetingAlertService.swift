@@ -107,10 +107,25 @@ final class MeetingAlertService {
                 self?.dismissAlert(for: event.eventIdentifier)
             case .dismiss:
                 self?.dismissAlert(for: event.eventIdentifier)
+            case .snooze(let minutes):
+                self?.snoozeAlert(event: event, meetingLink: meetingLink, minutes: minutes)
             }
         }
         alertWindow = window
         window.showFullscreen()
+    }
+
+    private func snoozeAlert(event: EKEvent, meetingLink: MeetingLink, minutes: Int) {
+        alertWindow?.close()
+        alertWindow = nil
+        let delay = TimeInterval(minutes * 60)
+        let timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.showAlertWindow(event: event, meetingLink: meetingLink)
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        scheduledTimers["snooze_\(event.eventIdentifier ?? "unknown")"] = timer
     }
 
     private func startPeriodicRefresh() {

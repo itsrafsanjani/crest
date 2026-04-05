@@ -9,15 +9,15 @@ struct EventRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button(action: { withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() } }) {
-                HStack(alignment: .top, spacing: 8) {
-                    Circle()
+                HStack(spacing: 0) {
+                    RoundedRectangle(cornerRadius: 1.5)
                         .fill(Color(cgColor: event.calendar.cgColor))
-                        .frame(width: 8, height: 8)
-                        .padding(.top, 5)
+                        .frame(width: 3)
+                        .padding(.vertical, 4)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(event.title ?? "Untitled")
-                            .font(.callout.weight(.medium))
+                            .font(.body.weight(.medium))
                             .lineLimit(1)
 
                         Text(DateFormatting.eventTimeRange(
@@ -28,23 +28,23 @@ struct EventRowView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     }
+                    .padding(.leading, 10)
 
                     Spacer()
 
                     if meetingLink != nil {
                         Image(systemName: "video.fill")
                             .font(.caption)
-                            .foregroundStyle(.blue)
-                            .padding(.top, 4)
+                            .foregroundStyle(Color.accentColor)
+                            .padding(.trailing, 6)
                     }
 
                     Image(systemName: "chevron.right")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                         .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                        .padding(.top, 4)
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .contentShape(Rectangle())
             }

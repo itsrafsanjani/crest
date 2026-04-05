@@ -5,6 +5,7 @@ import EventKit
 enum MeetingAlertAction {
     case join
     case dismiss
+    case snooze(minutes: Int)
 }
 
 final class MeetingAlertWindow: NSPanel {
@@ -34,6 +35,7 @@ final class MeetingAlertWindow: NSPanel {
 
         let alertView = MeetingAlertView(
             eventTitle: event.title ?? "Untitled Event",
+            eventStartDate: event.startDate,
             timeRange: DateFormatting.eventTimeRange(
                 start: event.startDate,
                 end: event.endDate,
@@ -44,7 +46,8 @@ final class MeetingAlertWindow: NSPanel {
             serviceName: meetingLink.service.rawValue,
             attendees: (event.attendees ?? []).compactMap { $0.name ?? $0.url.absoluteString },
             onJoin: { onAction(.join) },
-            onDismiss: { onAction(.dismiss) }
+            onDismiss: { onAction(.dismiss) },
+            onSnooze: { minutes in onAction(.snooze(minutes: minutes)) }
         )
 
         let hostingView = NSHostingView(rootView: alertView)

@@ -22,11 +22,8 @@ struct CrestApp: App {
                 prayerTimeService: prayerService
             )
         } label: {
-            MenuBarLabel(
-                clock: clock,
-                nextEventTitle: calendarService.nextEvent?.title,
-                hijriDateString: prayerService.isEnabled ? prayerService.hijriDateString : nil
-            )
+            Image(systemName: "calendar")
+                .imageScale(.large)
         }
         .menuBarExtraStyle(.window)
 

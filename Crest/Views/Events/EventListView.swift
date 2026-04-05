@@ -31,7 +31,7 @@ struct EventListView: View {
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 240)
+                .frame(maxWidth: 260)
             Button("Grant Access") {
                 calendarService.requestAccess()
             }
@@ -54,7 +54,7 @@ struct EventListView: View {
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 240)
+                .frame(maxWidth: 260)
             Button("Open System Settings") {
                 if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars") {
                     NSWorkspace.shared.open(url)
@@ -71,14 +71,14 @@ struct EventListView: View {
         return ScrollView {
             if grouped.isEmpty {
                 VStack(spacing: 8) {
-                    Spacer(minLength: 32)
+                    Spacer(minLength: 24)
                     Image(systemName: "calendar")
-                        .font(.system(size: 28))
+                        .font(.system(size: 24))
                         .foregroundStyle(.tertiary)
                     Text(selectedDate != nil ? "No events on this day" : "No upcoming events")
                         .font(.callout)
                         .foregroundStyle(.secondary)
-                    Spacer(minLength: 32)
+                    Spacer(minLength: 24)
                 }
                 .frame(maxWidth: .infinity)
             } else {
@@ -89,7 +89,7 @@ struct EventListView: View {
                                 EventRowView(event: event)
                                 if event.eventIdentifier != group.events.last?.eventIdentifier {
                                     Divider()
-                                        .padding(.leading, 24)
+                                        .padding(.leading, 28)
                                 }
                             }
                         } header: {
@@ -97,7 +97,7 @@ struct EventListView: View {
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(.secondary)
                                 .textCase(.uppercase)
-                                .padding(.horizontal, 12)
+                                .padding(.horizontal, 16)
                                 .padding(.vertical, 6)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(.bar)

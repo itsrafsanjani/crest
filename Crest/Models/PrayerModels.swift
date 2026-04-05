@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Adhan
 
 enum Prayer: String, CaseIterable, Identifiable {
@@ -43,6 +44,17 @@ enum Prayer: String, CaseIterable, Identifiable {
         case .asr: return "sun.min"
         case .maghrib: return "sunset"
         case .isha: return "moon.stars"
+        }
+    }
+
+    var themeColor: Color {
+        switch self {
+        case .fajr: return Color(red: 0.2, green: 0.3, blue: 0.6)
+        case .sunrise: return Color(red: 0.9, green: 0.6, blue: 0.2)
+        case .dhuhr: return Color(red: 0.85, green: 0.65, blue: 0.15)
+        case .asr: return Color(red: 0.8, green: 0.5, blue: 0.15)
+        case .maghrib: return Color(red: 0.85, green: 0.4, blue: 0.15)
+        case .isha: return Color(red: 0.25, green: 0.2, blue: 0.5)
         }
     }
 

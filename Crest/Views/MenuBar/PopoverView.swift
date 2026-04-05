@@ -6,53 +6,41 @@ struct PopoverView: View {
     var calendarService: CalendarService
     var prayerTimeService: PrayerTimeService
 
-    @AppStorage(AppSettingsKey.dateFormat) private var dateFormat = AppSettingsDefault.dateFormat
-    @AppStorage(AppSettingsKey.showSeconds) private var showSeconds = AppSettingsDefault.showSeconds
     @AppStorage(AppSettingsKey.islamicModeEnabled) private var islamicModeEnabled = AppSettingsDefault.islamicModeEnabled
 
     @Environment(\.openSettings) private var openSettingsAction
 
     @State private var selectedDate: Date? = nil
 
+    private var showPrayers: Bool {
+        islamicModeEnabled && !prayerTimeService.todayPrayers.isEmpty
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-            header
-            Divider()
             MiniCalendarView(
                 calendarService: calendarService,
-                selectedDate: $selectedDate
+                selectedDate: $selectedDate,
+                hijriDateString: islamicModeEnabled ? prayerTimeService.hijriDateString : nil
             )
+
             Divider()
+
             EventListView(
                 calendarService: calendarService,
                 selectedDate: selectedDate
             )
-            if islamicModeEnabled && !prayerTimeService.todayPrayers.isEmpty {
+
+            if showPrayers {
                 Divider()
                 PrayerTimesView(prayerTimeService: prayerTimeService)
             }
+
             Divider()
+
             footer
         }
-        .frame(width: 320, height: islamicModeEnabled && !prayerTimeService.todayPrayers.isEmpty ? 630 : 550)
-    }
-
-    private var header: some View {
-        VStack(spacing: 2) {
-            Text(clock.formattedTime(format: dateFormat, showSeconds: showSeconds))
-                .font(.system(size: 28, weight: .light, design: .rounded))
-                .monospacedDigit()
-            Text(headerDate)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            if islamicModeEnabled && !prayerTimeService.hijriDateString.isEmpty {
-                Text(prayerTimeService.hijriDateString)
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
-            }
-        }
-        .padding(.vertical, 12)
-        .frame(maxWidth: .infinity)
+        .frame(width: 390, height: showPrayers ? 660 : 540)
     }
 
     private var footer: some View {
@@ -60,34 +48,24 @@ struct PopoverView: View {
             Button {
                 openSettings()
             } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "gear")
-                    Text("Settings")
-                    Text("⌘,")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                }
-                .font(.callout)
+                Image(systemName: "gear")
+                    .font(.callout)
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
+            .help("Settings ⌘,")
 
             Spacer()
 
             Button {
                 NSApplication.shared.terminate(nil)
             } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "power")
-                    Text("Quit")
-                    Text("⌘Q")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                }
-                .font(.callout)
+                Image(systemName: "power")
+                    .font(.callout)
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
+            .help("Quit ⌘Q")
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
@@ -101,11 +79,5 @@ struct PopoverView: View {
                 window.orderFrontRegardless()
             }
         }
-    }
-
-    private var headerDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMMM d, yyyy"
-        return formatter.string(from: clock.currentTime)
     }
 }

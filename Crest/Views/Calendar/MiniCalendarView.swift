@@ -3,6 +3,7 @@ import SwiftUI
 struct MiniCalendarView: View {
     var calendarService: CalendarService
     @Binding var selectedDate: Date?
+    var hijriDateString: String?
 
     @State private var displayedMonth = Date()
 
@@ -11,42 +12,49 @@ struct MiniCalendarView: View {
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 7)
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             monthNavigation
+            if let hijri = hijriDateString, !hijri.isEmpty {
+                Text(hijri)
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
             weekdayHeaders
             daysGrid
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
+        .padding(.bottom, 8)
     }
 
     private var monthNavigation: some View {
         HStack {
-            Button(action: previousMonth) {
-                Image(systemName: "chevron.left")
-                    .font(.caption.weight(.semibold))
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
             Text(monthYearString)
-                .font(.subheadline.weight(.semibold))
+                .font(.title3.weight(.semibold))
+                .onTapGesture(count: 2) {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        displayedMonth = Date()
+                        selectedDate = nil
+                    }
+                }
 
             Spacer()
 
-            Button(action: { displayedMonth = Date() }) {
-                Text("Today")
-                    .font(.caption)
-            }
-            .buttonStyle(.plain)
-            .foregroundStyle(Color.accentColor)
+            HStack(spacing: 16) {
+                Button(action: previousMonth) {
+                    Image(systemName: "chevron.left")
+                        .font(.callout.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
 
-            Button(action: nextMonth) {
-                Image(systemName: "chevron.right")
-                    .font(.caption.weight(.semibold))
+                Button(action: nextMonth) {
+                    Image(systemName: "chevron.right")
+                        .font(.callout.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
     }
 
@@ -54,9 +62,10 @@ struct MiniCalendarView: View {
         LazyVGrid(columns: columns, spacing: 0) {
             ForEach(weekdaySymbols, id: \.self) { symbol in
                 Text(symbol)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.tertiary)
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, 4)
             }
         }
     }
@@ -64,65 +73,73 @@ struct MiniCalendarView: View {
     private var daysGrid: some View {
         let days = generateDays()
         return LazyVGrid(columns: columns, spacing: 2) {
-            ForEach(days, id: \.self) { day in
-                if let day {
-                    DayCell(
-                        date: day,
-                        isToday: calendar.isDateInToday(day),
-                        isSelected: selectedDate.map { calendar.isDate($0, inSameDayAs: day) } ?? false,
-                        isCurrentMonth: calendar.isDate(day, equalTo: displayedMonth, toGranularity: .month),
-                        hasEvents: calendarService.hasEvents(on: day)
-                    )
-                    .onTapGesture {
-                        if selectedDate.map({ calendar.isDate($0, inSameDayAs: day) }) == true {
-                            selectedDate = nil
-                        } else {
-                            selectedDate = day
-                        }
+            ForEach(Array(days.enumerated()), id: \.offset) { _, day in
+                DayCell(
+                    date: day.date,
+                    isToday: calendar.isDateInToday(day.date),
+                    isSelected: selectedDate.map { calendar.isDate($0, inSameDayAs: day.date) } ?? false,
+                    isCurrentMonth: day.isCurrentMonth,
+                    hasEvents: calendarService.hasEvents(on: day.date)
+                )
+                .onTapGesture {
+                    if selectedDate.map({ calendar.isDate($0, inSameDayAs: day.date) }) == true {
+                        selectedDate = nil
+                    } else {
+                        selectedDate = day.date
                     }
-                } else {
-                    Color.clear
-                        .frame(height: 32)
                 }
             }
         }
     }
 
-    private func generateDays() -> [Date?] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: displayedMonth),
-              let firstWeek = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.start) else {
+    private struct CalendarDay {
+        let date: Date
+        let isCurrentMonth: Bool
+    }
+
+    private func generateDays() -> [CalendarDay] {
+        guard let monthInterval = calendar.dateInterval(of: .month, for: displayedMonth) else {
             return []
         }
 
-        var days: [Date?] = []
-        let startWeekday = calendar.component(.weekday, from: monthInterval.start)
-        let prefixCount = startWeekday - calendar.firstWeekday
-        let adjustedPrefix = prefixCount < 0 ? prefixCount + 7 : prefixCount
+        var days: [CalendarDay] = []
 
-        for _ in 0..<adjustedPrefix {
-            days.append(nil)
+        let startWeekday = calendar.component(.weekday, from: monthInterval.start)
+        let prefixCount = (startWeekday - calendar.firstWeekday + 7) % 7
+
+        for i in (0..<prefixCount).reversed() {
+            if let date = calendar.date(byAdding: .day, value: -(i + 1), to: monthInterval.start) {
+                days.append(CalendarDay(date: date, isCurrentMonth: false))
+            }
         }
 
         let daysInMonth = calendar.range(of: .day, in: .month, for: displayedMonth)!
         for day in daysInMonth {
             if let date = calendar.date(bySetting: .day, value: day, of: displayedMonth) {
-                days.append(date)
+                days.append(CalendarDay(date: date, isCurrentMonth: true))
             }
         }
 
         while days.count % 7 != 0 {
-            days.append(nil)
+            let nextDayOffset = days.count - prefixCount - daysInMonth.count + 1
+            if let date = calendar.date(byAdding: .day, value: nextDayOffset - 1, to: monthInterval.end) {
+                days.append(CalendarDay(date: date, isCurrentMonth: false))
+            }
         }
 
         return days
     }
 
     private func previousMonth() {
-        displayedMonth = calendar.date(byAdding: .month, value: -1, to: displayedMonth) ?? displayedMonth
+        withAnimation(.easeInOut(duration: 0.2)) {
+            displayedMonth = calendar.date(byAdding: .month, value: -1, to: displayedMonth) ?? displayedMonth
+        }
     }
 
     private func nextMonth() {
-        displayedMonth = calendar.date(byAdding: .month, value: 1, to: displayedMonth) ?? displayedMonth
+        withAnimation(.easeInOut(duration: 0.2)) {
+            displayedMonth = calendar.date(byAdding: .month, value: 1, to: displayedMonth) ?? displayedMonth
+        }
     }
 
     private var monthYearString: String {

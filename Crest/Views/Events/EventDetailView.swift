@@ -40,7 +40,7 @@ struct EventDetailView: View {
                         .font(.caption)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.accentColor)
             }
         }
         .padding(.horizontal, 28)

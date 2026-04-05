@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MeetingAlertView: View {
     let eventTitle: String
+    let eventStartDate: Date
     let timeRange: String
     let calendarName: String
     let calendarColor: Color
@@ -9,150 +10,174 @@ struct MeetingAlertView: View {
     let attendees: [String]
     let onJoin: () -> Void
     let onDismiss: () -> Void
+    let onSnooze: (Int) -> Void
 
-    @State private var pulseScale: CGFloat = 1.0
+    @State private var currentTime = Date()
+    @State private var timer: Timer?
+
+    private var minutesUntilStart: Int {
+        max(0, Int(ceil(eventStartDate.timeIntervalSince(currentTime) / 60)))
+    }
+
+    private var timeUntilText: String {
+        let mins = minutesUntilStart
+        if mins <= 0 { return "Starting now" }
+        if mins == 1 { return "In 1 minute" }
+        return "In \(mins) minutes"
+    }
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.55)
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                Spacer()
-                alertCard
-                Spacer()
-            }
+            gradientBackground
+            mainContent
+            clockBadge
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
-            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
-                pulseScale = 1.08
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                currentTime = Date()
             }
+            if let timer { RunLoop.main.add(timer, forMode: .common) }
         }
+        .onDisappear { timer?.invalidate() }
     }
 
-    private var alertCard: some View {
-        VStack(spacing: 24) {
-            pulseRing
-            eventInfo
-            if !attendees.isEmpty {
-                attendeeSection
-            }
-            actions
-        }
-        .padding(40)
-        .frame(width: 480)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
-        .overlay(
-            RoundedRectangle(cornerRadius: 24)
-                .strokeBorder(.white.opacity(0.1), lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.4), radius: 40, y: 10)
-    }
-
-    private var pulseRing: some View {
+    private var gradientBackground: some View {
         ZStack {
-            Circle()
-                .stroke(calendarColor.opacity(0.2), lineWidth: 3)
-                .frame(width: 72, height: 72)
-                .scaleEffect(pulseScale)
+            LinearGradient(
+                colors: [
+                    Color(red: 0.15, green: 0.1, blue: 0.35),
+                    Color(red: 0.3, green: 0.15, blue: 0.5),
+                    Color(red: 0.5, green: 0.2, blue: 0.55),
+                    Color(red: 0.3, green: 0.1, blue: 0.45)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
 
-            Circle()
-                .fill(calendarColor.opacity(0.15))
-                .frame(width: 64, height: 64)
-
-            Image(systemName: "video.fill")
-                .font(.system(size: 26))
-                .foregroundStyle(calendarColor)
+            RadialGradient(
+                colors: [
+                    Color(red: 0.6, green: 0.25, blue: 0.65).opacity(0.4),
+                    .clear
+                ],
+                center: .center,
+                startRadius: 100,
+                endRadius: 600
+            )
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    private var eventInfo: some View {
-        VStack(spacing: 10) {
-            Text("Meeting Starting Now")
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
-                .tracking(1)
+    private var clockBadge: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Text(clockString)
+                    .font(.system(size: 14, weight: .medium, design: .rounded).monospacedDigit())
+                    .foregroundStyle(.white.opacity(0.5))
+                    .padding(.top, 40)
+                    .padding(.trailing, 24)
+            }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var mainContent: some View {
+        VStack(spacing: 0) {
+            Spacer()
 
             Text(eventTitle)
-                .font(.title.weight(.semibold))
+                .font(.system(size: 36, weight: .semibold))
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .lineLimit(3)
+                .padding(.horizontal, 40)
+                .padding(.bottom, 12)
 
-            HStack(spacing: 12) {
-                Label(timeRange, systemImage: "clock")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+            Text(timeUntilText)
+                .font(.title3.weight(.medium))
+                .foregroundStyle(.white.opacity(0.7))
+                .padding(.bottom, 6)
 
-                Text("·")
-                    .foregroundStyle(.tertiary)
+            Text(timeRange)
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.5))
+                .padding(.bottom, 28)
 
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(calendarColor)
-                        .frame(width: 8, height: 8)
-                    Text(calendarName)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                }
-            }
+            actionButtons
+                .padding(.bottom, 16)
 
-            serviceBadge
+            snoozeOptions
+
+            Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    private var serviceBadge: some View {
-        Text(serviceName)
-            .font(.caption.weight(.medium))
-            .foregroundStyle(.white.opacity(0.9))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 5)
-            .background(calendarColor.opacity(0.7), in: Capsule())
-    }
-
-    private var attendeeSection: some View {
-        VStack(spacing: 6) {
-            let count = attendees.count
-            let displayCount = min(count, 5)
-            let displayed = attendees.prefix(displayCount)
-
-            HStack(spacing: 4) {
-                Image(systemName: "person.2")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(count) attendee\(count == 1 ? "" : "s")")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Text(displayed.joined(separator: ", ") + (count > displayCount ? " + \(count - displayCount) more" : ""))
-                .font(.caption)
-                .foregroundStyle(.tertiary)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
-        }
-        .padding(.horizontal, 16)
-    }
-
-    private var actions: some View {
+    private var actionButtons: some View {
         HStack(spacing: 16) {
             Button(action: onDismiss) {
                 Text("Dismiss")
                     .font(.body.weight(.medium))
-                    .frame(width: 120, height: 36)
+                    .foregroundStyle(.white.opacity(0.8))
+                    .padding(.horizontal, 28)
+                    .padding(.vertical, 12)
+                    .background(.white.opacity(0.12), in: Capsule())
+                    .overlay(Capsule().strokeBorder(.white.opacity(0.2), lineWidth: 1))
             }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
+            .buttonStyle(.plain)
             .keyboardShortcut(.escape, modifiers: [])
 
             Button(action: onJoin) {
-                Label("Join Meeting", systemImage: "video.fill")
-                    .font(.body.weight(.semibold))
-                    .frame(width: 160, height: 36)
+                HStack(spacing: 6) {
+                    Text("Join Video Call")
+                        .font(.body.weight(.semibold))
+                    Image(systemName: "video.fill")
+                        .font(.caption)
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 28)
+                .padding(.vertical, 12)
+                .background(Color.accentColor, in: Capsule())
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .buttonStyle(.plain)
             .keyboardShortcut(.return, modifiers: [])
         }
+    }
+
+    private var snoozeOptions: some View {
+        VStack(spacing: 10) {
+            Text("Snooze")
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.4))
+
+            HStack(spacing: 8) {
+                snoozeButton("1 minute", minutes: 1)
+                snoozeButton("5 minutes", minutes: 5)
+                snoozeButton("Until Event", minutes: max(1, minutesUntilStart))
+            }
+        }
+    }
+
+    private func snoozeButton(_ title: String, minutes: Int) -> some View {
+        Button {
+            onSnooze(minutes)
+        } label: {
+            Text(title)
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.white.opacity(0.6))
+                .padding(.horizontal, 14)
+                .padding(.vertical, 7)
+                .background(.white.opacity(0.08), in: Capsule())
+                .overlay(Capsule().strokeBorder(.white.opacity(0.12), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var clockString: String {
+        let f = DateFormatter()
+        f.dateFormat = "HH:mm"
+        return f.string(from: currentTime)
     }
 }
