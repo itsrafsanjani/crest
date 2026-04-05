@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 @main
@@ -22,8 +23,7 @@ struct CrestApp: App {
                 prayerTimeService: prayerService
             )
         } label: {
-            Image(systemName: "calendar")
-                .imageScale(.large)
+            Image(nsImage: Self.menuBarIcon)
         }
         .menuBarExtraStyle(.window)
 
@@ -37,6 +37,15 @@ struct CrestApp: App {
             )
         }
     }
+
+    private static let menuBarIcon: NSImage = {
+        let config = NSImage.SymbolConfiguration(pointSize: 16, weight: .medium)
+        let image = NSImage(systemSymbolName: "calendar", accessibilityDescription: "Crest")!
+            .withSymbolConfiguration(config)!
+        image.size = NSSize(width: 22, height: 22)
+        image.isTemplate = true
+        return image
+    }()
 
     private var resolvedPrayerTimeService: PrayerTimeService {
         if let existing = prayerTimeService { return existing }
