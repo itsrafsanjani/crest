@@ -11,21 +11,20 @@ struct PrayerTimesView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text("Prayer Times")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .textCase(.uppercase)
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 6)
-            .background(.bar)
+            Text("Prayer Times")
+                .font(.caption.weight(.semibold))
+                .tracking(0.5)
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.primary.opacity(0.04))
 
             ForEach(prayerTimeService.todayPrayers) { pt in
                 prayerRow(pt)
                 if pt.prayer != .isha {
-                    Divider().padding(.horizontal, 16)
+                    Divider().padding(.leading, 42)
                 }
             }
         }

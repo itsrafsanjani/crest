@@ -39,10 +39,9 @@ struct CrestApp: App {
     }
 
     private static let menuBarIcon: NSImage = {
-        let config = NSImage.SymbolConfiguration(pointSize: 16, weight: .medium)
+        let config = NSImage.SymbolConfiguration(pointSize: 18, weight: .medium)
         let image = NSImage(systemSymbolName: "calendar", accessibilityDescription: "Crest")!
             .withSymbolConfiguration(config)!
-        image.size = NSSize(width: 22, height: 22)
         image.isTemplate = true
         return image
     }()

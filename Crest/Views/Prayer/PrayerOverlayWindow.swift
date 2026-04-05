@@ -14,12 +14,12 @@ final class PrayerOverlayWindow: NSPanel {
 
         super.init(
             contentRect: frame,
-            styleMask: [.borderless, .nonactivatingPanel],
+            styleMask: [.borderless],
             backing: .buffered,
             defer: false
         )
 
-        self.level = .floating
+        self.level = .screenSaver
         self.isOpaque = false
         self.backgroundColor = .clear
         self.hasShadow = false
@@ -41,6 +41,7 @@ final class PrayerOverlayWindow: NSPanel {
     }
 
     func showFullscreen() {
+        NSApp.activate(ignoringOtherApps: true)
         makeKeyAndOrderFront(nil)
     }
 
@@ -51,4 +52,5 @@ final class PrayerOverlayWindow: NSPanel {
     }
 
     override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
 }

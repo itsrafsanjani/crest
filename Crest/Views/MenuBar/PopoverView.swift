@@ -40,7 +40,8 @@ struct PopoverView: View {
 
             footer
         }
-        .frame(width: 390, height: showPrayers ? 660 : 540)
+        .frame(width: 320)
+        .background(.regularMaterial)
     }
 
     private var footer: some View {
@@ -68,7 +69,7 @@ struct PopoverView: View {
             .help("Quit ⌘Q")
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 8)
+        .padding(.vertical, 10)
     }
 
     private func openSettings() {

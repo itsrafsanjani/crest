@@ -16,12 +16,11 @@ struct EventListView: View {
                 eventsList
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 180, maxHeight: 320)
     }
 
     private var accessPrompt: some View {
         VStack(spacing: 12) {
-            Spacer()
             Image(systemName: "calendar.badge.plus")
                 .font(.system(size: 32))
                 .foregroundStyle(.secondary)
@@ -31,20 +30,20 @@ struct EventListView: View {
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 260)
+                .frame(maxWidth: 300)
             Button("Grant Access") {
                 calendarService.requestAccess()
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.regular)
-            Spacer()
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
     }
 
     private var deniedView: some View {
         VStack(spacing: 12) {
-            Spacer()
             Image(systemName: "lock.shield")
                 .font(.system(size: 32))
                 .foregroundStyle(.secondary)
@@ -54,16 +53,17 @@ struct EventListView: View {
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 260)
+                .frame(maxWidth: 300)
             Button("Open System Settings") {
                 if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars") {
                     NSWorkspace.shared.open(url)
                 }
             }
             .buttonStyle(.bordered)
-            Spacer()
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
     }
 
     private var eventsList: some View {
@@ -82,7 +82,7 @@ struct EventListView: View {
                 }
                 .frame(maxWidth: .infinity)
             } else {
-                LazyVStack(alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
+                LazyVStack(alignment: .leading, spacing: 0) {
                     ForEach(grouped, id: \.date) { group in
                         Section {
                             ForEach(group.events, id: \.eventIdentifier) { event in
@@ -95,12 +95,13 @@ struct EventListView: View {
                         } header: {
                             Text(DateFormatting.relativeDayHeader(for: group.date))
                                 .font(.caption.weight(.semibold))
+                                .tracking(0.5)
                                 .foregroundStyle(.secondary)
                                 .textCase(.uppercase)
                                 .padding(.horizontal, 16)
-                                .padding(.vertical, 6)
+                                .padding(.vertical, 8)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(.bar)
+                                .background(Color.primary.opacity(0.04))
                         }
                     }
                 }
