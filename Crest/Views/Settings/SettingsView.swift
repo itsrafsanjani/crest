@@ -4,6 +4,8 @@ struct SettingsView: View {
     var locationService: LocationService
     var prayerTimeService: PrayerTimeService
     var notificationService: PrayerNotificationService?
+    var onTestOverlay1Now: (() -> Bool)?
+    var onTestOverlay2Now: (() -> Bool)?
 
     var body: some View {
         TabView {
@@ -37,7 +39,9 @@ struct SettingsView: View {
                 IslamicSettingsView(
                     locationService: locationService,
                     prayerTimeService: prayerTimeService,
-                    notificationService: notifService
+                    notificationService: notifService,
+                    onTestOverlay1Now: onTestOverlay1Now,
+                    onTestOverlay2Now: onTestOverlay2Now
                 )
                 .tabItem {
                     Label("Islamic Mode", systemImage: "moon.stars")

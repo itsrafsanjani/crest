@@ -34,7 +34,9 @@ struct CrestApp: App {
             SettingsView(
                 locationService: locationService,
                 prayerTimeService: prayerService,
-                notificationService: appDelegate.prayerNotificationService
+                notificationService: appDelegate.prayerNotificationService,
+                onTestOverlay1Now: { appDelegate.triggerOverlay1TestNow() },
+                onTestOverlay2Now: { appDelegate.triggerOverlay2TestNow() }
             )
         }
     }

@@ -111,6 +111,28 @@ final class PrayerOverlayService {
         scheduleOverlays()
     }
 
+    @discardableResult
+    func triggerOverlay1TestNow() -> Bool {
+        guard prayerTimeService.isEnabled else { return false }
+
+        let now = Date()
+
+        if let next = prayerTimeService.nextPrayer,
+           next != .sunrise {
+            let prayerTime = prayerTimeService.timeForPrayer(next) ?? now.addingTimeInterval(warningMinutes * 60)
+            fireOverlay(for: next, prayerTime: prayerTime)
+            return true
+        }
+
+        if let fallbackPrayer = Prayer.adjustable.first {
+            let prayerTime = prayerTimeService.timeForPrayer(fallbackPrayer) ?? now.addingTimeInterval(warningMinutes * 60)
+            fireOverlay(for: fallbackPrayer, prayerTime: prayerTime)
+            return true
+        }
+
+        return false
+    }
+
     // MARK: - Private
 
     private func fireOverlay(for prayer: Prayer, prayerTime: Date) {

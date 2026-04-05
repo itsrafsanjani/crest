@@ -4,6 +4,8 @@ struct IslamicSettingsView: View {
     var locationService: LocationService
     var prayerTimeService: PrayerTimeService
     var notificationService: PrayerNotificationService
+    var onTestOverlay1Now: (() -> Bool)?
+    var onTestOverlay2Now: (() -> Bool)?
 
     @AppStorage(AppSettingsKey.islamicModeEnabled) private var islamicModeEnabled = AppSettingsDefault.islamicModeEnabled
     @AppStorage(AppSettingsKey.calculationMethod) private var calculationMethod = AppSettingsDefault.calculationMethod
@@ -18,6 +20,7 @@ struct IslamicSettingsView: View {
     @State private var adhanPerPrayer: [String: Bool] = AppSettingsDefault.defaultPrayerAdhanPerPrayer
     @State private var overlay1PerPrayer: [String: Bool] = AppSettingsDefault.defaultOverlay1PerPrayer
     @State private var overlay2PerPrayer: [String: Bool] = AppSettingsDefault.defaultOverlay2PerPrayer
+    @State private var overlayTestStatus: String?
 
     var body: some View {
         Form {
@@ -178,6 +181,20 @@ struct IslamicSettingsView: View {
                 }
                 .padding(.vertical, 2)
             }
+
+            Button("Test Overlay 1 Now") {
+                triggerOverlayTestNow()
+            }
+
+            Button("Test Overlay 2 Now") {
+                triggerEndingOverlayTestNow()
+            }
+
+            if let overlayTestStatus {
+                Text(overlayTestStatus)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 
@@ -259,5 +276,33 @@ struct IslamicSettingsView: View {
     private func saveAdjustments() {
         UserDefaults.standard.set(adjustments, forKey: AppSettingsKey.prayerAdjustments)
         recomputeAndReschedule()
+    }
+
+    private func triggerOverlayTestNow() {
+        guard islamicModeEnabled else {
+            overlayTestStatus = "Enable Islamic Mode first."
+            return
+        }
+
+        let didTrigger = onTestOverlay1Now?() ?? false
+        if didTrigger {
+            overlayTestStatus = "Overlay 1 test triggered."
+        } else {
+            overlayTestStatus = "Unable to trigger Overlay 1. Check Islamic Mode and service setup."
+        }
+    }
+
+    private func triggerEndingOverlayTestNow() {
+        guard islamicModeEnabled else {
+            overlayTestStatus = "Enable Islamic Mode first."
+            return
+        }
+
+        let didTrigger = onTestOverlay2Now?() ?? false
+        if didTrigger {
+            overlayTestStatus = "Overlay 2 test triggered."
+        } else {
+            overlayTestStatus = "Unable to trigger Overlay 2. Check Islamic Mode and service setup."
+        }
     }
 }

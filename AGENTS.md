@@ -36,9 +36,11 @@ The app requires calendar access. On first launch:
 
 1. Click the Crest date/time label in the menu bar and click **"Grant Access"** in the popover, or
 2. Open **System Settings > Privacy & Security > Calendars** and enable Crest manually:
+
    ```bash
    open "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars"
    ```
+
 3. Restart the app after granting permission (`killall Crest`, then relaunch).
 
 ### Code Signing Notes
@@ -57,8 +59,29 @@ The app requires calendar access. On first launch:
 - **Entitlements** are in `Crest.entitlements`. Add new capabilities there (e.g., reminders, location).
 - **Meeting link patterns** go in `MeetingLinkDetector.patterns` array.
 
-## Release Phases
+## Testing Prayer Overlays
 
+Overlay 1 is scheduled at `prayerTime - 15 minutes` and Overlay 2 is scheduled near prayer end, so real-world testing can be delayed by hours. Use the built-in manual triggers in Settings for immediate verification.
+
+### Preconditions
+
+1. Enable **Islamic Mode**.
+2. Set **Respect Do Not Disturb** as desired (when enabled and Focus/DND is active, overlays will be suppressed).
+
+### Trigger Steps
+
+1. Open settings (`Cmd+,`).
+2. Go to **Islamic Mode** tab.
+3. In **Prayer Reminders**, click **Test Overlay 1 Now** or **Test Overlay 2 Now**.
+
+### Expected Behavior
+
+1. The selected overlay appears immediately in fullscreen.
+2. Overlay 1 shows start-time reminder content and supports **Snooze 5 min**.
+3. Overlay 2 shows before-end reminder content for the active/next prayer window.
+4. **Dismiss** closes the overlay.
+
+## Release Phases
 
 | Current | Phase | Scope                                                                   |
 | ------- | ----- | ----------------------------------------------------------------------- |
@@ -68,7 +91,6 @@ The app requires calendar access. On first launch:
 | done    | v0.4  | Islamic Mode: prayer times, Hijri date, notifications, Overlay 1        |
 | done    | v0.5  | Overlay 2 (prayer ending alert), prayer tracking, sleep/wake            |
 | next    | v1.0  | World clocks, date calculator, polish, App Store                        |
-
 
 ## When Adding New Files
 

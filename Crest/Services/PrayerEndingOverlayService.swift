@@ -95,6 +95,19 @@ final class PrayerEndingOverlayService {
         scheduleOverlays()
     }
 
+    @discardableResult
+    func triggerOverlay2TestNow() -> Bool {
+        guard prayerTimeService.isEnabled else { return false }
+
+        let now = Date()
+        let candidate = prayerTimeService.currentPrayer ?? prayerTimeService.nextPrayer ?? .fajr
+        let prayer = candidate == .sunrise ? .dhuhr : candidate
+
+        let prayerEndTime = prayerTimeService.prayerEndTime(prayer) ?? now.addingTimeInterval(warningMinutes * 60)
+        fireOverlay(for: prayer, prayerEndTime: prayerEndTime)
+        return true
+    }
+
     // MARK: - Private
 
     private func fireOverlay(for prayer: Prayer, prayerEndTime: Date) {

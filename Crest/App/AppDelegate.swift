@@ -67,4 +67,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+
+    @discardableResult
+    func triggerOverlay1TestNow() -> Bool {
+        prayerOverlayService?.triggerOverlay1TestNow() ?? false
+    }
+
+    @discardableResult
+    func triggerOverlay2TestNow() -> Bool {
+        prayerEndingOverlayService?.triggerOverlay2TestNow() ?? false
+    }
 }
