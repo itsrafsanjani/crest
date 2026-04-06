@@ -10,8 +10,8 @@ struct PrayerEndingOverlayView: View {
     @State private var remainingSeconds: Int
     @State private var dismissText = ""
     @State private var timer: Timer?
-
-    private let totalDuration: Int = 20 * 60
+    @State private var shakeOffset: CGFloat = 0
+    @FocusState private var isTextFieldFocused: Bool
 
     init(prayer: Prayer, prayerEndTime: Date,
          nextPrayer: Prayer?, nextPrayerStartTime: Date?,
@@ -23,11 +23,6 @@ struct PrayerEndingOverlayView: View {
         self.onDismiss = onDismiss
         let remaining = Int(max(0, prayerEndTime.timeIntervalSince(Date())))
         _remainingSeconds = State(initialValue: remaining)
-    }
-
-    private var progress: Double {
-        guard totalDuration > 0 else { return 0 }
-        return Double(remainingSeconds) / Double(totalDuration)
     }
 
     private var countdownText: String {
@@ -57,26 +52,32 @@ struct PrayerEndingOverlayView: View {
             mainContent
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear { startCountdown() }
+        .onAppear {
+            startCountdown()
+            isTextFieldFocused = true
+        }
         .onDisappear { timer?.invalidate() }
     }
 
     private var overlayBackground: some View {
         ZStack {
-            Color.black
+            Color(red: 0.04, green: 0.04, blue: 0.06)
 
             RadialGradient(
-                colors: [
-                    urgencyColor.opacity(0.5),
-                    prayer.themeColor.opacity(0.2),
-                    Color.black.opacity(0.85)
+                stops: [
+                    .init(color: urgencyColor.opacity(0.3), location: 0.0),
+                    .init(color: urgencyColor.opacity(0.18), location: 0.15),
+                    .init(color: urgencyColor.opacity(0.08), location: 0.3),
+                    .init(color: urgencyColor.opacity(0.03), location: 0.5),
+                    .init(color: .clear, location: 0.7)
                 ],
                 center: .center,
-                startRadius: 80,
-                endRadius: 800
+                startRadius: 50,
+                endRadius: 500
             )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .drawingGroup()
     }
 
     private var countdownBadge: some View {
@@ -125,9 +126,6 @@ struct PrayerEndingOverlayView: View {
                 .padding(.bottom, 20)
             }
 
-            progressBar
-                .padding(.bottom, 40)
-
             dismissField
                 .padding(.bottom, 32)
 
@@ -146,20 +144,6 @@ struct PrayerEndingOverlayView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    private var progressBar: some View {
-        ZStack(alignment: .leading) {
-            Capsule()
-                .fill(.white.opacity(0.1))
-                .frame(width: 300, height: 4)
-
-            Capsule()
-                .fill(urgencyColor)
-                .frame(width: 300 * progress, height: 4)
-                .animation(.linear(duration: 1), value: remainingSeconds)
-        }
-        .frame(width: 300, height: 4)
     }
 
     private var dismissField: some View {
@@ -181,7 +165,27 @@ struct PrayerEndingOverlayView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(.white.opacity(0.15), lineWidth: 1)
                 )
+                .focused($isTextFieldFocused)
+                .onSubmit { handleSubmit() }
         }
+        .offset(x: shakeOffset)
+        .animation(.default, value: shakeOffset)
+    }
+
+    private func handleSubmit() {
+        if canDismiss {
+            onDismiss()
+        } else {
+            triggerShake()
+        }
+    }
+
+    private func triggerShake() {
+        shakeOffset = 10
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { shakeOffset = -8 }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { shakeOffset = 6 }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { shakeOffset = -4 }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { shakeOffset = 0 }
     }
 
     private func startCountdown() {

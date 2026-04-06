@@ -55,6 +55,46 @@ final class MeetingAlertWindow: NSPanel {
         self.contentView = hostingView
     }
 
+    init(title: String, startDate: Date, timeRange: String, serviceName: String, onAction: @escaping (MeetingAlertAction) -> Void) {
+        self.onAction = onAction
+
+        let screen = NSScreen.main ?? NSScreen.screens[0]
+        let frame = screen.frame
+
+        super.init(
+            contentRect: frame,
+            styleMask: [.borderless, .nonactivatingPanel],
+            backing: .buffered,
+            defer: false
+        )
+
+        self.level = .screenSaver
+        self.isOpaque = false
+        self.backgroundColor = .clear
+        self.hasShadow = false
+        self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        self.isMovable = false
+        self.isMovableByWindowBackground = false
+        self.hidesOnDeactivate = false
+
+        let alertView = MeetingAlertView(
+            eventTitle: title,
+            eventStartDate: startDate,
+            timeRange: timeRange,
+            calendarName: "Test Calendar",
+            calendarColor: .blue,
+            serviceName: serviceName,
+            attendees: [],
+            onJoin: { onAction(.join) },
+            onDismiss: { onAction(.dismiss) },
+            onSnooze: { minutes in onAction(.snooze(minutes: minutes)) }
+        )
+
+        let hostingView = NSHostingView(rootView: alertView)
+        hostingView.frame = frame
+        self.contentView = hostingView
+    }
+
     func showFullscreen() {
         makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)

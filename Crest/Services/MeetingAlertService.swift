@@ -74,6 +74,33 @@ final class MeetingAlertService {
         }
     }
 
+    @discardableResult
+    func triggerTestAlert() -> Bool {
+        let now = Date()
+        let startDate = now.addingTimeInterval(5 * 60)
+        let endDate = now.addingTimeInterval(35 * 60)
+        let timeRange = DateFormatting.eventTimeRange(start: startDate, end: endDate, isAllDay: false)
+
+        dismissAlert()
+
+        let window = MeetingAlertWindow(
+            title: "Test Meeting",
+            startDate: startDate,
+            timeRange: timeRange,
+            serviceName: "Test"
+        ) { [weak self] action in
+            switch action {
+            case .join, .dismiss:
+                self?.dismissAlert()
+            case .snooze:
+                self?.dismissAlert()
+            }
+        }
+        alertWindow = window
+        window.showFullscreen()
+        return true
+    }
+
     func dismissAlert(for eventID: String? = nil) {
         if let eventID {
             dismissedEventIDs.insert(eventID)

@@ -6,10 +6,11 @@ struct SettingsView: View {
     var notificationService: PrayerNotificationService?
     var onTestOverlay1Now: (() -> Bool)?
     var onTestOverlay2Now: (() -> Bool)?
+    var onTestMeetingAlertNow: (() -> Bool)?
 
     var body: some View {
         TabView {
-            GeneralSettingsView()
+            GeneralSettingsView(onTestMeetingAlertNow: onTestMeetingAlertNow)
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }

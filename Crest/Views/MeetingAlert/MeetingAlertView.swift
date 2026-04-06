@@ -19,6 +19,10 @@ struct MeetingAlertView: View {
         max(0, Int(ceil(eventStartDate.timeIntervalSince(currentTime) / 60)))
     }
 
+    private var secondsUntilStart: Int {
+        max(0, Int(eventStartDate.timeIntervalSince(currentTime)))
+    }
+
     private var timeUntilText: String {
         let mins = minutesUntilStart
         if mins <= 0 { return "Starting now" }
@@ -26,11 +30,20 @@ struct MeetingAlertView: View {
         return "In \(mins) minutes"
     }
 
+    private var countdownText: String {
+        let total = secondsUntilStart
+        let m = total / 60
+        let s = total % 60
+        return String(format: "%02d:%02d", m, s)
+    }
+
+    private let themeColor = Color(red: 0.4, green: 0.3, blue: 0.8)
+
     var body: some View {
         ZStack {
-            gradientBackground
+            overlayBackground
+            countdownBadge
             mainContent
-            clockBadge
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
@@ -42,42 +55,33 @@ struct MeetingAlertView: View {
         .onDisappear { timer?.invalidate() }
     }
 
-    private var gradientBackground: some View {
+    private var overlayBackground: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.15, green: 0.1, blue: 0.35),
-                    Color(red: 0.3, green: 0.15, blue: 0.5),
-                    Color(red: 0.5, green: 0.2, blue: 0.55),
-                    Color(red: 0.3, green: 0.1, blue: 0.45)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            Color(red: 0.04, green: 0.04, blue: 0.06)
 
             RadialGradient(
-                colors: [
-                    Color(red: 0.6, green: 0.25, blue: 0.65).opacity(0.4),
-                    .clear
+                stops: [
+                    .init(color: themeColor.opacity(0.25), location: 0.0),
+                    .init(color: themeColor.opacity(0.15), location: 0.15),
+                    .init(color: themeColor.opacity(0.08), location: 0.3),
+                    .init(color: themeColor.opacity(0.03), location: 0.5),
+                    .init(color: .clear, location: 0.7)
                 ],
                 center: .center,
-                startRadius: 100,
-                endRadius: 600
+                startRadius: 50,
+                endRadius: 500
             )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .drawingGroup()
     }
 
-    private var clockBadge: some View {
+    private var countdownBadge: some View {
         VStack {
-            HStack {
-                Spacer()
-                Text(clockString)
-                    .font(.system(size: 14, weight: .medium, design: .rounded).monospacedDigit())
-                    .foregroundStyle(.white.opacity(0.5))
-                    .padding(.top, 40)
-                    .padding(.trailing, 24)
-            }
+            Text(countdownText)
+                .font(.system(size: 14, weight: .medium, design: .rounded).monospacedDigit())
+                .foregroundStyle(.white.opacity(0.5))
+                .padding(.top, 40)
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -87,8 +91,13 @@ struct MeetingAlertView: View {
         VStack(spacing: 0) {
             Spacer()
 
+            Image(systemName: "video.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(themeColor)
+                .padding(.bottom, 24)
+
             Text(eventTitle)
-                .font(.system(size: 36, weight: .semibold))
+                .font(.system(size: 34, weight: .bold))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .lineLimit(3)
@@ -103,7 +112,7 @@ struct MeetingAlertView: View {
             Text(timeRange)
                 .font(.subheadline)
                 .foregroundStyle(.white.opacity(0.5))
-                .padding(.bottom, 28)
+                .padding(.bottom, 32)
 
             actionButtons
                 .padding(.bottom, 16)
@@ -120,11 +129,11 @@ struct MeetingAlertView: View {
             Button(action: onDismiss) {
                 Text("Dismiss")
                     .font(.body.weight(.medium))
-                    .foregroundStyle(.white.opacity(0.8))
+                    .foregroundStyle(.white.opacity(0.7))
                     .padding(.horizontal, 28)
                     .padding(.vertical, 12)
-                    .background(.white.opacity(0.12), in: Capsule())
-                    .overlay(Capsule().strokeBorder(.white.opacity(0.2), lineWidth: 1))
+                    .background(.white.opacity(0.1), in: Capsule())
+                    .overlay(Capsule().strokeBorder(.white.opacity(0.15), lineWidth: 1))
             }
             .buttonStyle(.plain)
             .keyboardShortcut(.escape, modifiers: [])
@@ -173,11 +182,5 @@ struct MeetingAlertView: View {
                 .overlay(Capsule().strokeBorder(.white.opacity(0.12), lineWidth: 1))
         }
         .buttonStyle(.plain)
-    }
-
-    private var clockString: String {
-        let f = DateFormatter()
-        f.dateFormat = "HH:mm"
-        return f.string(from: currentTime)
     }
 }

@@ -103,6 +103,7 @@ final class PrayerEndingOverlayService {
         let candidate = prayerTimeService.currentPrayer ?? prayerTimeService.nextPrayer ?? .fajr
         let prayer = candidate == .sunrise ? .dhuhr : candidate
 
+        dismissedPrayers.remove(prayer.rawValue)
         let prayerEndTime = prayerTimeService.prayerEndTime(prayer) ?? now.addingTimeInterval(warningMinutes * 60)
         fireOverlay(for: prayer, prayerEndTime: prayerEndTime)
         return true

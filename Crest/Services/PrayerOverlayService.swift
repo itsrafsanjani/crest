@@ -119,12 +119,14 @@ final class PrayerOverlayService {
 
         if let next = prayerTimeService.nextPrayer,
            next != .sunrise {
+            dismissedPrayers.remove(next.rawValue)
             let prayerTime = prayerTimeService.timeForPrayer(next) ?? now.addingTimeInterval(warningMinutes * 60)
             fireOverlay(for: next, prayerTime: prayerTime)
             return true
         }
 
         if let fallbackPrayer = Prayer.adjustable.first {
+            dismissedPrayers.remove(fallbackPrayer.rawValue)
             let prayerTime = prayerTimeService.timeForPrayer(fallbackPrayer) ?? now.addingTimeInterval(warningMinutes * 60)
             fireOverlay(for: fallbackPrayer, prayerTime: prayerTime)
             return true

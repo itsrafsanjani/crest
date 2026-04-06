@@ -33,7 +33,8 @@ struct CrestApp: App {
                 prayerTimeService: prayerService,
                 notificationService: appDelegate.prayerNotificationService,
                 onTestOverlay1Now: { appDelegate.triggerOverlay1TestNow() },
-                onTestOverlay2Now: { appDelegate.triggerOverlay2TestNow() }
+                onTestOverlay2Now: { appDelegate.triggerOverlay2TestNow() },
+                onTestMeetingAlertNow: { appDelegate.triggerMeetingAlertTestNow() }
             )
         }
     }
