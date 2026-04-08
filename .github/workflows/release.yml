@@ -65,6 +65,8 @@ jobs:
 
       - name: Sign update with Sparkle EdDSA
         id: sign
+        env:
+          SPARKLE_KEY: ${{ secrets.SPARKLE_EDDSA_PRIVATE_KEY }}
         run: |
           SPARKLE_VERSION="2.9.1"
           curl -sL -o sparkle.tar.xz \
@@ -72,8 +74,14 @@ jobs:
           mkdir -p sparkle_tools
           tar -xf sparkle.tar.xz -C sparkle_tools
 
+          # Write key to temp file for sign_update
+          KEY_FILE=$(mktemp)
+          printf '%s' "$SPARKLE_KEY" > "$KEY_FILE"
+
           DMG_FILE="Crest-${{ steps.version.outputs.VERSION }}.dmg"
-          SIGN_OUTPUT=$(echo "${{ secrets.SPARKLE_EDDSA_PRIVATE_KEY }}" | ./sparkle_tools/bin/sign_update "${DMG_FILE}")
+          SIGN_OUTPUT=$(./sparkle_tools/bin/sign_update "${DMG_FILE}" -f "$KEY_FILE")
+          rm -f "$KEY_FILE"
+
           echo "SIGN_OUTPUT=${SIGN_OUTPUT}" >> "$GITHUB_OUTPUT"
 
           DMG_SIZE=$(stat -f%z "${DMG_FILE}")
