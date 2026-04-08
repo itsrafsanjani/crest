@@ -87,8 +87,7 @@ jobs:
           DMG_SIZE=$(stat -f%z "${DMG_FILE}")
           echo "DMG_SIZE=${DMG_SIZE}" >> "$GITHUB_OUTPUT"
 
-      - name: Generate appcast item
-        id: appcast
+      - name: Build appcast.xml
         run: |
           VERSION="${{ steps.version.outputs.VERSION }}"
           DMG_URL="https://github.com/itsrafsanjani/crest/releases/download/v${VERSION}/Crest-${VERSION}.dmg"
@@ -98,28 +97,6 @@ jobs:
           DMG_LENGTH="${{ steps.sign.outputs.DMG_SIZE }}"
           PUB_DATE=$(date -R)
 
-          NEW_ITEM=$(cat <<ITEM_EOF
-              <item>
-                <title>Version ${VERSION}</title>
-                <sparkle:version>${{ github.run_number }}</sparkle:version>
-                <sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>
-                <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-                <pubDate>${PUB_DATE}</pubDate>
-                <enclosure
-                  url="${DMG_URL}"
-                  type="application/octet-stream"
-                  sparkle:edSignature="${ED_SIGNATURE}"
-                  length="${DMG_LENGTH}"
-                />
-              </item>
-          ITEM_EOF
-          )
-
-          # Write new item to file for later use
-          echo "${NEW_ITEM}" > new_item.xml
-
-      - name: Build appcast.xml
-        run: |
           # Fetch existing appcast from gh-pages if it exists
           git fetch origin gh-pages:gh-pages 2>/dev/null || true
           git show gh-pages:appcast.xml > existing_appcast.xml 2>/dev/null || cat > existing_appcast.xml <<'EMPTY_EOF'
@@ -132,9 +109,8 @@ jobs:
           </rss>
           EMPTY_EOF
 
-          # Insert new item before </channel>
-          NEW_ITEM=$(cat new_item.xml)
-          awk -v item="$NEW_ITEM" '/<\/channel>/{print item}1' existing_appcast.xml > appcast.xml
+          # Build the complete appcast by inserting new item before </channel>
+          sed "s|</channel>|      <item>\n        <title>Version ${VERSION}</title>\n        <sparkle:version>${{ github.run_number }}</sparkle:version>\n        <sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>\n        <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>\n        <pubDate>${PUB_DATE}</pubDate>\n        <enclosure url=\"${DMG_URL}\" type=\"application/octet-stream\" sparkle:edSignature=\"${ED_SIGNATURE}\" length=\"${DMG_LENGTH}\"/>\n      </item>\n    </channel>|" existing_appcast.xml > appcast.xml
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
