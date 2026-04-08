@@ -156,7 +156,7 @@ jobs:
           VERSION="${{ steps.version.outputs.VERSION }}"
           SHA=$(shasum -a 256 "Crest-${VERSION}.dmg" | awk '{print $1}')
 
-          gh repo clone itsrafsanjani/homebrew-crest /tmp/tap || exit 0
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/itsrafsanjani/homebrew-crest.git" /tmp/tap || exit 0
           cd /tmp/tap
 
           sed -i '' "s/version \".*\"/version \"${VERSION}\"/" Casks/crest.rb
