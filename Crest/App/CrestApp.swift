@@ -29,6 +29,7 @@ struct CrestApp: App {
 
         Settings {
             SettingsView(
+                updater: appDelegate.updaterController.updater,
                 locationService: locationService,
                 prayerTimeService: prayerService,
                 notificationService: appDelegate.prayerNotificationService,

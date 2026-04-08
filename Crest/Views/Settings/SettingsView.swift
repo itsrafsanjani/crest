@@ -1,6 +1,8 @@
 import SwiftUI
+import Sparkle
 
 struct SettingsView: View {
+    var updater: SPUUpdater
     var locationService: LocationService
     var prayerTimeService: PrayerTimeService
     var notificationService: PrayerNotificationService?
@@ -10,7 +12,7 @@ struct SettingsView: View {
 
     var body: some View {
         TabView {
-            GeneralSettingsView(onTestMeetingAlertNow: onTestMeetingAlertNow)
+            GeneralSettingsView(onTestMeetingAlertNow: onTestMeetingAlertNow, updater: updater)
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }

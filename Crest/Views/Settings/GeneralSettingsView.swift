@@ -1,8 +1,10 @@
 import SwiftUI
 import ServiceManagement
+import Sparkle
 
 struct GeneralSettingsView: View {
     var onTestMeetingAlertNow: (() -> Bool)?
+    var updater: SPUUpdater
 
     @AppStorage(AppSettingsKey.meetingAlertEnabled) private var meetingAlertEnabled = AppSettingsDefault.meetingAlertEnabled
     @AppStorage(AppSettingsKey.joinMeetingShortcutEnabled) private var joinShortcutEnabled = AppSettingsDefault.joinMeetingShortcutEnabled
@@ -46,6 +48,13 @@ struct GeneralSettingsView: View {
                     .onChange(of: launchAtLogin) { _, newValue in
                         setLaunchAtLogin(newValue)
                     }
+            }
+
+            Section("Updates") {
+                Button("Check for Updates…") {
+                    updater.checkForUpdates()
+                }
+                .disabled(!updater.canCheckForUpdates)
             }
         }
         .formStyle(.grouped)

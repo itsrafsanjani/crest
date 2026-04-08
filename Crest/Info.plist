@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSCalendarsFullAccessUsageDescription</key>
@@ -26,5 +26,9 @@
 	<string>Crest needs access to your calendars to show upcoming events and meeting links.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Crest needs your location to calculate accurate prayer times.</string>
+	<key>SUFeedURL</key>
+	<string>https://itsrafsanjani.github.io/crest/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>XwuY5nOkreRnwPKtbx3hdKDT7HvSH0JqxU/nyRNrk8o=</string>
 </dict>
 </plist>

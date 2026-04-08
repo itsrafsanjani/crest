@@ -1,6 +1,13 @@
 import AppKit
+import Sparkle
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    let updaterController = SPUStandardUpdaterController(
+        startingUpdater: true,
+        updaterDelegate: nil,
+        userDriverDelegate: nil
+    )
+
     var meetingAlertService: MeetingAlertService?
     var globalShortcutService: GlobalShortcutService?
     var prayerOverlayService: PrayerOverlayService?

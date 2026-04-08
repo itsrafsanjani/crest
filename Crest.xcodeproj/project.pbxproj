@@ -43,6 +43,7 @@
 		D35A36B2F17A63EAFFD4007D /* IslamicSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF3460709590753DF203528 /* IslamicSettingsView.swift */; };
 		D667D06D5C0E2710A3E1221B /* PrayerTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D91B0877FE5D9B2D3058D45 /* PrayerTimeService.swift */; };
 		E544B37692C36B8FEFFBB74A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C5646A45BA81ECDE709EB8 /* Theme.swift */; };
+		EE7B11D486299BE5FE3255CF /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A53132F41A9E661E04469D1E /* Sparkle */; };
 		EF11FD64D25C574A478197F7 /* MeetingAlertWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */; };
 		F80E393AA0A9DCAD95CD4385 /* PrayerEndingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */; };
 /* End PBXBuildFile section */
@@ -96,6 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16D73F13F1B1B10C11FDD963 /* Adhan in Frameworks */,
+				EE7B11D486299BE5FE3255CF /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +272,7 @@
 			name = Crest;
 			packageProductDependencies = (
 				DE10C5B2B8455DFA9F7D63F5 /* Adhan */,
+				A53132F41A9E661E04469D1E /* Sparkle */,
 			);
 			productName = Crest;
 			productReference = 704AE3B14AA8297313BFB555 /* Crest.app */;
@@ -300,6 +303,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FBE2921492CA17960BEFA299 /* XCRemoteSwiftPackageReference "adhan-swift" */,
+				03FFF088BFDFD4F04A0C1739 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7915A41E54FD90E7E93E8846 /* Products */;
@@ -552,6 +556,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		03FFF088BFDFD4F04A0C1739 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = exactVersion;
+				version = 2.9.1;
+			};
+		};
 		FBE2921492CA17960BEFA299 /* XCRemoteSwiftPackageReference "adhan-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/batoulapps/adhan-swift";
@@ -563,6 +575,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A53132F41A9E661E04469D1E /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03FFF088BFDFD4F04A0C1739 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
 		DE10C5B2B8455DFA9F7D63F5 /* Adhan */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FBE2921492CA17960BEFA299 /* XCRemoteSwiftPackageReference "adhan-swift" */;

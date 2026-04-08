@@ -1,0 +1,185 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Install tools
+        run: brew install xcodegen create-dmg
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Resolve SPM dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Crest.xcodeproj \
+            -scheme Crest
+
+      - name: Build release
+        run: |
+          xcodebuild build \
+            -project Crest.xcodeproj \
+            -scheme Crest \
+            -configuration Release \
+            -derivedDataPath build \
+            MARKETING_VERSION="${{ steps.version.outputs.VERSION }}" \
+            CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_STYLE=Manual
+
+      - name: Prepare app for DMG
+        run: |
+          mkdir -p dmg_staging
+          cp -R build/Build/Products/Release/Crest.app dmg_staging/
+
+      - name: Create DMG
+        run: |
+          create-dmg \
+            --volname "Crest" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "Crest.app" 150 190 \
+            --app-drop-link 450 190 \
+            --no-internet-enable \
+            "Crest-${{ steps.version.outputs.VERSION }}.dmg" \
+            "dmg_staging/" || true
+          # create-dmg exits 2 when it can't set a custom icon, but the DMG is still valid
+          ls -la Crest-*.dmg
+
+      - name: Sign update with Sparkle EdDSA
+        id: sign
+        run: |
+          SPARKLE_VERSION="2.9.1"
+          curl -sL -o sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz"
+          mkdir -p sparkle_tools
+          tar -xf sparkle.tar.xz -C sparkle_tools
+
+          DMG_FILE="Crest-${{ steps.version.outputs.VERSION }}.dmg"
+          SIGN_OUTPUT=$(echo "${{ secrets.SPARKLE_EDDSA_PRIVATE_KEY }}" | ./sparkle_tools/bin/sign_update "${DMG_FILE}")
+          echo "SIGN_OUTPUT=${SIGN_OUTPUT}" >> "$GITHUB_OUTPUT"
+
+          DMG_SIZE=$(stat -f%z "${DMG_FILE}")
+          echo "DMG_SIZE=${DMG_SIZE}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate appcast item
+        id: appcast
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          DMG_URL="https://github.com/itsrafsanjani/crest/releases/download/v${VERSION}/Crest-${VERSION}.dmg"
+          SIGN_OUTPUT="${{ steps.sign.outputs.SIGN_OUTPUT }}"
+
+          ED_SIGNATURE=$(echo "${SIGN_OUTPUT}" | grep -o 'sparkle:edSignature="[^"]*"' | cut -d'"' -f2)
+          DMG_LENGTH="${{ steps.sign.outputs.DMG_SIZE }}"
+          PUB_DATE=$(date -R)
+
+          NEW_ITEM=$(cat <<ITEM_EOF
+              <item>
+                <title>Version ${VERSION}</title>
+                <sparkle:version>${{ github.run_number }}</sparkle:version>
+                <sparkle:shortVersionString>${VERSION}</sparkle:shortVersionString>
+                <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+                <pubDate>${PUB_DATE}</pubDate>
+                <enclosure
+                  url="${DMG_URL}"
+                  type="application/octet-stream"
+                  sparkle:edSignature="${ED_SIGNATURE}"
+                  length="${DMG_LENGTH}"
+                />
+              </item>
+          ITEM_EOF
+          )
+
+          # Write new item to file for later use
+          echo "${NEW_ITEM}" > new_item.xml
+
+      - name: Build appcast.xml
+        run: |
+          # Fetch existing appcast from gh-pages if it exists
+          git fetch origin gh-pages:gh-pages 2>/dev/null || true
+          git show gh-pages:appcast.xml > existing_appcast.xml 2>/dev/null || cat > existing_appcast.xml <<'EMPTY_EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+            <channel>
+              <title>Crest Updates</title>
+              <link>https://itsrafsanjani.github.io/crest/appcast.xml</link>
+            </channel>
+          </rss>
+          EMPTY_EOF
+
+          # Insert new item before </channel>
+          NEW_ITEM=$(cat new_item.xml)
+          awk -v item="$NEW_ITEM" '/<\/channel>/{print item}1' existing_appcast.xml > appcast.xml
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Crest-${{ steps.version.outputs.VERSION }}.dmg
+          generate_release_notes: true
+          body: |
+            ## Installation
+
+            1. Download `Crest-${{ steps.version.outputs.VERSION }}.dmg`
+            2. Open the DMG and drag Crest to Applications
+            3. On first launch, right-click Crest.app → **Open** → Click **Open** (required once for unsigned apps)
+
+            Or install via Homebrew:
+            ```bash
+            brew tap itsrafsanjani/crest
+            brew install --cask crest
+            ```
+
+            **Existing users:** Crest will prompt you to update automatically.
+
+      - name: Deploy appcast to GitHub Pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create a temporary directory for gh-pages content
+          mkdir -p gh_pages_deploy
+          cp appcast.xml gh_pages_deploy/
+
+          cd gh_pages_deploy
+          git init
+          git add appcast.xml
+          git commit -m "Update appcast for v${{ steps.version.outputs.VERSION }}"
+          git branch -M gh-pages
+          git push --force "https://x-access-token:${{ github.token }}@github.com/itsrafsanjani/crest.git" gh-pages
+
+      - name: Update Homebrew Cask
+        if: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          SHA=$(shasum -a 256 "Crest-${VERSION}.dmg" | awk '{print $1}')
+
+          gh repo clone itsrafsanjani/homebrew-crest /tmp/tap || exit 0
+          cd /tmp/tap
+
+          sed -i '' "s/version \".*\"/version \"${VERSION}\"/" Casks/crest.rb
+          sed -i '' "s/sha256 \".*\"/sha256 \"${SHA}\"/" Casks/crest.rb
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/crest.rb
+          git commit -m "Update crest to ${VERSION}"
+          git push
