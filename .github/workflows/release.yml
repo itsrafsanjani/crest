@@ -165,9 +165,9 @@ jobs:
           git push --force "https://x-access-token:${{ github.token }}@github.com/itsrafsanjani/crest.git" gh-pages
 
       - name: Update Homebrew Cask
-        if: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        if: env.GH_TOKEN != ''
         run: |
           VERSION="${{ steps.version.outputs.VERSION }}"
           SHA=$(shasum -a 256 "Crest-${VERSION}.dmg" | awk '{print $1}')
