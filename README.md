@@ -41,10 +41,16 @@ A native macOS menu bar app for calendar events, meetings, and schedule awarenes
 2. Open the DMG and drag **Crest** to **Applications**
 3. On first launch, right-click Crest.app > **Open** > click **Open** (required once for unsigned apps)
 
-> **Note:** Crest is not notarized with Apple. If macOS blocks the app, run:
+**Note:** Crest is not notarized with Apple. If macOS blocks the app, run:
+
 > ```bash
 > xattr -cr /Applications/Crest.app
 > ```
+
+or
+
+<img width="1836" height="2176" alt="CleanShot 2026-04-08 at 23 13 57@2x" src="https://github.com/user-attachments/assets/40b2b7bb-c707-4cc1-b7fa-1e7ad41e0b6e" />
+
 
 ### Homebrew
 
