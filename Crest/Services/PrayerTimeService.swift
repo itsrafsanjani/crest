@@ -75,13 +75,22 @@ final class PrayerTimeService {
 
         rawPrayerTimes = prayers
 
+        let jamaatEnabled = UserDefaults.standard.object(forKey: AppSettingsKey.jamaatTimesEnabled) as? Bool
+            ?? AppSettingsDefault.jamaatTimesEnabled
+        let jamaatOffsets = loadJamaatOffsets()
+
         todayPrayers = [
-            PrayerTime(prayer: .fajr, time: prayers.fajr),
+            PrayerTime(prayer: .fajr, time: prayers.fajr,
+                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.fajr, offsetMinutes: jamaatOffsets["fajr"]) : nil),
             PrayerTime(prayer: .sunrise, time: prayers.sunrise),
-            PrayerTime(prayer: .dhuhr, time: prayers.dhuhr),
-            PrayerTime(prayer: .asr, time: prayers.asr),
-            PrayerTime(prayer: .maghrib, time: prayers.maghrib),
-            PrayerTime(prayer: .isha, time: prayers.isha),
+            PrayerTime(prayer: .dhuhr, time: prayers.dhuhr,
+                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.dhuhr, offsetMinutes: jamaatOffsets["dhuhr"]) : nil),
+            PrayerTime(prayer: .asr, time: prayers.asr,
+                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.asr, offsetMinutes: jamaatOffsets["asr"]) : nil),
+            PrayerTime(prayer: .maghrib, time: prayers.maghrib,
+                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.maghrib, offsetMinutes: jamaatOffsets["maghrib"]) : nil),
+            PrayerTime(prayer: .isha, time: prayers.isha,
+                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.isha, offsetMinutes: jamaatOffsets["isha"]) : nil),
         ]
 
         islamicMidnight = SunnahTimes(from: prayers)?.middleOfTheNight
@@ -170,6 +179,16 @@ final class PrayerTimeService {
     private func loadAdjustments() -> [String: Int] {
         (UserDefaults.standard.dictionary(forKey: AppSettingsKey.prayerAdjustments) as? [String: Int])
             ?? AppSettingsDefault.defaultPrayerAdjustments
+    }
+
+    private func loadJamaatOffsets() -> [String: Int] {
+        (UserDefaults.standard.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: Int])
+            ?? AppSettingsDefault.defaultJamaatTimes
+    }
+
+    private func jamaatTime(base: Date, offsetMinutes: Int?) -> Date? {
+        guard let offset = offsetMinutes, offset >= 0 else { return nil }
+        return Calendar.current.date(byAdding: .minute, value: offset, to: base)
     }
 
     private func startTimer() {

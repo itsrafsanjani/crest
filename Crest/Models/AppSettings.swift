@@ -46,6 +46,12 @@ enum AppSettingsKey {
     static let overlayRespectDND = "overlayRespectDND"
     static let cachedLatitude = "cachedLatitude"
     static let cachedLongitude = "cachedLongitude"
+
+    // Jamaat Times
+    static let jamaatTimesEnabled = "jamaatTimesEnabled"
+    static let jamaatTimes = "jamaatTimes"
+    static let jamaatNotificationsEnabled = "jamaatNotificationsEnabled"
+    static let jamaatNotificationPerPrayer = "jamaatNotificationPerPrayer"
 }
 
 enum AppSettingsDefault {
@@ -80,6 +86,17 @@ enum AppSettingsDefault {
         "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
     ]
     static let defaultOverlay2PerPrayer: [String: Bool] = [
+        "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
+    ]
+
+    // Jamaat Times
+    static let jamaatTimesEnabled = false
+    static let jamaatNotificationsEnabled = true
+    /// Jamaat offsets stored as minutes-after-prayer-time (Int). Negative values not allowed.
+    static let defaultJamaatTimes: [String: Int] = [
+        "fajr": 20, "dhuhr": 15, "asr": 15, "maghrib": 5, "isha": 15
+    ]
+    static let defaultJamaatNotificationPerPrayer: [String: Bool] = [
         "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
     ]
 }

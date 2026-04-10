@@ -14,12 +14,16 @@ struct IslamicSettingsView: View {
     @AppStorage(AppSettingsKey.showHijriInMenuBar) private var showHijriInMenuBar = AppSettingsDefault.showHijriInMenuBar
     @AppStorage(AppSettingsKey.prayerNotificationsEnabled) private var notificationsEnabled = AppSettingsDefault.prayerNotificationsEnabled
     @AppStorage(AppSettingsKey.overlayRespectDND) private var respectDND = AppSettingsDefault.overlayRespectDND
+    @AppStorage(AppSettingsKey.jamaatTimesEnabled) private var jamaatTimesEnabled = AppSettingsDefault.jamaatTimesEnabled
+    @AppStorage(AppSettingsKey.jamaatNotificationsEnabled) private var jamaatNotificationsEnabled = AppSettingsDefault.jamaatNotificationsEnabled
 
     @State private var adjustments: [String: Int] = AppSettingsDefault.defaultPrayerAdjustments
     @State private var notifPerPrayer: [String: Bool] = AppSettingsDefault.defaultPrayerNotificationPerPrayer
     @State private var adhanPerPrayer: [String: Bool] = AppSettingsDefault.defaultPrayerAdhanPerPrayer
     @State private var overlay1PerPrayer: [String: Bool] = AppSettingsDefault.defaultOverlay1PerPrayer
     @State private var overlay2PerPrayer: [String: Bool] = AppSettingsDefault.defaultOverlay2PerPrayer
+    @State private var jamaatOffsets: [String: Int] = AppSettingsDefault.defaultJamaatTimes
+    @State private var jamaatNotifPerPrayer: [String: Bool] = AppSettingsDefault.defaultJamaatNotificationPerPrayer
     @State private var overlayTestStatus: String?
 
     var body: some View {
@@ -36,6 +40,7 @@ struct IslamicSettingsView: View {
                 locationSection
                 calculationSection
                 adjustmentsSection
+                jamaatSection
                 hijriSection
                 notificationsSection
                 overlaySection
@@ -110,6 +115,71 @@ struct IslamicSettingsView: View {
                     in: -30...30
                 )
             }
+        }
+    }
+
+    // MARK: - Jamaat Times
+
+    private var jamaatSection: some View {
+        Group {
+            Section {
+                Toggle("Enable Jamaat Times", isOn: $jamaatTimesEnabled)
+                    .onChange(of: jamaatTimesEnabled) { _, _ in
+                        prayerTimeService.recompute()
+                        notificationService.scheduleAll()
+                    }
+
+                if jamaatTimesEnabled {
+                    ForEach(Prayer.adjustable) { prayer in
+                        jamaatOffsetRow(prayer)
+                    }
+                }
+            } header: {
+                Text("Jamaat Times")
+            } footer: {
+                Text("Set the offset (minutes after the prayer start time) for Jamaat at your local mosque.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            if jamaatTimesEnabled {
+                Section("Jamaat Notifications") {
+                    Toggle("Jamaat notifications", isOn: $jamaatNotificationsEnabled)
+                        .onChange(of: jamaatNotificationsEnabled) { _, _ in
+                            notificationService.scheduleAll()
+                        }
+
+                    if jamaatNotificationsEnabled {
+                        ForEach(Prayer.adjustable) { prayer in
+                            Toggle(prayer.displayName, isOn: jamaatNotifBinding(prayer))
+                                .font(.callout)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func jamaatOffsetRow(_ prayer: Prayer) -> some View {
+        let offsetBinding = Binding<Int>(
+            get: { jamaatOffsets[prayer.rawValue] ?? AppSettingsDefault.defaultJamaatTimes[prayer.rawValue] ?? 15 },
+            set: { newValue in
+                jamaatOffsets[prayer.rawValue] = newValue
+                saveJamaatOffsets()
+            }
+        )
+        return HStack {
+            Image(systemName: prayer.systemImage)
+                .frame(width: 20)
+                .foregroundStyle(prayer.themeColor)
+            Text(prayer.displayName)
+            Spacer()
+            Stepper(
+                "\(jamaatOffsets[prayer.rawValue] ?? 0) min after",
+                value: offsetBinding,
+                in: 0...60
+            )
+            .fixedSize()
         }
     }
 
@@ -257,6 +327,23 @@ struct IslamicSettingsView: View {
         )
     }
 
+    private func jamaatNotifBinding(_ prayer: Prayer) -> Binding<Bool> {
+        Binding(
+            get: { jamaatNotifPerPrayer[prayer.rawValue] ?? true },
+            set: { newValue in
+                jamaatNotifPerPrayer[prayer.rawValue] = newValue
+                UserDefaults.standard.set(jamaatNotifPerPrayer, forKey: AppSettingsKey.jamaatNotificationPerPrayer)
+                notificationService.scheduleAll()
+            }
+        )
+    }
+
+    private func saveJamaatOffsets() {
+        UserDefaults.standard.set(jamaatOffsets, forKey: AppSettingsKey.jamaatTimes)
+        prayerTimeService.recompute()
+        notificationService.scheduleAll()
+    }
+
     // MARK: - Persistence
 
     private func loadPerPrayerSettings() {
@@ -271,6 +358,10 @@ struct IslamicSettingsView: View {
             ?? AppSettingsDefault.defaultOverlay1PerPrayer
         overlay2PerPrayer = (defaults.dictionary(forKey: AppSettingsKey.overlay2PerPrayer) as? [String: Bool])
             ?? AppSettingsDefault.defaultOverlay2PerPrayer
+        jamaatOffsets = (defaults.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: Int])
+            ?? AppSettingsDefault.defaultJamaatTimes
+        jamaatNotifPerPrayer = (defaults.dictionary(forKey: AppSettingsKey.jamaatNotificationPerPrayer) as? [String: Bool])
+            ?? AppSettingsDefault.defaultJamaatNotificationPerPrayer
     }
 
     private func saveAdjustments() {
