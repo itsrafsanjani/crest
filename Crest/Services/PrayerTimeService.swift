@@ -75,13 +75,22 @@ final class PrayerTimeService {
 
         rawPrayerTimes = prayers
 
+        let jamaatEnabled = UserDefaults.standard.object(forKey: AppSettingsKey.jamaatTimesEnabled) as? Bool
+            ?? AppSettingsDefault.jamaatTimesEnabled
+        let jamaatTimes = loadJamaatTimes()
+
         todayPrayers = [
-            PrayerTime(prayer: .fajr, time: prayers.fajr),
+            PrayerTime(prayer: .fajr, time: prayers.fajr,
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .fajr, configuredTimes: jamaatTimes) : nil),
             PrayerTime(prayer: .sunrise, time: prayers.sunrise),
-            PrayerTime(prayer: .dhuhr, time: prayers.dhuhr),
-            PrayerTime(prayer: .asr, time: prayers.asr),
-            PrayerTime(prayer: .maghrib, time: prayers.maghrib),
-            PrayerTime(prayer: .isha, time: prayers.isha),
+            PrayerTime(prayer: .dhuhr, time: prayers.dhuhr,
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .dhuhr, configuredTimes: jamaatTimes) : nil),
+            PrayerTime(prayer: .asr, time: prayers.asr,
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .asr, configuredTimes: jamaatTimes) : nil),
+            PrayerTime(prayer: .maghrib, time: prayers.maghrib,
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .maghrib, configuredTimes: jamaatTimes) : nil),
+            PrayerTime(prayer: .isha, time: prayers.isha,
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .isha, configuredTimes: jamaatTimes) : nil),
         ]
 
         islamicMidnight = SunnahTimes(from: prayers)?.middleOfTheNight
@@ -170,6 +179,30 @@ final class PrayerTimeService {
     private func loadAdjustments() -> [String: Int] {
         (UserDefaults.standard.dictionary(forKey: AppSettingsKey.prayerAdjustments) as? [String: Int])
             ?? AppSettingsDefault.defaultPrayerAdjustments
+    }
+
+    private func loadJamaatTimes() -> [String: String] {
+        (UserDefaults.standard.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: String])
+            ?? AppSettingsDefault.defaultJamaatTimes
+    }
+
+    private func jamaatTime(for prayer: Prayer, configuredTimes: [String: String]) -> Date? {
+        let timeString = configuredTimes[prayer.rawValue] ?? AppSettingsDefault.defaultJamaatTimes[prayer.rawValue]
+        guard let timeString else { return nil }
+
+        let parts = timeString.split(separator: ":")
+        guard parts.count == 2,
+              let hour = Int(parts[0]),
+              let minute = Int(parts[1]),
+              (0 ... 23).contains(hour),
+              (0 ... 59).contains(minute)
+        else {
+            return nil
+        }
+
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return calendar.date(byAdding: DateComponents(hour: hour, minute: minute), to: today)
     }
 
     private func startTimer() {
