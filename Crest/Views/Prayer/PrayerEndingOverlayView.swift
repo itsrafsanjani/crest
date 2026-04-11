@@ -147,27 +147,11 @@ struct PrayerEndingOverlayView: View {
     }
 
     private var dismissField: some View {
-        VStack(spacing: 8) {
-            Text("Type **inshallah** to dismiss")
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.5))
-
-            TextField("", text: $dismissText)
-                .textFieldStyle(.plain)
-                .font(.body)
-                .foregroundStyle(.white)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .frame(width: 220)
-                .background(.white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.white.opacity(0.15), lineWidth: 1)
-                )
-                .focused($isTextFieldFocused)
-                .onSubmit { handleSubmit() }
-        }
+        DismissPromptField(
+            text: $dismissText,
+            onSubmit: handleSubmit,
+            isFocused: $isTextFieldFocused
+        )
         .offset(x: shakeOffset)
         .animation(.default, value: shakeOffset)
     }

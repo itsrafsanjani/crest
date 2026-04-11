@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		051BBEAEC33F7F322379E40F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0F3B1CCC350E068EDB37F /* AppDelegate.swift */; };
+		05DB321A5EF0A39DF7D9CF15 /* DismissPromptField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2617A31983F8362D73CE284 /* DismissPromptField.swift */; };
 		08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC20B7E89F0D072779F0C977 /* SettingsView.swift */; };
 		13CC27987046A433C5B44EB6 /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */; };
 		16D73F13F1B1B10C11FDD963 /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = DE10C5B2B8455DFA9F7D63F5 /* Adhan */; };
@@ -81,6 +82,7 @@
 		CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		CDF3460709590753DF203528 /* IslamicSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslamicSettingsView.swift; sourceTree = "<group>"; };
 		D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayService.swift; sourceTree = "<group>"; };
+		D2617A31983F8362D73CE284 /* DismissPromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissPromptField.swift; sourceTree = "<group>"; };
 		D2FC315B66CB4056F378BCFF /* PrayerNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerNotificationService.swift; sourceTree = "<group>"; };
 		D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCalendarView.swift; sourceTree = "<group>"; };
 		DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 		CC24DC66F673770FE67B85A5 /* Prayer */ = {
 			isa = PBXGroup;
 			children = (
+				D2617A31983F8362D73CE284 /* DismissPromptField.swift */,
 				3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */,
 				4E84418163FAABEA8D221BD2 /* PrayerEndingOverlayWindow.swift */,
 				613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */,
@@ -339,6 +342,7 @@
 				641CB2B8A8A6B2DCAF79CE3E /* CrestApp.swift in Sources */,
 				13CC27987046A433C5B44EB6 /* DateFormatting.swift in Sources */,
 				416E3285FC9BF11C9DA4F8C8 /* DayCell.swift in Sources */,
+				05DB321A5EF0A39DF7D9CF15 /* DismissPromptField.swift in Sources */,
 				41C66B993D13DC19D37CA8EF /* EventDetailView.swift in Sources */,
 				6ED94B515257AF1F0FEFC346 /* EventListView.swift in Sources */,
 				AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */,
