@@ -22,7 +22,7 @@ struct IslamicSettingsView: View {
     @State private var adhanPerPrayer: [String: Bool] = AppSettingsDefault.defaultPrayerAdhanPerPrayer
     @State private var overlay1PerPrayer: [String: Bool] = AppSettingsDefault.defaultOverlay1PerPrayer
     @State private var overlay2PerPrayer: [String: Bool] = AppSettingsDefault.defaultOverlay2PerPrayer
-    @State private var jamaatOffsets: [String: Int] = AppSettingsDefault.defaultJamaatTimes
+    @State private var jamaatTimes: [String: String] = AppSettingsDefault.defaultJamaatTimes
     @State private var jamaatNotifPerPrayer: [String: Bool] = AppSettingsDefault.defaultJamaatNotificationPerPrayer
     @State private var overlayTestStatus: String?
 
@@ -125,19 +125,20 @@ struct IslamicSettingsView: View {
             Section {
                 Toggle("Enable Jamaat Times", isOn: $jamaatTimesEnabled)
                     .onChange(of: jamaatTimesEnabled) { _, _ in
+                        ensureJamaatTimesPersisted()
                         prayerTimeService.recompute()
                         notificationService.scheduleAll()
                     }
 
                 if jamaatTimesEnabled {
                     ForEach(Prayer.adjustable) { prayer in
-                        jamaatOffsetRow(prayer)
+                        jamaatTimeRow(prayer)
                     }
                 }
             } header: {
                 Text("Jamaat Times")
             } footer: {
-                Text("Set the offset (minutes after the prayer start time) for Jamaat at your local mosque.")
+                Text("Set the Jamaat start time for each prayer at your local mosque.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -160,26 +161,27 @@ struct IslamicSettingsView: View {
         }
     }
 
-    private func jamaatOffsetRow(_ prayer: Prayer) -> some View {
-        let offsetBinding = Binding<Int>(
-            get: { jamaatOffsets[prayer.rawValue] ?? AppSettingsDefault.defaultJamaatTimes[prayer.rawValue] ?? 15 },
+    private func jamaatTimeRow(_ prayer: Prayer) -> some View {
+        let timeBinding = Binding<Date>(
+            get: { jamaatDate(for: prayer) },
             set: { newValue in
-                jamaatOffsets[prayer.rawValue] = newValue
-                saveJamaatOffsets()
+                jamaatTimes[prayer.rawValue] = storedJamaatTime(from: newValue)
+                saveJamaatTimes()
             }
         )
+
         return HStack {
             Image(systemName: prayer.systemImage)
                 .frame(width: 20)
                 .foregroundStyle(prayer.themeColor)
             Text(prayer.displayName)
             Spacer()
-            Stepper(
-                "\(jamaatOffsets[prayer.rawValue] ?? 0) min after",
-                value: offsetBinding,
-                in: 0...60
+            DatePicker(
+                "",
+                selection: timeBinding,
+                displayedComponents: .hourAndMinute
             )
-            .fixedSize()
+            .labelsHidden()
         }
     }
 
@@ -338,10 +340,16 @@ struct IslamicSettingsView: View {
         )
     }
 
-    private func saveJamaatOffsets() {
-        UserDefaults.standard.set(jamaatOffsets, forKey: AppSettingsKey.jamaatTimes)
+    private func saveJamaatTimes() {
+        UserDefaults.standard.set(jamaatTimes, forKey: AppSettingsKey.jamaatTimes)
         prayerTimeService.recompute()
         notificationService.scheduleAll()
+    }
+
+    private func ensureJamaatTimesPersisted() {
+        let defaults = UserDefaults.standard
+        guard defaults.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: String] == nil else { return }
+        defaults.set(jamaatTimes, forKey: AppSettingsKey.jamaatTimes)
     }
 
     // MARK: - Persistence
@@ -358,10 +366,52 @@ struct IslamicSettingsView: View {
             ?? AppSettingsDefault.defaultOverlay1PerPrayer
         overlay2PerPrayer = (defaults.dictionary(forKey: AppSettingsKey.overlay2PerPrayer) as? [String: Bool])
             ?? AppSettingsDefault.defaultOverlay2PerPrayer
-        jamaatOffsets = (defaults.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: Int])
-            ?? AppSettingsDefault.defaultJamaatTimes
+        jamaatTimes = loadStoredJamaatTimes(defaults: defaults)
         jamaatNotifPerPrayer = (defaults.dictionary(forKey: AppSettingsKey.jamaatNotificationPerPrayer) as? [String: Bool])
             ?? AppSettingsDefault.defaultJamaatNotificationPerPrayer
+    }
+
+    private func loadStoredJamaatTimes(defaults: UserDefaults) -> [String: String] {
+        if let storedTimes = defaults.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: String] {
+            return storedTimes
+        }
+
+        defaults.set(AppSettingsDefault.defaultJamaatTimes, forKey: AppSettingsKey.jamaatTimes)
+        return AppSettingsDefault.defaultJamaatTimes
+    }
+
+    private func jamaatDate(for prayer: Prayer) -> Date {
+        let stored = jamaatTimes[prayer.rawValue] ?? AppSettingsDefault.defaultJamaatTimes[prayer.rawValue]
+        return jamaatDate(from: stored) ?? defaultJamaatDate()
+    }
+
+    private func jamaatDate(from storedValue: String?) -> Date? {
+        guard let storedValue else { return nil }
+
+        let parts = storedValue.split(separator: ":")
+        guard parts.count == 2,
+              let hour = Int(parts[0]),
+              let minute = Int(parts[1]),
+              (0 ... 23).contains(hour),
+              (0 ... 59).contains(minute)
+        else {
+            return nil
+        }
+
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return calendar.date(byAdding: DateComponents(hour: hour, minute: minute), to: today)
+    }
+
+    private func storedJamaatTime(from date: Date) -> String {
+        let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+        let hour = components.hour ?? 0
+        let minute = components.minute ?? 0
+        return String(format: "%02d:%02d", hour, minute)
+    }
+
+    private func defaultJamaatDate() -> Date {
+        Calendar.current.startOfDay(for: Date())
     }
 
     private func saveAdjustments() {

@@ -34,8 +34,9 @@ struct PrayerTimesView: View {
     private func prayerRow(_ pt: PrayerTime) -> some View {
         let isNext = prayerTimeService.nextPrayer == pt.prayer
         let isPast = pt.isPast()
+        let jamaatIsPast = pt.jamaatTime.map { $0 < Date() } ?? false
 
-        return VStack(spacing: 0) {
+        return VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 8) {
                 Image(systemName: pt.prayer.systemImage)
                     .font(.system(size: 12))
@@ -63,11 +64,11 @@ struct PrayerTimesView: View {
             }
 
             if let jamaat = pt.jamaatTime {
-                jamaatRow(time: jamaat, isPast: jamaat < Date())
+                jamaatRow(time: jamaat, isPast: jamaatIsPast)
             }
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 6)
+        .padding(.vertical, pt.jamaatTime == nil ? 6 : 4)
         .background(isNext ? Color.accentColor.opacity(0.05) : .clear)
     }
 
@@ -88,6 +89,5 @@ struct PrayerTimesView: View {
                 .font(.caption.monospacedDigit())
                 .foregroundStyle(isPast ? .quaternary : .secondary)
         }
-        .padding(.top, 2)
     }
 }

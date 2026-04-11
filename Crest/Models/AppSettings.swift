@@ -92,9 +92,13 @@ enum AppSettingsDefault {
     // Jamaat Times
     static let jamaatTimesEnabled = false
     static let jamaatNotificationsEnabled = true
-    /// Jamaat offsets stored as minutes-after-prayer-time (Int). Negative values not allowed.
-    static let defaultJamaatTimes: [String: Int] = [
-        "fajr": 20, "dhuhr": 15, "asr": 15, "maghrib": 5, "isha": 15
+    /// Jamaat times stored as local clock times in 24-hour `HH:mm` format.
+    static let defaultJamaatTimes: [String: String] = [
+        "fajr": "05:00",
+        "dhuhr": "13:15",
+        "asr": "17:00",
+        "maghrib": "18:15",
+        "isha": "19:30"
     ]
     static let defaultJamaatNotificationPerPrayer: [String: Bool] = [
         "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
