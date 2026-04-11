@@ -67,6 +67,8 @@ enum Prayer: String, CaseIterable, Identifiable {
 struct PrayerTime: Identifiable {
     let prayer: Prayer
     let time: Date
+    /// Jamaat (congregational prayer) start time for the current day, if configured by the user.
+    var jamaatTime: Date?
     var id: String { prayer.rawValue }
 
     func isPast(relativeTo now: Date = Date()) -> Bool {
