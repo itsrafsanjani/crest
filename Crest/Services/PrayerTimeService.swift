@@ -77,20 +77,20 @@ final class PrayerTimeService {
 
         let jamaatEnabled = UserDefaults.standard.object(forKey: AppSettingsKey.jamaatTimesEnabled) as? Bool
             ?? AppSettingsDefault.jamaatTimesEnabled
-        let jamaatOffsets = loadJamaatOffsets()
+        let jamaatTimes = loadJamaatTimes()
 
         todayPrayers = [
             PrayerTime(prayer: .fajr, time: prayers.fajr,
-                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.fajr, offsetMinutes: jamaatOffsets["fajr"]) : nil),
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .fajr, configuredTimes: jamaatTimes) : nil),
             PrayerTime(prayer: .sunrise, time: prayers.sunrise),
             PrayerTime(prayer: .dhuhr, time: prayers.dhuhr,
-                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.dhuhr, offsetMinutes: jamaatOffsets["dhuhr"]) : nil),
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .dhuhr, configuredTimes: jamaatTimes) : nil),
             PrayerTime(prayer: .asr, time: prayers.asr,
-                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.asr, offsetMinutes: jamaatOffsets["asr"]) : nil),
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .asr, configuredTimes: jamaatTimes) : nil),
             PrayerTime(prayer: .maghrib, time: prayers.maghrib,
-                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.maghrib, offsetMinutes: jamaatOffsets["maghrib"]) : nil),
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .maghrib, configuredTimes: jamaatTimes) : nil),
             PrayerTime(prayer: .isha, time: prayers.isha,
-                       jamaatTime: jamaatEnabled ? jamaatTime(base: prayers.isha, offsetMinutes: jamaatOffsets["isha"]) : nil),
+                       jamaatTime: jamaatEnabled ? jamaatTime(for: .isha, configuredTimes: jamaatTimes) : nil),
         ]
 
         islamicMidnight = SunnahTimes(from: prayers)?.middleOfTheNight
@@ -181,14 +181,28 @@ final class PrayerTimeService {
             ?? AppSettingsDefault.defaultPrayerAdjustments
     }
 
-    private func loadJamaatOffsets() -> [String: Int] {
-        (UserDefaults.standard.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: Int])
+    private func loadJamaatTimes() -> [String: String] {
+        (UserDefaults.standard.dictionary(forKey: AppSettingsKey.jamaatTimes) as? [String: String])
             ?? AppSettingsDefault.defaultJamaatTimes
     }
 
-    private func jamaatTime(base: Date, offsetMinutes: Int?) -> Date? {
-        guard let offset = offsetMinutes, offset >= 0 else { return nil }
-        return Calendar.current.date(byAdding: .minute, value: offset, to: base)
+    private func jamaatTime(for prayer: Prayer, configuredTimes: [String: String]) -> Date? {
+        let timeString = configuredTimes[prayer.rawValue] ?? AppSettingsDefault.defaultJamaatTimes[prayer.rawValue]
+        guard let timeString else { return nil }
+
+        let parts = timeString.split(separator: ":")
+        guard parts.count == 2,
+              let hour = Int(parts[0]),
+              let minute = Int(parts[1]),
+              (0 ... 23).contains(hour),
+              (0 ... 59).contains(minute)
+        else {
+            return nil
+        }
+
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return calendar.date(byAdding: DateComponents(hour: hour, minute: minute), to: today)
     }
 
     private func startTimer() {

@@ -99,33 +99,3 @@ Overlay 1 is scheduled at `prayerTime - 15 minutes` and Overlay 2 is scheduled n
 3. Build with `xcodebuild` to verify.
 
 No manual Xcode project editing required — xcodegen picks up files automatically from the `Crest/` source directory.
-
-## Cursor Cloud specific instructions
-
-This is a **native macOS app** (SwiftUI + AppKit). The Cloud VM runs Ubuntu Linux, so `xcodebuild` and the full macOS SDK are unavailable. The following tools **do** work on Linux and are pre-installed by the update script:
-
-| Tool | Command | What it covers |
-|---|---|---|
-| **Swift (6.3)** | `swift -frontend -parse <file>.swift` | Syntax-only parsing (no type-checking — macOS frameworks are absent) |
-| **SwiftLint** | `swiftlint-static lint` | Linting (uses the statically-linked binary; the dynamic `swiftlint` requires SourceKit) |
-| **XcodeGen** | `LOGNAME="${LOGNAME:-ubuntu}" xcodegen generate` | Project generation from `project.yml` |
-
-### Gotchas
-
-- **`LOGNAME` must be set** for `xcodegen generate` to succeed. The update script adds `export LOGNAME="${LOGNAME:-ubuntu}"` to `~/.bashrc`, but if you run xcodegen in a non-login shell, pass it inline.
-- **Full builds (`xcodebuild`) cannot run on Linux.** Building and running the app requires macOS with Xcode 16.1+. Use the syntax parse + SwiftLint workflow above to validate changes.
-- **`swiftlint` (dynamic) crashes** on this VM due to missing `libsourcekitdInProc.so`. Always use `swiftlint-static` instead.
-- The `.swift-version` file created by `swiftly` in the workspace root is git-ignored and cleaned up by the update script to avoid interfering with the repo.
-
-### Typical validation workflow
-
-```bash
-# 1. Lint
-swiftlint-static lint
-
-# 2. Syntax-check all files
-find Crest -name '*.swift' -print0 | xargs -0 swift -frontend -parse
-
-# 3. Regenerate Xcode project (after adding/removing files or changing project.yml)
-LOGNAME="${LOGNAME:-ubuntu}" xcodegen generate
-```
