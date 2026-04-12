@@ -70,7 +70,7 @@ enum AppSettingsDefault {
     static let madhab = "shafi"
     static let hijriDateOffset = 0
     static let showHijriInMenuBar = false
-    static let prayerNotificationsEnabled = true
+    static let prayerNotificationsEnabled = false
     static let overlayRespectDND = true
 
     static let defaultPrayerAdjustments: [String: Int] = [
@@ -83,14 +83,14 @@ enum AppSettingsDefault {
         "fajr": false, "dhuhr": false, "asr": false, "maghrib": false, "isha": false
     ]
     static let defaultOverlay1PerPrayer: [String: Bool] = [
-        "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
+        "fajr": false, "dhuhr": false, "asr": false, "maghrib": false, "isha": false
     ]
     static let defaultOverlay2PerPrayer: [String: Bool] = [
-        "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
+        "fajr": false, "dhuhr": false, "asr": false, "maghrib": false, "isha": false
     ]
 
     // Jamaat Times
-    static let jamaatTimesEnabled = false
+    static let jamaatTimesEnabled = true
     static let jamaatNotificationsEnabled = true
     /// Jamaat times stored as local clock times in 24-hour `HH:mm` format.
     static let defaultJamaatTimes: [String: String] = [

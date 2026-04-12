@@ -12,6 +12,7 @@ final class PrayerOverlayService {
     private(set) var activePrayer: Prayer?
 
     private let warningMinutes: TimeInterval = 15
+    private let wakeGraceMinutes: TimeInterval = 15
 
     init(prayerTimeService: PrayerTimeService) {
         self.prayerTimeService = prayerTimeService
@@ -34,7 +35,6 @@ final class PrayerOverlayService {
             ?? AppSettingsDefault.defaultOverlay1PerPrayer
 
         let now = Date()
-        let warningInterval = warningMinutes * 60
 
         for prayerTime in prayerTimeService.todayPrayers {
             let prayer = prayerTime.prayer
@@ -42,13 +42,13 @@ final class PrayerOverlayService {
             guard perPrayer[prayer.rawValue] ?? true else { continue }
             guard !dismissedPrayers.contains(prayer.rawValue) else { continue }
 
-            let fireTime = prayerTime.time.addingTimeInterval(-warningInterval)
+            let fireTime = overlayFireTime(for: prayerTime)
             guard fireTime > now else { continue }
 
             let delay = fireTime.timeIntervalSince(now)
             let timer = Timer.scheduledTimer(withTimeInterval: max(delay, 0.1), repeats: false) { [weak self] _ in
                 DispatchQueue.main.async {
-                    self?.fireOverlay(for: prayer, prayerTime: prayerTime.time)
+                    self?.fireOverlay(for: prayer, triggerTime: fireTime)
                 }
             }
             RunLoop.main.add(timer, forMode: .common)
@@ -74,9 +74,7 @@ final class PrayerOverlayService {
         let snoozeTimer = Timer.scheduledTimer(withTimeInterval: 5 * 60, repeats: false) { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self else { return }
-                if let pt = self.prayerTimeService.timeForPrayer(prayer) {
-                    self.fireOverlay(for: prayer, prayerTime: pt)
-                }
+                self.fireOverlay(for: prayer, triggerTime: Date())
             }
         }
         RunLoop.main.add(snoozeTimer, forMode: .common)
@@ -91,7 +89,7 @@ final class PrayerOverlayService {
             ?? AppSettingsDefault.defaultOverlay1PerPrayer
 
         let now = Date()
-        let warningInterval = warningMinutes * 60
+        let wakeGraceInterval = wakeGraceMinutes * 60
 
         for prayerTime in prayerTimeService.todayPrayers {
             let prayer = prayerTime.prayer
@@ -99,11 +97,11 @@ final class PrayerOverlayService {
             guard perPrayer[prayer.rawValue] ?? true else { continue }
             guard !dismissedPrayers.contains(prayer.rawValue) else { continue }
 
-            let fireTime = prayerTime.time.addingTimeInterval(-warningInterval)
+            let fireTime = overlayFireTime(for: prayerTime)
+            let validUntil = overlayWakeValidUntil(for: prayerTime, fireTime: fireTime)
 
-            // Fire time passed during sleep but prayer hasn't started yet
-            if fireTime <= now && prayerTime.time > now {
-                fireOverlay(for: prayer, prayerTime: prayerTime.time)
+            if fireTime <= now && validUntil > now && now.timeIntervalSince(fireTime) <= wakeGraceInterval {
+                fireOverlay(for: prayer, triggerTime: fireTime)
                 return
             }
         }
@@ -120,15 +118,13 @@ final class PrayerOverlayService {
         if let next = prayerTimeService.nextPrayer,
            next != .sunrise {
             dismissedPrayers.remove(next.rawValue)
-            let prayerTime = prayerTimeService.timeForPrayer(next) ?? now.addingTimeInterval(warningMinutes * 60)
-            fireOverlay(for: next, prayerTime: prayerTime)
+            fireOverlay(for: next, triggerTime: now)
             return true
         }
 
         if let fallbackPrayer = Prayer.adjustable.first {
             dismissedPrayers.remove(fallbackPrayer.rawValue)
-            let prayerTime = prayerTimeService.timeForPrayer(fallbackPrayer) ?? now.addingTimeInterval(warningMinutes * 60)
-            fireOverlay(for: fallbackPrayer, prayerTime: prayerTime)
+            fireOverlay(for: fallbackPrayer, triggerTime: now)
             return true
         }
 
@@ -137,7 +133,7 @@ final class PrayerOverlayService {
 
     // MARK: - Private
 
-    private func fireOverlay(for prayer: Prayer, prayerTime: Date) {
+    private func fireOverlay(for prayer: Prayer, triggerTime: Date) {
         guard prayerTimeService.isEnabled else { return }
         guard !dismissedPrayers.contains(prayer.rawValue) else { return }
 
@@ -151,7 +147,7 @@ final class PrayerOverlayService {
             }
         }
 
-        showOverlayWindow(prayer: prayer, prayerTime: prayerTime)
+        showOverlayWindow(prayer: prayer, prayerTime: triggerTime)
         scheduledTimers.removeValue(forKey: prayer.rawValue)
     }
 
@@ -199,5 +195,29 @@ final class PrayerOverlayService {
             }
         }
         toRemove.forEach { dismissedPrayers.remove($0) }
+    }
+
+    private func overlayFireTime(for prayerTime: PrayerTime) -> Date {
+        if let jamaatTime = resolvedJamaatTime(for: prayerTime) {
+            return jamaatTime
+        }
+
+        let warningInterval = warningMinutes * 60
+        return prayerTime.time.addingTimeInterval(-warningInterval)
+    }
+
+    private func overlayWakeValidUntil(for prayerTime: PrayerTime, fireTime: Date) -> Date {
+        if resolvedJamaatTime(for: prayerTime) != nil {
+            return fireTime.addingTimeInterval(wakeGraceMinutes * 60)
+        }
+
+        return prayerTime.time
+    }
+
+    private func resolvedJamaatTime(for prayerTime: PrayerTime) -> Date? {
+        let jamaatEnabled = UserDefaults.standard.object(forKey: AppSettingsKey.jamaatTimesEnabled) as? Bool
+            ?? AppSettingsDefault.jamaatTimesEnabled
+        guard jamaatEnabled else { return nil }
+        return prayerTime.jamaatTime
     }
 }
