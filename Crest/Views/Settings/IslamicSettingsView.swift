@@ -244,7 +244,7 @@ struct IslamicSettingsView: View {
                     Text(prayer.displayName)
                         .font(.callout.weight(.medium))
                     HStack(spacing: 16) {
-                        Toggle("Remind at start", isOn: overlay1Binding(prayer))
+                        Toggle("Remind at jamaat/prayer time", isOn: overlay1Binding(prayer))
                             .toggleStyle(.checkbox)
                         Toggle("Remind before end", isOn: overlay2Binding(prayer))
                             .toggleStyle(.checkbox)
@@ -253,6 +253,10 @@ struct IslamicSettingsView: View {
                 }
                 .padding(.vertical, 2)
             }
+
+            Text("Start reminders appear at jamaat time when Jamaat Times are enabled for that prayer; otherwise they fall back to the prayer-time reminder window.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
             Button("Test Overlay 1 Now") {
                 triggerOverlayTestNow()
