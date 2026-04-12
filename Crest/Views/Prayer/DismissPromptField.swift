@@ -28,14 +28,20 @@ struct DismissPromptField: View {
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)
+                    .frame(height: fieldHeight)
                     .focused(isFocused)
                     .onSubmit(onSubmit)
             }
-            .frame(width: fieldWidth)
-            .frame(minHeight: fieldHeight)
-            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .onTapGesture {
-                isFocused.wrappedValue = true
+            .frame(width: fieldWidth, height: fieldHeight)
+            .contentShape(.rect(cornerRadius: cornerRadius))
+            .overlay {
+                Button {
+                    isFocused.wrappedValue = true
+                } label: {
+                    Color.clear
+                }
+                .buttonStyle(.plain)
+                .accessibilityHidden(true)
             }
         }
     }

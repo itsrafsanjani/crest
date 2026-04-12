@@ -3,14 +3,12 @@ import ServiceManagement
 import Sparkle
 
 struct GeneralSettingsView: View {
-    var onTestMeetingAlertNow: (() -> Bool)?
     var updater: SPUUpdater
 
     @AppStorage(AppSettingsKey.meetingAlertEnabled) private var meetingAlertEnabled = AppSettingsDefault.meetingAlertEnabled
     @AppStorage(AppSettingsKey.joinMeetingShortcutEnabled) private var joinShortcutEnabled = AppSettingsDefault.joinMeetingShortcutEnabled
 
     @State private var launchAtLogin = false
-    @State private var meetingTestStatus: String?
 
     var body: some View {
         Form {
@@ -29,17 +27,6 @@ struct GeneralSettingsView: View {
                             .padding(.vertical, 3)
                             .background(.quaternary, in: RoundedRectangle(cornerRadius: 5))
                     }
-                }
-
-                Button("Test Meeting Alert Now") {
-                    let didTrigger = onTestMeetingAlertNow?() ?? false
-                    meetingTestStatus = didTrigger ? "Meeting alert test triggered." : "Unable to trigger meeting alert."
-                }
-
-                if let meetingTestStatus {
-                    Text(meetingTestStatus)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                 }
             }
 
