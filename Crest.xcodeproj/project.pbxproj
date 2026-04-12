@@ -26,6 +26,7 @@
 		7304066B00F7974744FEDDDE /* PrayerTimesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C256ED20E676B026299C726 /* PrayerTimesView.swift */; };
 		743B66FDBB7043CC63882DDE /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */; };
 		7D38FA4B37BB6F01BBA41A64 /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F54E2C0031F04188666E4DB /* CalendarSettingsView.swift */; };
+		808B5128859E6D10C58C2467 /* TestingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133BA25A72F587B21EA9510 /* TestingSettingsView.swift */; };
 		87E60D10A6C54363ED125B03 /* GlobalShortcutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */; };
 		94B25719D881F4E0E14D1680 /* PrayerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */; };
 		9F371AAD042E1E647EF2ED4D /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */; };
@@ -82,6 +83,7 @@
 		CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		CDF3460709590753DF203528 /* IslamicSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslamicSettingsView.swift; sourceTree = "<group>"; };
 		D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayService.swift; sourceTree = "<group>"; };
+		D133BA25A72F587B21EA9510 /* TestingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingSettingsView.swift; sourceTree = "<group>"; };
 		D2617A31983F8362D73CE284 /* DismissPromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissPromptField.swift; sourceTree = "<group>"; };
 		D2FC315B66CB4056F378BCFF /* PrayerNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerNotificationService.swift; sourceTree = "<group>"; };
 		D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCalendarView.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				CDF3460709590753DF203528 /* IslamicSettingsView.swift */,
 				884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */,
 				DC20B7E89F0D072779F0C977 /* SettingsView.swift */,
+				D133BA25A72F587B21EA9510 /* TestingSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				7304066B00F7974744FEDDDE /* PrayerTimesView.swift in Sources */,
 				08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */,
 				5D1D12D1BD2CCE8533736801 /* SleepWakeService.swift in Sources */,
+				808B5128859E6D10C58C2467 /* TestingSettingsView.swift in Sources */,
 				E544B37692C36B8FEFFBB74A /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

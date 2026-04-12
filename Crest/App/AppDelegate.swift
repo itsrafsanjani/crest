@@ -89,4 +89,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func triggerMeetingAlertTestNow() -> Bool {
         meetingAlertService?.triggerTestAlert() ?? false
     }
+
+    @discardableResult
+    func triggerJamaatAlertTestNow() -> Bool {
+        prayerOverlayService?.triggerOverlay1TestNow() ?? false
+    }
 }

@@ -9,10 +9,11 @@ struct SettingsView: View {
     var onTestOverlay1Now: (() -> Bool)?
     var onTestOverlay2Now: (() -> Bool)?
     var onTestMeetingAlertNow: (() -> Bool)?
+    var onTestJamaatAlertNow: (() -> Bool)?
 
     var body: some View {
         TabView {
-            GeneralSettingsView(onTestMeetingAlertNow: onTestMeetingAlertNow, updater: updater)
+            GeneralSettingsView(updater: updater)
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }
@@ -42,9 +43,7 @@ struct SettingsView: View {
                 IslamicSettingsView(
                     locationService: locationService,
                     prayerTimeService: prayerTimeService,
-                    notificationService: notifService,
-                    onTestOverlay1Now: onTestOverlay1Now,
-                    onTestOverlay2Now: onTestOverlay2Now
+                    notificationService: notifService
                 )
                 .tabItem {
                     Label("Islamic Mode", systemImage: "moon.stars")
@@ -57,6 +56,16 @@ struct SettingsView: View {
                 .tabItem {
                     Label("Islamic Mode", systemImage: "moon.stars")
                 }
+            }
+
+            TestingSettingsView(
+                onTestMeetingAlertNow: onTestMeetingAlertNow,
+                onTestOverlay1Now: onTestOverlay1Now,
+                onTestOverlay2Now: onTestOverlay2Now,
+                onTestJamaatAlertNow: onTestJamaatAlertNow
+            )
+            .tabItem {
+                Label("Testing", systemImage: "flask")
             }
         }
         .frame(width: 480, height: 420)

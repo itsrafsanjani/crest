@@ -50,8 +50,6 @@ enum AppSettingsKey {
     // Jamaat Times
     static let jamaatTimesEnabled = "jamaatTimesEnabled"
     static let jamaatTimes = "jamaatTimes"
-    static let jamaatNotificationsEnabled = "jamaatNotificationsEnabled"
-    static let jamaatNotificationPerPrayer = "jamaatNotificationPerPrayer"
 }
 
 enum AppSettingsDefault {
@@ -91,7 +89,6 @@ enum AppSettingsDefault {
 
     // Jamaat Times
     static let jamaatTimesEnabled = true
-    static let jamaatNotificationsEnabled = true
     /// Jamaat times stored as local clock times in 24-hour `HH:mm` format.
     static let defaultJamaatTimes: [String: String] = [
         "fajr": "05:00",
@@ -99,8 +96,5 @@ enum AppSettingsDefault {
         "asr": "17:00",
         "maghrib": "18:15",
         "isha": "19:30"
-    ]
-    static let defaultJamaatNotificationPerPrayer: [String: Bool] = [
-        "fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true
     ]
 }
