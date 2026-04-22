@@ -91,7 +91,7 @@ Overlay 1 is scheduled at `prayerTime - 15 minutes` and Overlay 2 is scheduled n
 | done    | v0.3  | Meeting detection (50+ services), join button, fullscreen meeting alert |
 | done    | v0.4  | Islamic Mode: prayer times, Hijri date, notifications, Overlay 1        |
 | done    | v0.5  | Overlay 2 (prayer ending alert), prayer tracking, sleep/wake            |
-| next    | v1.0  | World clocks, date calculator, polish, App Store                        |
+| next    | v1.0  | Date calculator, polish, App Store                        |
 
 ## When Adding New Files
 
