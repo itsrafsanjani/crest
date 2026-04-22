@@ -71,8 +71,8 @@ settings:
 
 ```bash
 git add project.yml
-git commit -m "Bump version to 1.0.0"
-git tag v1.0.0
+git commit -m "chore: bump version to 1.0.0"
+git tag -a v1.0.0 -m "Release v1.0.0"
 git push origin main --tags
 ```
 

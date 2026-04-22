@@ -86,6 +86,15 @@ Crest needs calendar access to show your events. On first launch:
 
 Restart the app after granting permission.
 
+## Location Permission
+
+Islamic Mode uses your location to calculate accurate prayer times. When you enable Islamic Mode:
+
+1. Crest will prompt for location access — click **Allow**, or
+2. Go to **System Settings > Privacy & Security > Location Services** and enable Crest
+
+Location is used only for prayer time calculation and is never sent off-device.
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
