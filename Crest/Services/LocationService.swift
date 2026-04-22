@@ -2,6 +2,7 @@ import Foundation
 import CoreLocation
 import Observation
 import Adhan
+import AppKit
 
 @Observable
 final class LocationService: NSObject, CLLocationManagerDelegate {
@@ -25,6 +26,27 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
 
+    var canRequestLiveLocation: Bool {
+        authorizationStatus == .authorizedAlways
+    }
+
+    var needsSettingsAction: Bool {
+        authorizationStatus == .denied || authorizationStatus == .restricted
+    }
+
+    var permissionHelpText: String {
+        switch authorizationStatus {
+        case .denied:
+            return "Location access is off. Enable Location Services for Crest in System Settings, then try again."
+        case .restricted:
+            return "Location access is restricted on this Mac. Update your privacy restrictions, then try again."
+        case .notDetermined:
+            return "Allow location access to calculate accurate prayer times, or use a static location below."
+        default:
+            return ""
+        }
+    }
+
     override init() {
         super.init()
         manager.delegate = self
@@ -40,6 +62,13 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
         } else if status == .authorizedAlways {
             manager.requestLocation()
         }
+    }
+
+    func openLocationPrivacySettings() {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") else {
+            return
+        }
+        NSWorkspace.shared.open(url)
     }
 
     // MARK: - CLLocationManagerDelegate

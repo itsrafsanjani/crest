@@ -33,7 +33,7 @@ final class PrayerTimeService {
     }
 
     func recompute() {
-        guard isEnabled, let coords = locationService.coordinates else {
+        guard isEnabled, let coords = resolvedCoordinates() else {
             todayPrayers = []
             currentPrayer = nil
             nextPrayer = nil
@@ -217,6 +217,27 @@ final class PrayerTimeService {
             }
         }
         RunLoop.main.add(timer!, forMode: .common)
+    }
+
+    private func resolvedCoordinates() -> Coordinates? {
+        let defaults = UserDefaults.standard
+        let staticEnabled = defaults.object(forKey: AppSettingsKey.staticLocationEnabled) as? Bool
+            ?? AppSettingsDefault.staticLocationEnabled
+
+        if staticEnabled {
+            guard let latString = defaults.string(forKey: AppSettingsKey.staticLatitude),
+                  let lonString = defaults.string(forKey: AppSettingsKey.staticLongitude),
+                  let lat = Double(latString),
+                  let lon = Double(lonString),
+                  (-90.0 ... 90.0).contains(lat),
+                  (-180.0 ... 180.0).contains(lon)
+            else {
+                return nil
+            }
+            return Coordinates(latitude: lat, longitude: lon)
+        }
+
+        return locationService.coordinates
     }
 
     func formattedCountdown() -> String {

@@ -27,12 +27,12 @@ struct CrestApp: App {
         }
         .menuBarExtraStyle(.window)
 
-        Settings {
-            SettingsView(
-                updater: appDelegate.updaterController.updater,
-                locationService: locationService,
-                prayerTimeService: prayerService,
-                notificationService: appDelegate.prayerNotificationService,
+            Settings {
+                SettingsView(
+                    updater: appDelegate.updaterController.updater,
+                    locationService: locationService,
+                    prayerTimeService: prayerService,
+                    notificationService: appDelegate.prayerNotificationService,
                 onTestOverlay1Now: appDelegate.prayerOverlayService == nil ? nil : { appDelegate.triggerOverlay1TestNow() },
                 onTestOverlay2Now: appDelegate.prayerEndingOverlayService == nil ? nil : { appDelegate.triggerOverlay2TestNow() },
                 onTestMeetingAlertNow: appDelegate.meetingAlertService == nil ? nil : { appDelegate.triggerMeetingAlertTestNow() },

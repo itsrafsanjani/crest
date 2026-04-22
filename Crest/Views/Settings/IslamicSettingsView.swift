@@ -13,6 +13,10 @@ struct IslamicSettingsView: View {
     @AppStorage(AppSettingsKey.prayerNotificationsEnabled) private var notificationsEnabled = AppSettingsDefault.prayerNotificationsEnabled
     @AppStorage(AppSettingsKey.overlayRespectDND) private var respectDND = AppSettingsDefault.overlayRespectDND
     @AppStorage(AppSettingsKey.jamaatTimesEnabled) private var jamaatTimesEnabled = AppSettingsDefault.jamaatTimesEnabled
+    @AppStorage(AppSettingsKey.staticLocationEnabled) private var staticLocationEnabled = AppSettingsDefault.staticLocationEnabled
+    @AppStorage(AppSettingsKey.staticLatitude) private var staticLatitude = AppSettingsDefault.staticLatitude
+    @AppStorage(AppSettingsKey.staticLongitude) private var staticLongitude = AppSettingsDefault.staticLongitude
+    @AppStorage(AppSettingsKey.prayerOverlaySoundEnabled) private var prayerOverlaySoundEnabled = AppSettingsDefault.prayerOverlaySoundEnabled
 
     @State private var adjustments: [String: Int] = AppSettingsDefault.defaultPrayerAdjustments
     @State private var notifPerPrayer: [String: Bool] = AppSettingsDefault.defaultPrayerNotificationPerPrayer
@@ -49,14 +53,46 @@ struct IslamicSettingsView: View {
 
     private var locationSection: some View {
         Section("Location") {
-            HStack {
-                Text("Status")
-                Spacer()
-                Text(locationService.statusDescription)
-                    .foregroundStyle(.secondary)
+            Toggle("Use static location", isOn: $staticLocationEnabled)
+                .onChange(of: staticLocationEnabled) { _, _ in
+                    recomputeAndReschedule()
+                }
+
+            if staticLocationEnabled {
+                HStack {
+                    Text("Latitude")
+                    Spacer()
+                    TextField("e.g. 40.7128", text: $staticLatitude)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: 160)
+                        .onChange(of: staticLatitude) { _, newValue in
+                            staticLatitude = cleanedCoordinateInput(newValue)
+                            recomputeAndReschedule()
+                        }
+                }
+
+                HStack {
+                    Text("Longitude")
+                    Spacer()
+                    TextField("e.g. -74.0060", text: $staticLongitude)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: 160)
+                        .onChange(of: staticLongitude) { _, newValue in
+                            staticLongitude = cleanedCoordinateInput(newValue)
+                            recomputeAndReschedule()
+                        }
+                }
+
+                if !isValidStaticCoordinates {
+                    Text("Enter a valid latitude (-90 to 90) and longitude (-180 to 180).")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
-            if let lat = locationService.latitude, let lon = locationService.longitude {
+            if !staticLocationEnabled,
+               let lat = locationService.latitude,
+               let lon = locationService.longitude {
                 HStack {
                     Text("Coordinates")
                     Spacer()
@@ -66,9 +102,37 @@ struct IslamicSettingsView: View {
                 }
             }
 
+            if !staticLocationEnabled, locationService.needsSettingsAction {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(locationService.permissionHelpText)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    HStack(spacing: 10) {
+                        Button("Open System Settings") {
+                            locationService.openLocationPrivacySettings()
+                        }
+
+                        Button("Try Again") {
+                            locationService.requestLocation()
+                        }
+                    }
+                }
+            }
+
+            if !staticLocationEnabled,
+               !locationService.needsSettingsAction,
+               locationService.coordinates == nil,
+               !locationService.permissionHelpText.isEmpty {
+                Text(locationService.permissionHelpText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             Button("Refresh Location") {
                 locationService.requestLocation()
             }
+            .disabled(staticLocationEnabled)
         }
     }
 
@@ -218,6 +282,7 @@ struct IslamicSettingsView: View {
     private var overlaySection: some View {
         Section("Prayer Reminders") {
             Toggle("Respect Do Not Disturb", isOn: $respectDND)
+            Toggle("Play sound on start reminder", isOn: $prayerOverlaySoundEnabled)
 
             ForEach(Prayer.adjustable) { prayer in
                 VStack(alignment: .leading, spacing: 4) {
@@ -374,6 +439,15 @@ struct IslamicSettingsView: View {
     private func saveAdjustments() {
         UserDefaults.standard.set(adjustments, forKey: AppSettingsKey.prayerAdjustments)
         recomputeAndReschedule()
+    }
+
+    private var isValidStaticCoordinates: Bool {
+        guard let lat = Double(staticLatitude), let lon = Double(staticLongitude) else { return false }
+        return (-90.0 ... 90.0).contains(lat) && (-180.0 ... 180.0).contains(lon)
+    }
+
+    private func cleanedCoordinateInput(_ value: String) -> String {
+        value.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
 }

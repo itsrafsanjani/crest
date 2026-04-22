@@ -58,6 +58,7 @@ The app requires calendar access. On first launch:
 - **No dock icon.** `LSUIElement = true` in Info.plist — the app lives entirely in the menu bar.
 - **Entitlements** are in `Crest.entitlements`. Add new capabilities there (e.g., reminders, location).
 - **Meeting link patterns** go in `MeetingLinkDetector.patterns` array.
+- **Testing tab must stay in sync.** Whenever a new alert type or sound is added, add a matching test button in `TestingSettingsView.swift`. Sound triggers go in the "Sounds" section; visual/window alerts go in the "Alerts" section. Sound trigger methods in services (e.g., `triggerTestAlert`) must call `AlertSoundService` if sound is enabled — never bypass the sound path when simulating a real alert.
 
 ## Testing Prayer Overlays
 

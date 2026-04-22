@@ -25,6 +25,12 @@ targets:
     platform: macOS
     sources:
       - path: Crest
+        excludes:
+          - ".agents/**"
+          - ".claude/**"
+          - ".github/**"
+          - "crest/**"
+          - "docs/**"
     dependencies:
       - package: Adhan
       - package: Sparkle
