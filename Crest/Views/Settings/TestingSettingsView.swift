@@ -7,14 +7,38 @@ struct TestingSettingsView: View {
     var onTestJamaatAlertNow: (() -> Bool)?
 
     @AppStorage(AppSettingsKey.islamicModeEnabled) private var islamicModeEnabled = AppSettingsDefault.islamicModeEnabled
+    @AppStorage(AppSettingsKey.meetingAlertSoundEnabled) private var meetingAlertSoundEnabled = AppSettingsDefault.meetingAlertSoundEnabled
+    @AppStorage(AppSettingsKey.prayerOverlaySoundEnabled) private var prayerOverlaySoundEnabled = AppSettingsDefault.prayerOverlaySoundEnabled
 
     @State private var meetingStatus: String?
     @State private var overlay1Status: String?
     @State private var overlay2Status: String?
     @State private var jamaatStatus: String?
+    @State private var meetingSoundStatus: String?
+    @State private var prayerSoundStatus: String?
 
     var body: some View {
         Form {
+            Section("Sounds") {
+                testButtonRow(
+                    title: "Meeting Alert Sound",
+                    buttonTitle: "Test Meeting Sound Now",
+                    status: meetingSoundStatus,
+                    isEnabled: meetingAlertSoundEnabled,
+                    disabledHint: "Enable Play sound for meeting alerts in General settings first.",
+                    action: triggerMeetingSound
+                )
+
+                testButtonRow(
+                    title: "Prayer Overlay Sound",
+                    buttonTitle: "Test Prayer Sound Now",
+                    status: prayerSoundStatus,
+                    isEnabled: prayerOverlaySoundEnabled,
+                    disabledHint: "Enable Play sound on start reminder in Islamic Mode settings first.",
+                    action: triggerPrayerSound
+                )
+            }
+
             Section("Alerts") {
                 testButtonRow(
                     title: "Meeting Alert",
@@ -58,6 +82,7 @@ struct TestingSettingsView: View {
         buttonTitle: String,
         status: String?,
         isEnabled: Bool,
+        disabledHint: String? = nil,
         action: @escaping () -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -71,9 +96,23 @@ struct TestingSettingsView: View {
                 Text(status)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+            } else if !isEnabled, let hint = disabledHint {
+                Text(hint)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, 2)
+    }
+
+    private func triggerMeetingSound() {
+        AlertSoundService.shared.playMeetingAlert()
+        meetingSoundStatus = "Meeting alert sound played."
+    }
+
+    private func triggerPrayerSound() {
+        AlertSoundService.shared.playPrayerOverlayAlert()
+        prayerSoundStatus = "Prayer overlay sound played."
     }
 
     private func triggerMeetingAlert() {

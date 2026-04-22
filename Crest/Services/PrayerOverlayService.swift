@@ -11,6 +11,11 @@ final class PrayerOverlayService {
     private(set) var overlayWindow: PrayerOverlayWindow?
     private(set) var activePrayer: Prayer?
 
+    var isOverlaySoundEnabled: Bool {
+        UserDefaults.standard.object(forKey: AppSettingsKey.prayerOverlaySoundEnabled) as? Bool
+            ?? AppSettingsDefault.prayerOverlaySoundEnabled
+    }
+
     private let warningMinutes: TimeInterval = 15
     private let wakeGraceMinutes: TimeInterval = 15
 
@@ -153,6 +158,12 @@ final class PrayerOverlayService {
 
     private func showOverlayWindow(prayer: Prayer, prayerTime: Date) {
         dismissOverlayWindowOnly()
+
+        if isOverlaySoundEnabled {
+            Task { @MainActor in
+                AlertSoundService.shared.playPrayerOverlayAlert()
+            }
+        }
 
         activePrayer = prayer
         let window = PrayerOverlayWindow(

@@ -10,6 +10,11 @@ final class MeetingAlertService {
     private var refreshTimer: Timer?
     private(set) var alertWindow: MeetingAlertWindow?
 
+    var isSoundEnabled: Bool {
+        UserDefaults.standard.object(forKey: AppSettingsKey.meetingAlertSoundEnabled) as? Bool
+            ?? AppSettingsDefault.meetingAlertSoundEnabled
+    }
+
     var isAlertEnabled: Bool {
         UserDefaults.standard.object(forKey: AppSettingsKey.meetingAlertEnabled) as? Bool
             ?? AppSettingsDefault.meetingAlertEnabled
@@ -83,6 +88,12 @@ final class MeetingAlertService {
 
         dismissAlert()
 
+        if isSoundEnabled {
+            Task { @MainActor in
+                AlertSoundService.shared.playMeetingAlert()
+            }
+        }
+
         let window = MeetingAlertWindow(
             title: "Test Meeting",
             startDate: startDate,
@@ -126,6 +137,12 @@ final class MeetingAlertService {
 
     private func showAlertWindow(event: EKEvent, meetingLink: MeetingLink) {
         dismissAlert()
+
+        if isSoundEnabled {
+            Task { @MainActor in
+                AlertSoundService.shared.playMeetingAlert()
+            }
+        }
 
         let window = MeetingAlertWindow(event: event, meetingLink: meetingLink) { [weak self] action in
             switch action {

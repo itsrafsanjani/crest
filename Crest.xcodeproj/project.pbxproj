@@ -12,6 +12,7 @@
 		08841F6F0D7C1CB58800F7AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC20B7E89F0D072779F0C977 /* SettingsView.swift */; };
 		13CC27987046A433C5B44EB6 /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC56184E1B2A47F02BC7779 /* DateFormatting.swift */; };
 		16D73F13F1B1B10C11FDD963 /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = DE10C5B2B8455DFA9F7D63F5 /* Adhan */; };
+		2452F96DD678D3C416C1C92C /* AlertSoundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76377F7D506C32756CCA8553 /* AlertSoundService.swift */; };
 		273A281FE4F528B0040055BB /* PrayerOverlayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86322D1190012AC327623FB3 /* PrayerOverlayService.swift */; };
 		2B5C8500295F79349BB0969D /* PrayerOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949F196F767459DFE933161 /* PrayerOverlayWindow.swift */; };
 		3F93DA114A5454F544E1C3A7 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */; };
@@ -70,6 +71,7 @@
 		6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowView.swift; sourceTree = "<group>"; };
 		704AE3B14AA8297313BFB555 /* Crest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		748AFFD1063DC138815E1EFA /* MeetingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAlertView.swift; sourceTree = "<group>"; };
+		76377F7D506C32756CCA8553 /* AlertSoundService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertSoundService.swift; sourceTree = "<group>"; };
 		86322D1190012AC327623FB3 /* PrayerOverlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOverlayService.swift; sourceTree = "<group>"; };
 		884C423EC995F82110D67A96 /* PlaceholderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderSettingsView.swift; sourceTree = "<group>"; };
 		8D91B0877FE5D9B2D3058D45 /* PrayerTimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeService.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		403B2FD62885927D32F63248 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				76377F7D506C32756CCA8553 /* AlertSoundService.swift */,
 				A8309C07BB062ED3304E8DA5 /* CalendarService.swift */,
 				8DDEA8A0493A494E6A1BBA63 /* ClockService.swift */,
 				CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */,
@@ -157,6 +160,13 @@
 				D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */,
 			);
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		77DC08B1F0CB1741EB9DC014 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Setup;
 			sourceTree = "<group>";
 		};
 		7915A41E54FD90E7E93E8846 /* Products */ = {
@@ -215,6 +225,7 @@
 				3F842D942C4AFFF417D1CBE8 /* MenuBar */,
 				CC24DC66F673770FE67B85A5 /* Prayer */,
 				85D7822241355A5C5589B2FA /* Settings */,
+				77DC08B1F0CB1741EB9DC014 /* Setup */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -337,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2452F96DD678D3C416C1C92C /* AlertSoundService.swift in Sources */,
 				051BBEAEC33F7F322379E40F /* AppDelegate.swift in Sources */,
 				A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */,
 				BAE76692271D459894E3974D /* CalendarService.swift in Sources */,

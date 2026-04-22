@@ -6,6 +6,7 @@ struct GeneralSettingsView: View {
     var updater: SPUUpdater
 
     @AppStorage(AppSettingsKey.meetingAlertEnabled) private var meetingAlertEnabled = AppSettingsDefault.meetingAlertEnabled
+    @AppStorage(AppSettingsKey.meetingAlertSoundEnabled) private var meetingAlertSoundEnabled = AppSettingsDefault.meetingAlertSoundEnabled
     @AppStorage(AppSettingsKey.joinMeetingShortcutEnabled) private var joinShortcutEnabled = AppSettingsDefault.joinMeetingShortcutEnabled
 
     @State private var launchAtLogin = false
@@ -14,6 +15,7 @@ struct GeneralSettingsView: View {
         Form {
             Section("Meetings") {
                 Toggle("Fullscreen alert when meetings start", isOn: $meetingAlertEnabled)
+                Toggle("Play sound for meeting alerts", isOn: $meetingAlertSoundEnabled)
 
                 Toggle("Global shortcut to join next meeting", isOn: $joinShortcutEnabled)
                 if joinShortcutEnabled {

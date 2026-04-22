@@ -30,6 +30,7 @@ enum AppSettingsKey {
     static let enabledCalendarIDs = "enabledCalendarIDs"
     static let islamicModeEnabled = "islamicModeEnabled"
     static let meetingAlertEnabled = "meetingAlertEnabled"
+    static let meetingAlertSoundEnabled = "meetingAlertSoundEnabled"
     static let joinMeetingShortcutEnabled = "joinMeetingShortcutEnabled"
 
     // Islamic Mode
@@ -46,6 +47,10 @@ enum AppSettingsKey {
     static let overlayRespectDND = "overlayRespectDND"
     static let cachedLatitude = "cachedLatitude"
     static let cachedLongitude = "cachedLongitude"
+    static let staticLocationEnabled = "staticLocationEnabled"
+    static let staticLatitude = "staticLatitude"
+    static let staticLongitude = "staticLongitude"
+    static let prayerOverlaySoundEnabled = "prayerOverlaySoundEnabled"
 
     // Jamaat Times
     static let jamaatTimesEnabled = "jamaatTimesEnabled"
@@ -61,6 +66,7 @@ enum AppSettingsDefault {
     static let showDeclinedEvents = false
     static let islamicModeEnabled = false
     static let meetingAlertEnabled = true
+    static let meetingAlertSoundEnabled = true
     static let joinMeetingShortcutEnabled = true
 
     // Islamic Mode
@@ -70,6 +76,10 @@ enum AppSettingsDefault {
     static let showHijriInMenuBar = false
     static let prayerNotificationsEnabled = false
     static let overlayRespectDND = true
+    static let staticLocationEnabled = false
+    static let staticLatitude = ""
+    static let staticLongitude = ""
+    static let prayerOverlaySoundEnabled = true
 
     static let defaultPrayerAdjustments: [String: Int] = [
         "fajr": 0, "dhuhr": 0, "asr": 0, "maghrib": 0, "isha": 0
