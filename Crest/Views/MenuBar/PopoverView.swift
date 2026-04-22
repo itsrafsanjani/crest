@@ -7,6 +7,7 @@ struct PopoverView: View {
     var prayerTimeService: PrayerTimeService
 
     @AppStorage(AppSettingsKey.islamicModeEnabled) private var islamicModeEnabled = AppSettingsDefault.islamicModeEnabled
+    @AppStorage(AppSettingsKey.settingsSelectedTab) private var settingsSelectedTab = AppSettingsDefault.settingsSelectedTab
 
     @Environment(\.openSettings) private var openSettingsAction
 
@@ -14,6 +15,10 @@ struct PopoverView: View {
 
     private var showPrayers: Bool {
         islamicModeEnabled && !prayerTimeService.todayPrayers.isEmpty
+    }
+
+    private var showLocationEmptyState: Bool {
+        islamicModeEnabled && prayerTimeService.todayPrayers.isEmpty
     }
 
     var body: some View {
@@ -34,6 +39,12 @@ struct PopoverView: View {
             if showPrayers {
                 Divider()
                 PrayerTimesView(prayerTimeService: prayerTimeService)
+            } else if showLocationEmptyState {
+                Divider()
+                PrayerLocationEmptyStateView {
+                    settingsSelectedTab = 2
+                    openSettings()
+                }
             }
 
             Divider()

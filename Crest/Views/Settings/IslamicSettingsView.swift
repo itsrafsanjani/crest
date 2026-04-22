@@ -51,8 +51,17 @@ struct IslamicSettingsView: View {
 
     // MARK: - Location
 
+    private var locationMissing: Bool {
+        prayerTimeService.todayPrayers.isEmpty
+    }
+
     private var locationSection: some View {
-        Section("Location") {
+        Section {
+            if locationMissing {
+                Label("Prayer times need a location", systemImage: "location.slash.fill")
+                    .foregroundStyle(.orange)
+            }
+
             Toggle("Use static location", isOn: $staticLocationEnabled)
                 .onChange(of: staticLocationEnabled) { _, _ in
                     recomputeAndReschedule()
@@ -133,6 +142,15 @@ struct IslamicSettingsView: View {
                 locationService.requestLocation()
             }
             .disabled(staticLocationEnabled)
+        } header: {
+            HStack(spacing: 4) {
+                Text("Location")
+                if locationMissing {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .font(.caption)
+                }
+            }
         }
     }
 

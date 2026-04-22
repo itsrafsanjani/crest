@@ -55,6 +55,9 @@ enum AppSettingsKey {
     // Jamaat Times
     static let jamaatTimesEnabled = "jamaatTimesEnabled"
     static let jamaatTimes = "jamaatTimes"
+
+    // UI State
+    static let settingsSelectedTab = "settingsSelectedTab"
 }
 
 enum AppSettingsDefault {
@@ -96,6 +99,9 @@ enum AppSettingsDefault {
     static let defaultOverlay2PerPrayer: [String: Bool] = [
         "fajr": false, "dhuhr": false, "asr": false, "maghrib": false, "isha": false
     ]
+
+    // UI State
+    static let settingsSelectedTab = 0
 
     // Jamaat Times
     static let jamaatTimesEnabled = true
