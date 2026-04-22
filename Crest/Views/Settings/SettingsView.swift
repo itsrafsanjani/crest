@@ -11,17 +11,21 @@ struct SettingsView: View {
     var onTestMeetingAlertNow: (() -> Bool)?
     var onTestJamaatAlertNow: (() -> Bool)?
 
+    @AppStorage(AppSettingsKey.settingsSelectedTab) private var selectedTab = AppSettingsDefault.settingsSelectedTab
+
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             GeneralSettingsView(updater: updater)
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }
+                .tag(0)
 
             CalendarSettingsView()
                 .tabItem {
                     Label("Calendar", systemImage: "calendar")
                 }
+                .tag(1)
 
             if let notifService = notificationService {
                 IslamicSettingsView(
@@ -32,6 +36,7 @@ struct SettingsView: View {
                 .tabItem {
                     Label("Islamic Mode", systemImage: "moon.stars")
                 }
+                .tag(2)
             } else {
                 PlaceholderSettingsView(
                     title: "Islamic Mode",
@@ -40,6 +45,7 @@ struct SettingsView: View {
                 .tabItem {
                     Label("Islamic Mode", systemImage: "moon.stars")
                 }
+                .tag(2)
             }
 
             TestingSettingsView(
@@ -51,6 +57,7 @@ struct SettingsView: View {
             .tabItem {
                 Label("Testing", systemImage: "flask")
             }
+            .tag(3)
         }
         .frame(width: 480, height: 420)
     }

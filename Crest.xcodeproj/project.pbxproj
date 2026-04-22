@@ -15,6 +15,7 @@
 		2452F96DD678D3C416C1C92C /* AlertSoundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76377F7D506C32756CCA8553 /* AlertSoundService.swift */; };
 		273A281FE4F528B0040055BB /* PrayerOverlayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86322D1190012AC327623FB3 /* PrayerOverlayService.swift */; };
 		2B5C8500295F79349BB0969D /* PrayerOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2949F196F767459DFE933161 /* PrayerOverlayWindow.swift */; };
+		2D3C9441BD3B154D2995BC66 /* PrayerLocationEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697FFC2A4933EFB3D42B7C5 /* PrayerLocationEmptyStateView.swift */; };
 		3F93DA114A5454F544E1C3A7 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */; };
 		41624402DF685081DAFF6A66 /* MeetingAlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D0488F0F3E10CA123B72AD /* MeetingAlertService.swift */; };
 		416E3285FC9BF11C9DA4F8C8 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85AF892423B5F0A06ECDA2D /* DayCell.swift */; };
@@ -82,6 +83,7 @@
 		A0ADB2AA95B829D3B877D61F /* MenuBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabel.swift; sourceTree = "<group>"; };
 		A8309C07BB062ED3304E8DA5 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
 		AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAlertWindow.swift; sourceTree = "<group>"; };
+		B697FFC2A4933EFB3D42B7C5 /* PrayerLocationEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerLocationEmptyStateView.swift; sourceTree = "<group>"; };
 		CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		CDF3460709590753DF203528 /* IslamicSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslamicSettingsView.swift; sourceTree = "<group>"; };
 		D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayService.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				D2617A31983F8362D73CE284 /* DismissPromptField.swift */,
 				3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */,
 				4E84418163FAABEA8D221BD2 /* PrayerEndingOverlayWindow.swift */,
+				B697FFC2A4933EFB3D42B7C5 /* PrayerLocationEmptyStateView.swift */,
 				613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */,
 				2949F196F767459DFE933161 /* PrayerOverlayWindow.swift */,
 				9C256ED20E676B026299C726 /* PrayerTimesView.swift */,
@@ -376,6 +379,7 @@
 				B36A39B2696C9467B8FF8AEE /* PrayerEndingOverlayService.swift in Sources */,
 				F80E393AA0A9DCAD95CD4385 /* PrayerEndingOverlayView.swift in Sources */,
 				BCA5640411FED84E4C3D89C6 /* PrayerEndingOverlayWindow.swift in Sources */,
+				2D3C9441BD3B154D2995BC66 /* PrayerLocationEmptyStateView.swift in Sources */,
 				BA49B42F6E54474F19043476 /* PrayerModels.swift in Sources */,
 				A9A88634D5ABA65399433F77 /* PrayerNotificationService.swift in Sources */,
 				273A281FE4F528B0040055BB /* PrayerOverlayService.swift in Sources */,
