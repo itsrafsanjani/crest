@@ -23,22 +23,6 @@ struct SettingsView: View {
                     Label("Calendar", systemImage: "calendar")
                 }
 
-            PlaceholderSettingsView(
-                title: "Appearance",
-                description: "Theme and display customization options will appear here."
-            )
-            .tabItem {
-                Label("Appearance", systemImage: "paintbrush")
-            }
-
-            PlaceholderSettingsView(
-                title: "World Clocks",
-                description: "Add and manage world clocks here."
-            )
-            .tabItem {
-                Label("World Clocks", systemImage: "globe")
-            }
-
             if let notifService = notificationService {
                 IslamicSettingsView(
                     locationService: locationService,

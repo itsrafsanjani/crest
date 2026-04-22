@@ -16,8 +16,6 @@ Crest is a native Swift/SwiftUI macOS menu bar app focused on **calendar events,
 
 - Custom date/time label (format string, show/hide seconds)
 - Upcoming event title in menu bar (truncated, configurable)
-- Multiple world clock labels (up to 3)
-
 ### Calendar & Events
 
 - Mini monthly calendar popover with event dot indicators
@@ -32,12 +30,6 @@ Crest is a native Swift/SwiftUI macOS menu bar app focused on **calendar events,
 - Supports 50+ services: Google Meet, Zoom, Teams, Webex, etc.
 - One-click join from popover or global keyboard shortcut
 - Fullscreen meeting notification overlay at event start time
-
-### World Clocks
-
-- Unlimited time zones, custom display names
-- City search via bundled offline database (15k cities)
-- Time travel slider — drag to see all clocks shift together
 
 ### Utilities
 
@@ -129,4 +121,4 @@ No prayer tracking or "I have prayed" functionality — the overlays are purely 
 | v0.3  | Meeting detection, join button, fullscreen meeting alert                          |
 | v0.4  | Islamic Mode: prayer times, Hijri date, notifications, Overlay 1 (15-min warning) |
 | v0.5  | Overlay 2 (20-min prayer ending alert), sleep/wake handling                       |
-| v1.0  | World clocks, date calculator, polish, App Store release                          |
+| v1.0  | Date calculator, polish, App Store release                          |
