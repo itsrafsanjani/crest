@@ -120,7 +120,7 @@ struct MiniCalendarView: View {
             }
         }
 
-        while days.count % 7 != 0 {
+        while days.count < 42 {
             let nextDayOffset = days.count - prefixCount - daysInMonth.count + 1
             if let date = calendar.date(byAdding: .day, value: nextDayOffset - 1, to: monthInterval.end) {
                 days.append(CalendarDay(date: date, isCurrentMonth: false))
