@@ -4,6 +4,7 @@ struct IslamicSettingsView: View {
     var locationService: LocationService
     var prayerTimeService: PrayerTimeService
     var notificationService: PrayerNotificationService
+    var onOverlaySettingsChanged: (() -> Void)?
 
     @AppStorage(AppSettingsKey.islamicModeEnabled) private var islamicModeEnabled = AppSettingsDefault.islamicModeEnabled
     @AppStorage(AppSettingsKey.calculationMethod) private var calculationMethod = AppSettingsDefault.calculationMethod
@@ -215,7 +216,7 @@ struct IslamicSettingsView: View {
             } header: {
                 Text("Jamaat Times")
             } footer: {
-                Text("Set the Jamaat start time for each prayer at your local mosque.")
+                Text("Set jamaat times for your mosque. Enable Alert to receive a fullscreen reminder when each jamaat begins.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -232,6 +233,15 @@ struct IslamicSettingsView: View {
             }
         )
 
+        let alertBinding = Binding<Bool>(
+            get: { overlay1PerPrayer[prayer.rawValue] ?? false },
+            set: { newValue in
+                overlay1PerPrayer[prayer.rawValue] = newValue
+                UserDefaults.standard.set(overlay1PerPrayer, forKey: AppSettingsKey.overlay1PerPrayer)
+                onOverlaySettingsChanged?()
+            }
+        )
+
         return HStack {
             Image(systemName: prayer.systemImage)
                 .frame(width: 20)
@@ -244,6 +254,12 @@ struct IslamicSettingsView: View {
                 displayedComponents: .hourAndMinute
             )
             .labelsHidden()
+            Toggle("", isOn: alertBinding)
+                .toggleStyle(.checkbox)
+                .labelsHidden()
+            Text("Alert")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 
@@ -298,26 +314,24 @@ struct IslamicSettingsView: View {
     // MARK: - Overlay
 
     private var overlaySection: some View {
-        Section("Prayer Reminders") {
+        Section("End-of-Prayer Reminders") {
             Toggle("Respect Do Not Disturb", isOn: $respectDND)
             Toggle("Play sound on start reminder", isOn: $prayerOverlaySoundEnabled)
 
             ForEach(Prayer.adjustable) { prayer in
-                VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Image(systemName: prayer.systemImage)
+                        .frame(width: 20)
+                        .foregroundStyle(prayer.themeColor)
                     Text(prayer.displayName)
-                        .font(.callout.weight(.medium))
-                    HStack(spacing: 16) {
-                        Toggle("Remind at jamaat/prayer time", isOn: overlay1Binding(prayer))
-                            .toggleStyle(.checkbox)
-                        Toggle("Remind before end", isOn: overlay2Binding(prayer))
-                            .toggleStyle(.checkbox)
-                    }
-                    .font(.caption)
+                    Spacer()
+                    Toggle("", isOn: overlay2Binding(prayer))
+                        .toggleStyle(.checkbox)
+                        .labelsHidden()
                 }
-                .padding(.vertical, 2)
             }
 
-            Text("Start reminders appear at jamaat time when Jamaat Times are enabled for that prayer; otherwise they fall back to the prayer-time reminder window.")
+            Text("Receive a reminder before each prayer window ends.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -386,6 +400,7 @@ struct IslamicSettingsView: View {
         UserDefaults.standard.set(jamaatTimes, forKey: AppSettingsKey.jamaatTimes)
         prayerTimeService.recompute()
         notificationService.scheduleAll()
+        onOverlaySettingsChanged?()
     }
 
     private func ensureJamaatTimesPersisted() {
@@ -398,6 +413,9 @@ struct IslamicSettingsView: View {
 
     private func loadPerPrayerSettings() {
         let defaults = UserDefaults.standard
+
+        let isFirstRun = defaults.dictionary(forKey: AppSettingsKey.overlay1PerPrayer) == nil
+
         adjustments = (defaults.dictionary(forKey: AppSettingsKey.prayerAdjustments) as? [String: Int])
             ?? AppSettingsDefault.defaultPrayerAdjustments
         notifPerPrayer = (defaults.dictionary(forKey: AppSettingsKey.prayerNotificationPerPrayer) as? [String: Bool])
@@ -409,6 +427,11 @@ struct IslamicSettingsView: View {
         overlay2PerPrayer = (defaults.dictionary(forKey: AppSettingsKey.overlay2PerPrayer) as? [String: Bool])
             ?? AppSettingsDefault.defaultOverlay2PerPrayer
         jamaatTimes = loadStoredJamaatTimes(defaults: defaults)
+
+        if isFirstRun && jamaatTimesEnabled {
+            overlay1PerPrayer = ["fajr": true, "dhuhr": true, "asr": true, "maghrib": true, "isha": true]
+            defaults.set(overlay1PerPrayer, forKey: AppSettingsKey.overlay1PerPrayer)
+        }
     }
 
     private func loadStoredJamaatTimes(defaults: UserDefaults) -> [String: String] {
