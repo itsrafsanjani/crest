@@ -31,11 +31,13 @@
 		808B5128859E6D10C58C2467 /* TestingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133BA25A72F587B21EA9510 /* TestingSettingsView.swift */; };
 		87E60D10A6C54363ED125B03 /* GlobalShortcutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */; };
 		94B25719D881F4E0E14D1680 /* PrayerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */; };
+		97A44D3DAD81E591EF667A7B /* AppSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09E37DC892544D9EAE6B99 /* AppSettingsTests.swift */; };
 		9F371AAD042E1E647EF2ED4D /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */; };
 		A9A88634D5ABA65399433F77 /* PrayerNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC315B66CB4056F378BCFF /* PrayerNotificationService.swift */; };
 		A9E06EBD9F5B58975BD44D0E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F030B2E2DC44A485B760B202 /* AppSettings.swift */; };
 		AA9771D73890B9AB0B80971B /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E1F407917460DDF3D19C7 /* LocationService.swift */; };
 		AB742890B04CCF39CD7654A1 /* EventRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */; };
+		AC96FC442D11AA8A1DDD6BD8 /* PrayerTimeServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28470766D400C128A79B24B7 /* PrayerTimeServiceTests.swift */; };
 		B36A39B2696C9467B8FF8AEE /* PrayerEndingOverlayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */; };
 		B4A7A196F8A22013B6BA4D2C /* MiniCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C39EA21A51B50C82590724 /* MiniCalendarView.swift */; };
 		BA49B42F6E54474F19043476 /* PrayerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FF48833057677FE05C39CC /* PrayerModels.swift */; };
@@ -49,14 +51,27 @@
 		E544B37692C36B8FEFFBB74A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C5646A45BA81ECDE709EB8 /* Theme.swift */; };
 		EE7B11D486299BE5FE3255CF /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A53132F41A9E661E04469D1E /* Sparkle */; };
 		EF11FD64D25C574A478197F7 /* MeetingAlertWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE052078C3656EDC1C3B6F1 /* MeetingAlertWindow.swift */; };
+		EFE3F2877C849E03D9F844E8 /* MeetingLinkDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11B81E7A19A210CA634D084 /* MeetingLinkDetectorTests.swift */; };
 		F80E393AA0A9DCAD95CD4385 /* PrayerEndingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB47C306E0206CA13E2C315 /* PrayerEndingOverlayView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B874016D64B63278B3F45749 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6027AE677E6026C03E785E24 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ADA9BA9F3D6E69D3F8FBB95C;
+			remoteInfo = Crest;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		024393D69E85CDA7C13C6AC6 /* MeetingLinkDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkDetector.swift; sourceTree = "<group>"; };
 		095D1059E2E8C4D6664E8074 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0A34E8049B785BD0FD697D24 /* CrestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CrestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C6BE9F3B3F2BD9ECED7056F /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		1E7C5111C19071CEEEC81E75 /* EventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
+		28470766D400C128A79B24B7 /* PrayerTimeServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeServiceTests.swift; sourceTree = "<group>"; };
 		2949F196F767459DFE933161 /* PrayerOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOverlayWindow.swift; sourceTree = "<group>"; };
 		2C7868A5436B0A0D57C964D4 /* Crest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crest.entitlements; sourceTree = "<group>"; };
 		34FF48833057677FE05C39CC /* PrayerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerModels.swift; sourceTree = "<group>"; };
@@ -67,6 +82,7 @@
 		49C5646A45BA81ECDE709EB8 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		4E84418163FAABEA8D221BD2 /* PrayerEndingOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayWindow.swift; sourceTree = "<group>"; };
 		4FC25A0221AF4210A0E2B5C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5E09E37DC892544D9EAE6B99 /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
 		60DEFEFB94D81CDE3C8DD22E /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		613F5A49922619D411B4AE58 /* PrayerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerOverlayView.swift; sourceTree = "<group>"; };
 		6FDE3FAFDD9F8548C396EA47 /* EventRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowView.swift; sourceTree = "<group>"; };
@@ -87,6 +103,7 @@
 		CC2C5017FDAEF79D98C236B7 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		CDF3460709590753DF203528 /* IslamicSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslamicSettingsView.swift; sourceTree = "<group>"; };
 		D0EAC779CA609C61D89E6B04 /* PrayerEndingOverlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEndingOverlayService.swift; sourceTree = "<group>"; };
+		D11B81E7A19A210CA634D084 /* MeetingLinkDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkDetectorTests.swift; sourceTree = "<group>"; };
 		D133BA25A72F587B21EA9510 /* TestingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingSettingsView.swift; sourceTree = "<group>"; };
 		D2617A31983F8362D73CE284 /* DismissPromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissPromptField.swift; sourceTree = "<group>"; };
 		D2FC315B66CB4056F378BCFF /* PrayerNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerNotificationService.swift; sourceTree = "<group>"; };
@@ -112,6 +129,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01E4CD6EC3375F88226096C3 /* CrestTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E09E37DC892544D9EAE6B99 /* AppSettingsTests.swift */,
+				D11B81E7A19A210CA634D084 /* MeetingLinkDetectorTests.swift */,
+				28470766D400C128A79B24B7 /* PrayerTimeServiceTests.swift */,
+			);
+			path = CrestTests;
+			sourceTree = "<group>";
+		};
 		357D329A08CBAA269753CCBE /* Crest */ = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				704AE3B14AA8297313BFB555 /* Crest.app */,
+				0A34E8049B785BD0FD697D24 /* CrestTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -192,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				357D329A08CBAA269753CCBE /* Crest */,
+				01E4CD6EC3375F88226096C3 /* CrestTests */,
 				7915A41E54FD90E7E93E8846 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -277,6 +306,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		412EB9963F05DC0CBBBC33B0 /* CrestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB6AB3371C4CD5CA0C003EF0 /* Build configuration list for PBXNativeTarget "CrestTests" */;
+			buildPhases = (
+				AF0828F86357F0D7B02E7297 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED30FF007EB5A39755DBE9AE /* PBXTargetDependency */,
+			);
+			name = CrestTests;
+			packageProductDependencies = (
+			);
+			productName = CrestTests;
+			productReference = 0A34E8049B785BD0FD697D24 /* CrestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		ADA9BA9F3D6E69D3F8FBB95C /* Crest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7C6E46E563413AC7B08278FC /* Build configuration list for PBXNativeTarget "Crest" */;
@@ -307,6 +354,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
+					412EB9963F05DC0CBBBC33B0 = {
+						ProvisioningStyle = Manual;
+					};
 					ADA9BA9F3D6E69D3F8FBB95C = {
 						ProvisioningStyle = Manual;
 					};
@@ -331,6 +381,7 @@
 			projectRoot = "";
 			targets = (
 				ADA9BA9F3D6E69D3F8FBB95C /* Crest */,
+				412EB9963F05DC0CBBBC33B0 /* CrestTests */,
 			);
 		};
 /* End PBXProject section */
@@ -347,6 +398,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AF0828F86357F0D7B02E7297 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97A44D3DAD81E591EF667A7B /* AppSettingsTests.swift in Sources */,
+				EFE3F2877C849E03D9F844E8 /* MeetingLinkDetectorTests.swift in Sources */,
+				AC96FC442D11AA8A1DDD6BD8 /* PrayerTimeServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C54109E5ADE1FAC49EA35208 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -396,7 +457,36 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		ED30FF007EB5A39755DBE9AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ADA9BA9F3D6E69D3F8FBB95C /* Crest */;
+			targetProxy = B874016D64B63278B3F45749 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		52F1604D8F2425E839F6D67E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crest.app/Contents/MacOS/Crest";
+			};
+			name = Release;
+		};
 		78028379A8F94699FA12F41B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -472,6 +562,27 @@
 				SWIFT_VERSION = 5.9;
 			};
 			name = Release;
+		};
+		D60D68CA599F0A9FEC8DE188 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crest.app.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crest.app/Contents/MacOS/Crest";
+			};
+			name = Debug;
 		};
 		EB0EED063AE6BF3FC2ED025B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -573,6 +684,15 @@
 			buildConfigurations = (
 				EB0EED063AE6BF3FC2ED025B /* Debug */,
 				78028379A8F94699FA12F41B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EB6AB3371C4CD5CA0C003EF0 /* Build configuration list for PBXNativeTarget "CrestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D60D68CA599F0A9FEC8DE188 /* Debug */,
+				52F1604D8F2425E839F6D67E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
