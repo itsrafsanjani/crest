@@ -32,6 +32,7 @@ enum AppSettingsKey {
     static let meetingAlertEnabled = "meetingAlertEnabled"
     static let meetingAlertSoundEnabled = "meetingAlertSoundEnabled"
     static let joinMeetingShortcutEnabled = "joinMeetingShortcutEnabled"
+    static let meetingAlertOffsetMinutes = "meetingAlertOffsetMinutes"
 
     // Islamic Mode
     static let calculationMethod = "calculationMethod"
@@ -71,6 +72,7 @@ enum AppSettingsDefault {
     static let meetingAlertEnabled = true
     static let meetingAlertSoundEnabled = true
     static let joinMeetingShortcutEnabled = true
+    static let meetingAlertOffsetMinutes = 1
 
     // Islamic Mode
     static let calculationMethod = "moonsightingCommittee"

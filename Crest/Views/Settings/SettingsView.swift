@@ -7,6 +7,7 @@ struct SettingsView: View {
     var prayerTimeService: PrayerTimeService
     var notificationService: PrayerNotificationService?
     var onOverlaySettingsChanged: (() -> Void)?
+    var onMeetingAlertSettingsChanged: (() -> Void)?
     var onTestOverlay1Now: (() -> Bool)?
     var onTestOverlay2Now: (() -> Bool)?
     var onTestMeetingAlertNow: (() -> Bool)?
@@ -16,7 +17,10 @@ struct SettingsView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            GeneralSettingsView(updater: updater)
+            GeneralSettingsView(
+                updater: updater,
+                onMeetingAlertSettingsChanged: onMeetingAlertSettingsChanged
+            )
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }

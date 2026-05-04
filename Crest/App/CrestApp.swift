@@ -34,6 +34,7 @@ struct CrestApp: App {
                     prayerTimeService: prayerService,
                     notificationService: appDelegate.prayerNotificationService,
                 onOverlaySettingsChanged: { appDelegate.prayerOverlayService?.scheduleOverlays() },
+                onMeetingAlertSettingsChanged: { appDelegate.meetingAlertService?.scheduleAlerts() },
                 onTestOverlay1Now: appDelegate.prayerOverlayService == nil ? nil : { appDelegate.triggerOverlay1TestNow() },
                 onTestOverlay2Now: appDelegate.prayerEndingOverlayService == nil ? nil : { appDelegate.triggerOverlay2TestNow() },
                 onTestMeetingAlertNow: appDelegate.meetingAlertService == nil ? nil : { appDelegate.triggerMeetingAlertTestNow() },

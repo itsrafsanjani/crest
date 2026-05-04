@@ -20,6 +20,11 @@ final class MeetingAlertService {
             ?? AppSettingsDefault.meetingAlertEnabled
     }
 
+    var alertOffsetMinutes: Int {
+        UserDefaults.standard.object(forKey: AppSettingsKey.meetingAlertOffsetMinutes) as? Int
+            ?? AppSettingsDefault.meetingAlertOffsetMinutes
+    }
+
     init(calendarService: CalendarService) {
         self.calendarService = calendarService
         startPeriodicRefresh()
@@ -53,9 +58,12 @@ final class MeetingAlertService {
         guard isAlertEnabled else { return }
 
         let now = Date()
-        let horizon = now.addingTimeInterval(30 * 60)
+        let offsetSeconds = TimeInterval(alertOffsetMinutes * 60)
+        let horizon = now.addingTimeInterval(30 * 60 + offsetSeconds)
 
         for event in calendarService.events {
+            let alertTime = event.startDate.addingTimeInterval(-offsetSeconds)
+
             guard !event.isAllDay,
                   event.startDate > now,
                   event.startDate <= horizon,
@@ -68,8 +76,10 @@ final class MeetingAlertService {
                 url: event.url
             ) != nil else { continue }
 
-            let interval = event.startDate.timeIntervalSince(now)
-            let timer = Timer.scheduledTimer(withTimeInterval: max(interval, 0.1), repeats: false) { [weak self] _ in
+            let interval = alertTime.timeIntervalSince(now)
+            guard interval > 0 else { continue }
+
+            let timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
                 DispatchQueue.main.async {
                     self?.fireMeetingAlert(for: event)
                 }
