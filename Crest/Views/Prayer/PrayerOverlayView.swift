@@ -3,29 +3,47 @@ import SwiftUI
 struct PrayerOverlayView: View {
     let prayer: Prayer
     let prayerTime: Date
+    let prayerEndTime: Date?
     let onDismiss: () -> Void
     let onSnooze: (Int) -> Void
 
     @State private var remainingSeconds: Int
+    @State private var endRemainingSeconds: Int
     @State private var dismissText = ""
     @State private var timer: Timer?
     @State private var selectedSnoozeDuration: Int = 5
     @State private var shakeOffset: CGFloat = 0
     @FocusState private var isTextFieldFocused: Bool
 
-    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
+    init(prayer: Prayer, prayerTime: Date, prayerEndTime: Date?, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
         self.prayer = prayer
         self.prayerTime = prayerTime
+        self.prayerEndTime = prayerEndTime
         self.onDismiss = onDismiss
         self.onSnooze = onSnooze
         let remaining = Int(max(0, prayerTime.timeIntervalSince(Date())))
         _remainingSeconds = State(initialValue: remaining)
+        let endRemaining = Int(max(0, (prayerEndTime ?? Date()).timeIntervalSince(Date())))
+        _endRemainingSeconds = State(initialValue: endRemaining)
     }
 
     private var countdownText: String {
         let m = remainingSeconds / 60
         let s = remainingSeconds % 60
         return String(format: "%02d:%02d", m, s)
+    }
+
+    private var waqtEndsText: String? {
+        guard prayerEndTime != nil, endRemainingSeconds > 0 else { return nil }
+        let hours = endRemainingSeconds / 3600
+        let minutes = (endRemainingSeconds % 3600) / 60
+        if hours > 0 {
+            return "Waqt ends in \(hours)h \(minutes)m"
+        } else if minutes > 0 {
+            return "Waqt ends in \(minutes)m"
+        } else {
+            return "Waqt ends in < 1m"
+        }
     }
 
     private var canDismiss: Bool {
@@ -92,7 +110,21 @@ struct PrayerOverlayView: View {
             Text("It's time for \(prayer.displayName)")
                 .font(.system(size: 34, weight: .bold))
                 .foregroundStyle(.white)
+                .padding(.bottom, 12)
+
+            if let waqtText = waqtEndsText {
+                HStack(spacing: 6) {
+                    Image(systemName: "clock")
+                        .font(.caption)
+                    Text(waqtText)
+                        .font(.callout.weight(.medium))
+                }
+                .foregroundStyle(themeColor)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(themeColor.opacity(0.15), in: Capsule())
                 .padding(.bottom, 16)
+            }
 
             Text(quranVerse)
                 .font(.subheadline)
@@ -193,6 +225,10 @@ struct PrayerOverlayView: View {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             let remaining = Int(max(0, prayerTime.timeIntervalSince(Date())))
             remainingSeconds = remaining
+            if let endTime = prayerEndTime {
+                let endRemaining = Int(max(0, endTime.timeIntervalSince(Date())))
+                endRemainingSeconds = endRemaining
+            }
         }
         RunLoop.main.add(timer!, forMode: .common)
     }

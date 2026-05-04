@@ -166,9 +166,11 @@ final class PrayerOverlayService {
         }
 
         activePrayer = prayer
+        let endTime = prayerTimeService.prayerEndTime(prayer)
         let window = PrayerOverlayWindow(
             prayer: prayer,
             prayerTime: prayerTime,
+            prayerEndTime: endTime,
             onDismiss: { [weak self] in self?.dismissOverlay() },
             onSnooze: { [weak self] minutes in self?.snoozeOverlay(minutes: minutes) }
         )

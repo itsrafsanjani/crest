@@ -5,7 +5,7 @@ final class PrayerOverlayWindow: NSPanel {
     private let onDismissAction: () -> Void
     private let onSnoozeAction: (Int) -> Void
 
-    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
+    init(prayer: Prayer, prayerTime: Date, prayerEndTime: Date?, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
         self.onDismissAction = onDismiss
         self.onSnoozeAction = onSnooze
 
@@ -31,6 +31,7 @@ final class PrayerOverlayWindow: NSPanel {
         let overlayView = PrayerOverlayView(
             prayer: prayer,
             prayerTime: prayerTime,
+            prayerEndTime: prayerEndTime,
             onDismiss: onDismiss,
             onSnooze: onSnooze
         )
