@@ -4,7 +4,7 @@ struct PrayerOverlayView: View {
     let prayer: Prayer
     let prayerTime: Date
     let onDismiss: () -> Void
-    let onSnooze: () -> Void
+    let onSnooze: (Int) -> Void
 
     @State private var remainingSeconds: Int
     @State private var dismissText = ""
@@ -13,7 +13,7 @@ struct PrayerOverlayView: View {
     @State private var shakeOffset: CGFloat = 0
     @FocusState private var isTextFieldFocused: Bool
 
-    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping () -> Void) {
+    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
         self.prayer = prayer
         self.prayerTime = prayerTime
         self.onDismiss = onDismiss
@@ -140,7 +140,7 @@ struct PrayerOverlayView: View {
     private var actionButtons: some View {
         VStack(spacing: 12) {
             HStack(spacing: 16) {
-                Button(action: onSnooze) {
+                Button(action: { onSnooze(selectedSnoozeDuration) }) {
                     Label("Snooze (\(selectedSnoozeDuration)m)", systemImage: "moon.zzz")
                         .font(.body.weight(.semibold))
                         .foregroundStyle(.white)

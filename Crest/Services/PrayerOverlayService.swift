@@ -70,13 +70,13 @@ final class PrayerOverlayService {
         activePrayer = nil
     }
 
-    func snoozeOverlay() {
+    func snoozeOverlay(minutes: Int) {
         guard let prayer = activePrayer else { return }
         overlayWindow?.close()
         overlayWindow = nil
         activePrayer = nil
 
-        let snoozeTimer = Timer.scheduledTimer(withTimeInterval: 5 * 60, repeats: false) { [weak self] _ in
+        let snoozeTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(minutes * 60), repeats: false) { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self else { return }
                 self.fireOverlay(for: prayer, triggerTime: Date())
@@ -170,7 +170,7 @@ final class PrayerOverlayService {
             prayer: prayer,
             prayerTime: prayerTime,
             onDismiss: { [weak self] in self?.dismissOverlay() },
-            onSnooze: { [weak self] in self?.snoozeOverlay() }
+            onSnooze: { [weak self] minutes in self?.snoozeOverlay(minutes: minutes) }
         )
         overlayWindow = window
         window.showFullscreen()

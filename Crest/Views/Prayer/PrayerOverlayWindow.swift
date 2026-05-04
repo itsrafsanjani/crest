@@ -3,9 +3,9 @@ import SwiftUI
 
 final class PrayerOverlayWindow: NSPanel {
     private let onDismissAction: () -> Void
-    private let onSnoozeAction: () -> Void
+    private let onSnoozeAction: (Int) -> Void
 
-    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping () -> Void) {
+    init(prayer: Prayer, prayerTime: Date, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
         self.onDismissAction = onDismiss
         self.onSnoozeAction = onSnooze
 
