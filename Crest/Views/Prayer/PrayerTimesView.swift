@@ -32,7 +32,7 @@ struct PrayerTimesView: View {
     }
 
     private func prayerRow(_ pt: PrayerTime) -> some View {
-        let isNext = prayerTimeService.nextPrayer == pt.prayer
+        let isHighlighted = prayerTimeService.highlightedPrayer == pt.prayer
         let isPast = pt.isPast()
         let jamaatIsPast = pt.jamaatTime.map { $0 < Date() } ?? false
 
@@ -40,17 +40,17 @@ struct PrayerTimesView: View {
             HStack(spacing: 8) {
                 Image(systemName: pt.prayer.systemImage)
                     .font(.system(size: 12))
-                    .foregroundStyle(isNext ? Color.accentColor : (isPast ? Color.secondary.opacity(0.4) : Color.secondary))
+                    .foregroundStyle(isHighlighted ? Color.accentColor : (isPast ? Color.secondary.opacity(0.4) : Color.secondary))
                     .frame(width: 18)
 
                 Text(pt.prayer.displayName)
-                    .font(.callout.weight(isNext ? .semibold : .regular))
+                    .font(.callout.weight(isHighlighted ? .semibold : .regular))
                     .foregroundStyle(isPast ? .tertiary : .primary)
 
                 Spacer()
 
-                if isNext {
-                    Text("in \(prayerTimeService.formattedCountdown())")
+                if isHighlighted {
+                    Text(prayerTimeService.formattedHighlightCountdown())
                         .font(.caption)
                         .foregroundStyle(Color.accentColor)
                         .padding(.horizontal, 6)
@@ -69,7 +69,7 @@ struct PrayerTimesView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, pt.jamaatTime == nil ? 6 : 4)
-        .background(isNext ? Color.accentColor.opacity(0.05) : .clear)
+        .background(isHighlighted ? Color.accentColor.opacity(0.05) : .clear)
     }
 
     private func jamaatRow(time: Date, isPast: Bool) -> some View {

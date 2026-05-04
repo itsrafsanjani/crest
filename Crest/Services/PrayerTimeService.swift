@@ -14,6 +14,9 @@ final class PrayerTimeService {
     private(set) var nextPrayer: Prayer?
     private(set) var nextPrayerTime: Date?
     private(set) var countdownToNext: TimeInterval = 0
+    private(set) var highlightedPrayer: Prayer?
+    private(set) var isInActivePrayerWindow: Bool = false
+    private(set) var highlightCountdown: TimeInterval = 0
     private(set) var hijriDateString: String = ""
     private(set) var islamicMidnight: Date?
 
@@ -39,6 +42,9 @@ final class PrayerTimeService {
             nextPrayer = nil
             nextPrayerTime = nil
             countdownToNext = 0
+            highlightedPrayer = nil
+            isInActivePrayerWindow = false
+            highlightCountdown = 0
             hijriDateString = ""
             islamicMidnight = nil
             rawPrayerTimes = nil
@@ -149,6 +155,20 @@ final class PrayerTimeService {
             nextPrayerTime = nil
             countdownToNext = 0
         }
+
+        // Determine highlighted prayer: current prayer if in active window, otherwise next prayer
+        if let current = current,
+           current != .sunrise,
+           let endTime = prayerEndTime(current),
+           endTime > now {
+            highlightedPrayer = current
+            isInActivePrayerWindow = true
+            highlightCountdown = max(0, endTime.timeIntervalSince(now))
+        } else {
+            highlightedPrayer = next
+            isInActivePrayerWindow = false
+            highlightCountdown = countdownToNext
+        }
     }
 
     private func computeHijriDate() {
@@ -249,5 +269,18 @@ final class PrayerTimeService {
         } else {
             return "\(minutes)m"
         }
+    }
+
+    func formattedHighlightCountdown() -> String {
+        let total = Int(highlightCountdown)
+        let hours = total / 3600
+        let minutes = (total % 3600) / 60
+        let timeString: String
+        if hours > 0 {
+            timeString = "\(hours)h \(minutes)m"
+        } else {
+            timeString = "\(minutes)m"
+        }
+        return isInActivePrayerWindow ? "\(timeString) left" : "in \(timeString)"
     }
 }
